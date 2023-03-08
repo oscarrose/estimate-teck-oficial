@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="186.782" height="43.268" viewBox="0 0 186.782 43.268">
+  <defs>
+    <filter id="nube" x="0" y="0" width="54.194" height="43.268" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#84b5db" flood-opacity="0.769"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="letra" x="16.782" y="1.334" width="170" height="35" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur result="blur-2"/>
+      <feFlood flood-opacity="0.451"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_3329" data-name="Group 3329" transform="translate(5002.833 472.334)">
+    <g transform="matrix(1, 0, 0, 1, -5002.83, -472.33)" filter="url(#nube)">
+      <path id="nube-2" data-name="nube" d="M29.182,13.539A11.443,11.443,0,0,0,18.1,4,11.255,11.255,0,0,0,8.068,10.38,9.317,9.317,0,0,0,0,19.792a9.277,9.277,0,0,0,9.049,9.475H28.654a7.727,7.727,0,0,0,7.541-7.9A7.715,7.715,0,0,0,29.182,13.539Z" transform="translate(9 2)" fill="#29abe2"/>
+    </g>
+    <g id="logo" transform="translate(-4986.051 -471)">
+      <g transform="matrix(1, 0, 0, 1, -16.78, -1.33)" filter="url(#letra)">
+        <text id="letra-2" data-name="letra" transform="translate(16.78 29.33)" font-size="26" font-family="SegoeUI-Bold, Segoe UI" font-weight="700"><tspan x="0" y="0">Estimate-Teck</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
