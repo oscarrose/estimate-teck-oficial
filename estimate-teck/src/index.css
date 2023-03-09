@@ -2,3 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+.contenedor-btn-estado {
+    display: flex;
+    justify-content: center;
+    
+   
+}
+
+.btn-estado {
+    border: none;
+    width: 200px;
+    height: 60px;
+    margin-bottom: 25px;
+    color: rgb(0, 0, 0);
+}
+
+.btn-estado:hover {
+    background-color: rgb(4, 154, 247);
+    color: white;
+
+}

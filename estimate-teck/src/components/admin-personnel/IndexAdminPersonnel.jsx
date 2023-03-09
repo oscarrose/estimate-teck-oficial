@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card } from "antd";
 import ModuleEmployee from "./ModuleEmployee"
-import ModuleUser from "./ModuleUser";
+import ModuleUser from "./admin-user/ModuleUser";
 
 function IndexAdminPersonnel() {
   const [activeTabKey, setActiveTabKey] = useState("employee");
