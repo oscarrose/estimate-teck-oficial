@@ -1,12 +1,30 @@
 import React from "react";
 import { Button, Space, Table, message, Popconfirm } from "antd";
 import { PauseOutlined, ReloadOutlined } from "@ant-design/icons";
+import CallApi from "../../../ServicesHttp/CallApi";
 function TableUser({
   dataUser,
   loanding,
   setVisibleFormStatus,
-  setChangeUser
+  setChangeUser,
+  setloanding
 }) {
+
+
+  //Para restablecer la contraseña
+  const resetPassword = (id) => {
+    setloanding(true);
+    CallApi.patch(`Usuarios/resetPasswordUser/${id}`
+    ).then(() => {
+      message.success("Contraseña restablecida")
+      setloanding(false);
+    }).catch((error) => {
+      setloanding(false);
+      message.error(error.message);
+    });
+  };
+
+
   const columns = [
     {
       title: "Empleado",
@@ -50,8 +68,8 @@ function TableUser({
           <Popconfirm
             title="Restablecer constraseña"
             description="Estás segura de restablecer esta contraseña?"
-            onConfirm={confirm}
-            onCancel={cancel}
+            onConfirm={() => resetPassword(record.usuarioId)}
+
             okText="Yes"
             cancelText="No"
           >
@@ -64,14 +82,8 @@ function TableUser({
     },
   ];
 
-  const confirm = (e) => {
-    console.log(e);
-    message.success('Click on Yes');
-  };
-  const cancel = (e) => {
-    console.log(e);
-    message.error('Click on No');
-  };
+
+
   return (
     <div>
       <Table

@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Modal, Spin } from 'antd';
 import { message, Form } from 'antd';
 import { Status } from './ItemStatus';
+import CallApi from "../../../ServicesHttp/CallApi"
 
-
-export default function ModalPasswordAndStatus({ visibleFormStatus, setVisibleFormStatus, changeUser,setChangeUser }) {
+export default function ModalPasswordAndStatus({ visibleFormStatus, setVisibleFormStatus, changeUser,setUpdateTableUser, setChangeUser }) {
 
 
     const [form] = Form.useForm();
@@ -16,6 +16,28 @@ export default function ModalPasswordAndStatus({ visibleFormStatus, setVisibleFo
     const onReset = () => {
         form.resetFields();
     };
+
+    //Para cambiar de estado al usuario
+    const changeStateUser = (data) => {
+       
+        setLoading(true)
+        const objStatu = {
+            idObjectivo: changeUser,
+            idEstado: data
+        }
+       
+        CallApi.patch("Usuarios/ChangeStatusUser", objStatu)
+            .then(() => {
+                message.success("Estado actualizado")
+                setUpdateTableUser((prevData) => !prevData)
+                setLoading(false)
+                setVisibleFormStatus(false);
+            }).catch((error) => {
+                setLoading(false)
+                message.error(error.message);
+            });
+
+    }
 
     return (
 
@@ -33,7 +55,7 @@ export default function ModalPasswordAndStatus({ visibleFormStatus, setVisibleFo
                     <div className='contenedor-btn-estado'>
                         <Spin spinning={loading}>
                             {Status.map((valor) =>
-                                <button className='btn-estado' key={valor.EstadoId} >
+                                <button className='btn-estado' key={valor.EstadoId} onClick={() => changeStateUser(valor.EstadoId)} >
                                     {valor.Estado}
                                 </button>)}
                         </Spin>

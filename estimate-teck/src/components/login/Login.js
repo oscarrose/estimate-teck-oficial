@@ -1,14 +1,59 @@
 import "./styles.css";
+import React, { useState, useEffect } from "react";
 import imgPortada from "../../asset/loginPortada.svg";
 import cilindroGrey from "../../asset/cilindroGrey.svg";
 import cilindroBlue from "../../asset/cilindroBlue.svg";
+import CallApi from "../../ServicesHttp/CallApi";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
+import useAuth from "../../hooks/useAuth"
+
+
+let rute = process.env.REACT_APP_RUTE_VM
+
+
 const Login = () => {
+
+  const { SaveSession, auth } = useAuth();
+
+  const [isLogged, setLogged] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
 
+  useEffect(() => {
+    try {
+      if (auth != null) {
+
+        navigate(rute + "home", { replace: true });
+      }
+    } catch (error) {
+      message.error(error);
+    }
+
+  }, [auth, location, navigate]) //revisar la dependencia
+
+  const onSubmit = async (values) => {
+    console.log("Received values of form: ", values);
+    setLogged(true)
+    await CallApi.post("Auth/Login", values).then((res) => {
+      console.log("res",res.data);
+      // const emailUsuario = res?.data?.email;
+      // const rol = res?.data?.rol;
+      // const token = res?.data?.token;
+      // const idUsuario = res?.data.idUsuario;
+      //SaveSession({ emailUsuario, rol, token, idUsuario });
+      setLogged(false)
+      //navigate(rute + "home", { replace: true });
+    }).catch((error) => {
+      message.error(error.response.data)
+      console.log("err",error)
+      setLogged(false)
+     
+
+    });
+  };
   const onFinish = (values) => {
     navigate("/home", { replace: true });
     console.log("Received values of form: ", values);
@@ -30,20 +75,21 @@ const Login = () => {
             initialValues={{
               remember: true,
             }}
-            onFinish={onFinish}
+            onFinish={onSubmit}
           >
             <Form.Item
-              name="username"
+              name="userEmail"
               rules={[
                 {
                   required: true,
                   message: "Por favor ingresar su correo electronico!",
+                  type:"email"
                 },
               ]}
             >
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Usuario"
+                placeholder="Email"
               />
             </Form.Item>
             <Form.Item

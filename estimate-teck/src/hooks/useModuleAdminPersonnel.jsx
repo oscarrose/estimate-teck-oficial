@@ -15,6 +15,10 @@ const useModuleAdminPersonnel = () => {
   //Para saber si esta modificando la data de la tabla de empleado
   const [updateTableEmployee, setUpdateTableEmployee] = useState(false);
 
+
+  //Para saber si esta modificando la data de la tabla de usuario
+  const [updateTableUser, setUpdateTableUser] = useState(false);
+
   //Para saber cuando termina la peticcion de responder
   const [loanding, setloanding] = useState(false);
 
@@ -73,7 +77,7 @@ const useModuleAdminPersonnel = () => {
 
   useEffect(() => {
     fetchDataUser();
-  }, []);
+  }, [updateTableUser]);
 
   useEffect(() => {
     fetchDataRol();
@@ -85,7 +89,9 @@ const useModuleAdminPersonnel = () => {
     loanding,
     setUpdateTableEmployee,
     dataUser, setDataUser,
-    dataRol
+    dataRol,
+    setUpdateTableUser,
+    setloanding
   };
 };
 

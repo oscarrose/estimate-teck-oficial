@@ -7,7 +7,7 @@ import ModalPasswordAndStatus from "./ModalPasswordAndStatus";
 import useModuleAdminPersonnel from "../../../hooks/useModuleAdminPersonnel";
 function ModuleUser() {
 
-  const { dataRol, dataEmployee, dataUser,setDataUser, loanding } = useModuleAdminPersonnel();
+  const { setUpdateTableUser,dataRol, dataEmployee, dataUser,setDataUser, loanding,setloanding } = useModuleAdminPersonnel();
 
   //Para controlar el formulario de user
   const [controlFormUser, setControlFormUser] = useState(false);
@@ -31,9 +31,11 @@ function ModuleUser() {
       </div>
       <div>
         <TableUser
+        setloanding={setloanding}
         setVisibleFormStatus={setVisibleFormStatus}
           loanding={loanding}
           dataUser={dataUser}
+          setChangeUser={setChangeUser}
         />
       </div>
       <ModalFormUser
@@ -44,6 +46,7 @@ function ModuleUser() {
         dataEmployee={dataEmployee}
       />
       <ModalPasswordAndStatus
+      setUpdateTableUser={setUpdateTableUser}
       changeUser={changeUser}
       setChangeUser={setChangeUser}
       setVisibleFormStatus={setVisibleFormStatus}
