@@ -1,5 +1,6 @@
 ﻿using estimate_teck.Data;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace estimate_teck.Servicies.UsuariosTk
 {
@@ -33,5 +34,19 @@ namespace estimate_teck.Servicies.UsuariosTk
         {
             return (_context.Usuarios?.Any(e => e.UsuarioId == userId && e.EstadoUsuarioId == 1)).GetValueOrDefault();
         }
+
+      public void CreatePasswordHash(out byte[] passwordHash, out byte[] passwordSalt)
+        {
+             string password = "123456";
+
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+
+            }
+        }
+
+       
     }
 }

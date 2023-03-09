@@ -19,10 +19,10 @@ namespace estimate_teck.Controllers
         private readonly IConfiguration _configuration;
         private readonly estimate_teckContext _context;
 
-        public AuthController(estimate_teckContext context,IConfiguration configuration, IUsuarioService usuarioService)
+        public AuthController(estimate_teckContext context, IConfiguration configuration, IUsuarioService usuarioService)
         {
             _configuration = configuration;
-            _usuarioService= usuarioService;
+            _usuarioService = usuarioService;
             _context = context;
         }
 
@@ -38,13 +38,13 @@ namespace estimate_teck.Controllers
         [HttpPost("RegisterUser")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDTO userRegister)
         {
-             if (_usuarioService.EmployeeHasUser(userRegister.IdEmpleado))
-             {
-                 return BadRequest("Empleado tiene un usuario asignado");
-             }
+            if (_usuarioService.EmployeeHasUser(userRegister.IdEmpleado))
+            {
+                return BadRequest("Empleado tiene un usuario asignado");
+            }
             try
             {
-                CreatePasswordHash( out byte[] passwordHash, out byte[] passwordSalt);
+                _usuarioService.CreatePasswordHash(out byte[] passwordHash, out byte[] passwordSalt);
 
                 var usuario = new Usuario
                 {
@@ -60,19 +60,19 @@ namespace estimate_teck.Controllers
                 await _context.SaveChangesAsync();
 
                 var resultUserRegister = await (from userSave in _context.Usuarios
-                                    join employee in _context.Empleados on userSave.EmpleadoId equals employee.EmpleadoId
-                                    join rolUser in _context.Rols on userSave.IdRol equals rolUser.IdRol
-                                    where (userSave.UsuarioId == usuario.UsuarioId)
-                                    select new UserDTO
-                                    {
-                                        usuarioId = userSave.UsuarioId,
-                                        usuarioEmail=employee.Email,
-                                        nombreEmpleado = string.Concat(employee.Nombre, " ", employee.Apellido),
-                                        estado = userSave.EstadoUsuario.Estado,
-                                        fechaCreacion= userSave.FechaCreacion,
-                                        rolUsuario = rolUser.Nombre
-                                 
-                                    }).FirstOrDefaultAsync();
+                                                join employee in _context.Empleados on userSave.EmpleadoId equals employee.EmpleadoId
+                                                join rolUser in _context.Rols on userSave.IdRol equals rolUser.IdRol
+                                                where (userSave.UsuarioId == usuario.UsuarioId)
+                                                select new UserDTO
+                                                {
+                                                    usuarioId = userSave.UsuarioId,
+                                                    emailUsuario = employee.Email,
+                                                    empleado = string.Concat(employee.Nombre, " ", employee.Apellido),
+                                                    estado = userSave.EstadoUsuario.Estado,
+                                                    fechaCreacion = userSave.FechaCreacion,
+                                                    rol = rolUser.Nombre
+
+                                                }).FirstOrDefaultAsync();
                 return Ok(resultUserRegister);
 
             }
@@ -91,21 +91,23 @@ namespace estimate_teck.Controllers
             //obtener el empleado que tiene el usuario asignado
             var currentEmployee = _context.Empleados.Where(x => x.Email == user.UserEmail).FirstOrDefault();
 
+            if(currentEmployee==null)return NotFound();
+
             //obtener los datos del usuario
             var currentUser = _context.Usuarios.Where(x => x.EmpleadoId == currentEmployee.EmpleadoId).FirstOrDefault();
 
-            if (currentUser== null ) return BadRequest("Usuario no encontrado");
+            if (currentUser == null) return BadRequest("Usuario no encontrado");
 
             if (!_usuarioService.UserActive(currentUser.UsuarioId)) return BadRequest("Usuario acceso denegado");
 
 
             if (!VerifyPasswordHash(user.Password, currentUser.PasswordHast, currentUser.PasswordSalt))
             {
-                return BadRequest("Contrasena incorrecta");
+                return BadRequest("Contraseña incorrecta");
             }
-          
+
             var currentRol = _context.Rols.Where(x => x.IdRol == currentUser.IdRol).FirstOrDefault();
-          
+
             string token = CreateToken(currentUser);
 
             return Ok(new
@@ -126,7 +128,7 @@ namespace estimate_teck.Controllers
         /// <returns></returns>
         private string CreateToken(Usuario usuario)
         {
-          
+
             var currentRol = _context.Rols.Where(x => x.IdRol == usuario.IdRol).FirstOrDefault();
             var currentEmployee = _context.Empleados.Where(x => x.EmpleadoId == usuario.EmpleadoId).FirstOrDefault();
 
@@ -160,18 +162,6 @@ namespace estimate_teck.Controllers
             return jwt;
         }
 
-        //Para crear el password con hash para usar en el token
-        private void CreatePasswordHash( out byte[] passwordHash, out byte[] passwordSalt)
-        {
-          string  password = "123456";
-
-            using (var hmac = new HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-
-            }
-        }
 
         //Verificar el password de hash 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] PasswordSalt)

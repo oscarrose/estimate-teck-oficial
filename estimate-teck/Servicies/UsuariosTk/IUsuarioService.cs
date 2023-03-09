@@ -13,6 +13,14 @@
 
         // Verification method if employee has user
         bool EmployeeHasUser(int id);
+
+        /// <summary>
+        /// method for create password the user
+        /// </summary>
+        /// <param name="password">default</param>
+        /// <param name="passwordHash"></param>
+        /// <param name="passwordSalt"></param>
+        void CreatePasswordHash(out byte[] passwordHash, out byte[] passwordSalt);
     }
 
 
