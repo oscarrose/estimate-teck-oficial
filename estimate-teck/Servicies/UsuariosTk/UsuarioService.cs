@@ -16,7 +16,7 @@ namespace estimate_teck.Servicies.UsuariosTk
 
         public bool EmployeeHasUser(int id)
         {
-            return (_context.Usuarios?.Any(e => e.UsuarioId == id)).GetValueOrDefault();
+            return (_context.Usuarios?.Any(e => e.EmpleadoId == id)).GetValueOrDefault();
         }
 
         public string GetMyName()
@@ -35,9 +35,9 @@ namespace estimate_teck.Servicies.UsuariosTk
             return (_context.Usuarios?.Any(e => e.UsuarioId == userId && e.EstadoUsuarioId == 1)).GetValueOrDefault();
         }
 
-      public void CreatePasswordHash(out byte[] passwordHash, out byte[] passwordSalt)
+      public void CreatePasswordHash(string password,out byte[] passwordHash, out byte[] passwordSalt)
         {
-             string password = "123456";
+             
 
             using (var hmac = new HMACSHA512())
             {
@@ -47,6 +47,15 @@ namespace estimate_teck.Servicies.UsuariosTk
             }
         }
 
-       
+        //Verificar el password de hash 
+        public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] PasswordSalt)
+        {
+            using (var hmac = new HMACSHA512(PasswordSalt))
+            {
+                var computeHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return computeHash.SequenceEqual(passwordHash);
+
+            }
+        }
     }
 }

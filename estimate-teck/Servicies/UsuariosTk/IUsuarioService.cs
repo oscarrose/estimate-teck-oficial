@@ -20,10 +20,18 @@
         /// <param name="password">default</param>
         /// <param name="passwordHash"></param>
         /// <param name="passwordSalt"></param>
-        void CreatePasswordHash(out byte[] passwordHash, out byte[] passwordSalt);
+        void CreatePasswordHash(string password,out byte[] passwordHash, out byte[] passwordSalt);
+
+        /// <summary>
+        /// method for valid password the user
+        /// </summary>
+        /// <param name="password">default</param>
+        /// <param name="passwordHash"></param>
+        /// <param name="passwordSalt"></param>
+        bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] PasswordSalt);
     }
 
 
-   
+
 
 }

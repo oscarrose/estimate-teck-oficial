@@ -8,7 +8,7 @@
 
         public string empleado { get; set; } = null!;
 
-        public string estado { get; set; } = null!;
+        public string estadoUsuario { get; set; } = null!;
 
         public DateTime? fechaCreacion { get; set; }
 

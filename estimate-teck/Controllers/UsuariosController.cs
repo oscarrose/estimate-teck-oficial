@@ -60,21 +60,21 @@ namespace estimate_teck.Controllers
         {
             var user = await _context.Usuarios.FindAsync(changeStatu.IdObjectivo);
 
-            if (user == null)return NotFound("Usuario no encontrado");
-        
+            if (user == null) return NotFound("Usuario no encontrado");
+
             try
             {
                 var patchDoc = new JsonPatchDocument<Usuario>();
 
-                    patchDoc.Replace(user => user.EstadoUsuarioId, changeStatu.IdEstado);
+                patchDoc.Replace(user => user.EstadoUsuarioId, changeStatu.IdEstado);
 
-                    var serializedItemToUpdate = JsonConvert.SerializeObject(patchDoc);
-                    var deserialized = JsonConvert.DeserializeObject<JsonPatchDocument>(serializedItemToUpdate);
-                    deserialized?.ApplyTo(user);
+                var serializedItemToUpdate = JsonConvert.SerializeObject(patchDoc);
+                var deserialized = JsonConvert.DeserializeObject<JsonPatchDocument>(serializedItemToUpdate);
+                deserialized?.ApplyTo(user);
 
-                    await _context.SaveChangesAsync();
-                    return NoContent();
-               
+                await _context.SaveChangesAsync();
+                return NoContent();
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -85,10 +85,10 @@ namespace estimate_teck.Controllers
         }
 
 
-         /// <summary>
+        /// <summary>
         /// method for reset password user
         /// </summary>
-        /// <param name="changePasswordUser"></param>
+        /// <param name="resetPasswordUser"></param>
         /// <param name="id"></param>
         /// <returns></returns>
         // Patch: api/Usuarios/id
@@ -96,23 +96,72 @@ namespace estimate_teck.Controllers
         public async Task<IActionResult> resetPasswordUser(int id)
         {
             var user = await _context.Usuarios.FindAsync(id);
-            if (user == null)return NotFound("Usuario no encontrado");
+            if (user == null) return NotFound("Usuario no encontrado");
+
+
 
             try
             {
-               _usuarioService.CreatePasswordHash(out byte[] passwordHash, out byte[] passwordSalt);
+                _usuarioService.CreatePasswordHash("123456",out byte[] passwordHash, out byte[] passwordSalt);
 
-                    var patchDoc = new JsonPatchDocument<Usuario>();
-                    patchDoc.Replace(user => user.PasswordHast, passwordHash);
-                    patchDoc.Replace(user => user.PasswordSalt, passwordSalt);
+                var patchDoc = new JsonPatchDocument<Usuario>();
+                patchDoc.Replace(user => user.PasswordHast, passwordHash);
+                patchDoc.Replace(user => user.PasswordSalt, passwordSalt);
 
-                    var serializedItemToUpdate = JsonConvert.SerializeObject(patchDoc);
-                    var deserialized = JsonConvert.DeserializeObject<JsonPatchDocument>(serializedItemToUpdate);
-                    deserialized?.ApplyTo(user);
+                var serializedItemToUpdate = JsonConvert.SerializeObject(patchDoc);
+                var deserialized = JsonConvert.DeserializeObject<JsonPatchDocument>(serializedItemToUpdate);
+                deserialized?.ApplyTo(user);
 
-                    await _context.SaveChangesAsync();
-                    return NoContent();
-                
+                await _context.SaveChangesAsync();
+                return NoContent();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// method for change password user
+        /// </summary>
+        /// <param name="changePasswordUser"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        // Patch: api/Usuarios/id
+        [HttpPatch("changePasswordUser")]
+        public async Task<IActionResult> changePasswordUser([FromBody] changePassword dataPassword)
+        {
+            var currentUser = await _context.Usuarios.FindAsync(dataPassword.userId);
+
+            if (currentUser == null) return NotFound("Usuario no encontrado");
+
+            if (dataPassword.newPassword != dataPassword.confirmPassword) return NotFound("Contraseña no coinciden");
+
+
+            if (!_usuarioService.VerifyPasswordHash(dataPassword.oldPassword, currentUser.PasswordHast, currentUser.PasswordSalt))
+            {
+                return BadRequest("contraseña anterior incorrecta");
+            }
+
+            try
+            {
+                _usuarioService.CreatePasswordHash(dataPassword.newPassword,out byte[] passwordHash, out byte[] passwordSalt);
+
+                var patchDoc = new JsonPatchDocument<Usuario>();
+                patchDoc.Replace(user => user.PasswordHast, passwordHash);
+                patchDoc.Replace(user => user.PasswordSalt, passwordSalt);
+
+                var serializedItemToUpdate = JsonConvert.SerializeObject(patchDoc);
+                var deserialized = JsonConvert.DeserializeObject<JsonPatchDocument>(serializedItemToUpdate);
+                deserialized?.ApplyTo(currentUser);
+
+                await _context.SaveChangesAsync();
+                return NoContent();
+
             }
             catch (DbUpdateConcurrencyException)
             {

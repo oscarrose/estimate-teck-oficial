@@ -44,7 +44,7 @@ namespace estimate_teck.Controllers
             }
             try
             {
-                _usuarioService.CreatePasswordHash(out byte[] passwordHash, out byte[] passwordSalt);
+                _usuarioService.CreatePasswordHash("123456",out byte[] passwordHash, out byte[] passwordSalt);
 
                 var usuario = new Usuario
                 {
@@ -62,13 +62,14 @@ namespace estimate_teck.Controllers
                 var resultUserRegister = await (from userSave in _context.Usuarios
                                                 join employee in _context.Empleados on userSave.EmpleadoId equals employee.EmpleadoId
                                                 join rolUser in _context.Rols on userSave.IdRol equals rolUser.IdRol
+                                                join estadoUser in _context.EstadoUsuarioEmpleados on employee.EstadoId equals estadoUser.EstadoId
                                                 where (userSave.UsuarioId == usuario.UsuarioId)
                                                 select new UserDTO
                                                 {
                                                     usuarioId = userSave.UsuarioId,
                                                     emailUsuario = employee.Email,
                                                     empleado = string.Concat(employee.Nombre, " ", employee.Apellido),
-                                                    estado = userSave.EstadoUsuario.Estado,
+                                                    estadoUsuario = estadoUser.Estado,
                                                     fechaCreacion = userSave.FechaCreacion,
                                                     rol = rolUser.Nombre
 
@@ -83,7 +84,6 @@ namespace estimate_teck.Controllers
 
 
         }
-
         [HttpPost("Login")]
         [AllowAnonymous]
         public async Task<ActionResult<string>> Login([FromBody] UserLogin user)
@@ -91,7 +91,7 @@ namespace estimate_teck.Controllers
             //obtener el empleado que tiene el usuario asignado
             var currentEmployee = _context.Empleados.Where(x => x.Email == user.UserEmail).FirstOrDefault();
 
-            if(currentEmployee==null)return NotFound();
+            if(currentEmployee==null)return NotFound("Usuario no encontrado");
 
             //obtener los datos del usuario
             var currentUser = _context.Usuarios.Where(x => x.EmpleadoId == currentEmployee.EmpleadoId).FirstOrDefault();
@@ -101,9 +101,9 @@ namespace estimate_teck.Controllers
             if (!_usuarioService.UserActive(currentUser.UsuarioId)) return BadRequest("Usuario acceso denegado");
 
 
-            if (!VerifyPasswordHash(user.Password, currentUser.PasswordHast, currentUser.PasswordSalt))
+            if (!_usuarioService.VerifyPasswordHash(user.Password, currentUser.PasswordHast, currentUser.PasswordSalt))
             {
-                return BadRequest("Contraseña incorrecta");
+                return BadRequest("Usuario o contraseña incorrecta");
             }
 
             var currentRol = _context.Rols.Where(x => x.IdRol == currentUser.IdRol).FirstOrDefault();
@@ -163,15 +163,6 @@ namespace estimate_teck.Controllers
         }
 
 
-        //Verificar el password de hash 
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] PasswordSalt)
-        {
-            using (var hmac = new HMACSHA512(PasswordSalt))
-            {
-                var computeHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return computeHash.SequenceEqual(passwordHash);
-
-            }
-        }
+       
     }
 }
