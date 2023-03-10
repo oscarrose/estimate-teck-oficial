@@ -9,6 +9,7 @@ import IndexAdminPersonnel from "./components/admin-personnel/IndexAdminPersonne
 import indexEstimate from "./components/estimate/indexEstimate";
 import IndexTariff from "./components/Tariff/IndexTariff";
 import IndexAdminClient from "./components/client/IndexAdminClient";
+import ProfileUser from "./components/admin-personnel/PageProfile/ProfileUser";
 const ControllerRouter = () => {
   return (
     <Routes>
@@ -19,6 +20,7 @@ const ControllerRouter = () => {
       <Route path="/estimate" element={<AppRouter component={indexEstimate} />}/>
       <Route path="/tariff" element={<AppRouter component={IndexTariff}/>}/>
       <Route path="/client" element={<AppRouter component={IndexAdminClient}/>}/>
+      <Route path="/profile" element={<AppRouter component={ProfileUser}/>}/>
     </Routes>
   );
 };

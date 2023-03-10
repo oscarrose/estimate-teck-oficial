@@ -22,3 +22,32 @@
     color: white;
 
 }
+
+
+/*Estilo para la pagina de perfil de usuario*/
+
+.page-record-container {
+    margin-right:2.5vw;
+    background-color: #ffffff;
+}
+
+.title-item-profile {
+    display: block;
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+}
+
+
+.description-item-profile {
+    margin-bottom: 7px;
+    color: rgba(0, 0, 0, 0.767);
+    font-size: 14px;
+}
+
+
+.description-item-profile-label {
+    display: inline-block;
+    margin-right: 8px;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+}

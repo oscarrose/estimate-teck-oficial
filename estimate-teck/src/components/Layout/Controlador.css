@@ -1,0 +1,35 @@
+
+
+.navegacion{
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 16px;
+}
+
+.btnnavega{
+    text-decoration: none;
+    color: rgb(136, 136, 136);
+    font-size: 15px;
+    padding: 10px;
+}
+
+.btnnavega:hover{
+     color: rgb(0, 123, 0);
+     border-bottom: 1px solid green;
+}
+.btncerrar:hover{
+    color:  rgb(0, 123, 0);
+    border-bottom: 1px solid green;
+}
+.btncerrar{
+    text-decoration: none;
+    color: rgb(136, 136, 136);
+    font-size: 15px;
+    padding: 5px;
+    margin-bottom: 5px; 
+}
+
+
+

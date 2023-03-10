@@ -8,6 +8,7 @@ import {
   DeploymentUnitOutlined,
   FileTextOutlined,
   TeamOutlined,
+  SettingOutlined
 } from "@ant-design/icons";
 import { Menu, Layout, theme } from "antd";
 
@@ -72,6 +73,12 @@ function SliderMenu({collapsed}) {
               key: "/admin-personnel",
               icon: <TeamOutlined />,
               label:<Link to="/admin-personnel">Manejo del personal</Link>
+             
+            },
+            {
+              key: "/profile",
+              icon:<SettingOutlined />,
+              label:<Link to="/profile">Cuenta</Link>
              
             },
           ]}

@@ -1,12 +1,13 @@
 import React from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import UserInfo from "./UserInfo";
 import { Layout, theme } from "antd";
 
 const { Header } = Layout;
 
-function HeaderLayout({collapsed,setCollapsed}) {
-  
-  
+function HeaderLayout({ collapsed, setCollapsed }) {
+
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -16,10 +17,14 @@ function HeaderLayout({collapsed,setCollapsed}) {
     <>
       <Header
         style={{
-          padding: 0,
+          padding: '1.1rem',
           background: colorBgContainer,
+          display:"flex",
+          justifyContent:"space-between"
+          
         }}
       >
+      
         {React.createElement(
           collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
           {
@@ -27,8 +32,11 @@ function HeaderLayout({collapsed,setCollapsed}) {
             onClick: () => setCollapsed(!collapsed),
           }
         )}
+        <div>
+        <UserInfo/>
+        </div>
       </Header>
-     
+
     </>
   );
 }

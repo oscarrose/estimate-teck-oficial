@@ -5,7 +5,7 @@ import cilindroGrey from "../../asset/cilindroGrey.svg";
 import cilindroBlue from "../../asset/cilindroBlue.svg";
 import CallApi from "../../ServicesHttp/CallApi";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, message,Spin } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth"
 
@@ -35,17 +35,17 @@ const Login = () => {
   }, [auth, location, navigate]) //revisar la dependencia
 
   const onSubmit = async (values) => {
-    console.log("Received values of form: ", values);
+    
     setLogged(true)
     await CallApi.post("Auth/Login", values).then((res) => {
-      console.log("res",res.data);
-      // const emailUsuario = res?.data?.email;
-      // const rol = res?.data?.rol;
-      // const token = res?.data?.token;
-      // const idUsuario = res?.data.idUsuario;
-      //SaveSession({ emailUsuario, rol, token, idUsuario });
+      
+      const emailUsuario = res?.data?.email;
+      const rol = res?.data?.rol;
+      const token = res?.data?.token;
+      const idUsuario = res?.data.idUsuario;
+      SaveSession({ emailUsuario, rol, token, idUsuario });
       setLogged(false)
-      //navigate(rute + "home", { replace: true });
+      navigate(rute + "home", { replace: true });
     }).catch((error) => {
       message.error(error.response.data)
       console.log("err",error)
@@ -54,20 +54,18 @@ const Login = () => {
 
     });
   };
-  const onFinish = (values) => {
-    navigate("/home", { replace: true });
-    console.log("Received values of form: ", values);
-  };
+ 
   return (
     <div className="container  mx-auto ">
       <div className="grid grid-cols-3 ">
-        <div className="fixed -top-72 -ml-96">
+      <div className="fixed -top-72 -ml-96">
           <img className=" w-5/12" src={cilindroGrey} alt="" />
         </div>
         <div className="fixed top-72 -ml-72">
           <img className=" w-8/12" src={cilindroBlue} alt="" />
         </div>
         <div className="fixed right-96 pr-36 top-32">
+          <Spin spinning={isLogged}>
           <img src={imgPortada} alt="Bienvenidos" />
           <Form
             name="normal_login"
@@ -107,11 +105,11 @@ const Login = () => {
                 placeholder="Contraseña"
               />
             </Form.Item>
-            <Form.Item>
+            {/* <Form.Item>
               <a className="login-form-forgot" href="">
                 ¿Contraseña olvidada?
               </a>
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item>
               <Button
@@ -123,6 +121,7 @@ const Login = () => {
               </Button>
             </Form.Item>
           </Form>
+          </Spin>
         </div>
       </div>
     </div>
