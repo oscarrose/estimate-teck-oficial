@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace estimate_teck.Models
+namespace estimate_teck.Models;
+
+public partial class Rol
 {
-    public partial class Rol
-    {
-        public Rol()
-        {
-            Usuarios = new HashSet<Usuario>();
-        }
+    public int IdRol { get; set; }
 
-        public int IdRol { get; set; }
-        public string Nombre { get; set; } = null!;
+    public string Nombre { get; set; } = null!;
 
-        public virtual ICollection<Usuario> Usuarios { get; set; }
-    }
+    public virtual ICollection<Usuario> Usuarios { get; } = new List<Usuario>();
 }
