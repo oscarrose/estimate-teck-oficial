@@ -59,9 +59,9 @@ function SliderMenu({collapsed}) {
               label: <Link to={'/client'}>Clientes</Link>,
             },
             {
-              key: "4",
+              key: "/productividadpf",
               icon: <DeploymentUnitOutlined />,
-              label: "Plataforma de desarrollo",
+              label:<Link to={"/productividadpf"}>Plataforma de desarrollo</Link>
             },
             {
               key: "5",

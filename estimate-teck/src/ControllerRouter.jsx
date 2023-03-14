@@ -1,6 +1,6 @@
-import React,{lazy, Suspense} from "react";
+//import React,{lazy, Suspense} from "react";
 import { Routes, Route } from "react-router-dom";
-import { Spin } from "antd";
+//import { Spin } from "antd";
 import Landing from "./components/pages/Landing";
 import Login from "./components/login/Login";
 import HomeApp from "./components/pages/HomeApp";
@@ -9,6 +9,7 @@ import IndexAdminPersonnel from "./components/admin-personnel/IndexAdminPersonne
 import indexEstimate from "./components/estimate/indexEstimate";
 import IndexTariff from "./components/Tariff/IndexTariff";
 import IndexAdminClient from "./components/client/IndexAdminClient";
+import IndexProductividad from "./components/productividadPF/IndexProductividad";
 const ControllerRouter = () => {
   return (
     <Routes>
@@ -19,6 +20,7 @@ const ControllerRouter = () => {
       <Route path="/estimate" element={<AppRouter component={indexEstimate} />}/>
       <Route path="/tariff" element={<AppRouter component={IndexTariff}/>}/>
       <Route path="/client" element={<AppRouter component={IndexAdminClient}/>}/>
+      <Route path="/productividadpf" element={<AppRouter component={IndexProductividad}/>}/>
     </Routes>
   );
 };
