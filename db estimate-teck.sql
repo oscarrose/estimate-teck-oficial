@@ -150,6 +150,7 @@ CREATE TABLE ProductividadPuntoFuncion
 (
 	Productividad_Id int not null identity constraint Pk_ProductividadId primary key (Productividad_Id),
 	Usuario_Id int not null constraint Fk_UsuarioProductividad_Id foreign key references Usuario(Usuario_Id),
+	Estado_Id int not null constraint Fk_EstadoProductividad_Id foreign key references Estado_Usuario_Empleado(Estado_Id),
 	NombrePlataforma VARCHAR(255) NOT NULL,
 	NivelBajo int,
 	NivelMedio int,
