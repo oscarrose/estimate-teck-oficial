@@ -46,8 +46,6 @@ namespace estimate_teck.Controllers
 
 
 
-
-
                 }).ToListAsync();
             return Ok(AllProductividad);
 

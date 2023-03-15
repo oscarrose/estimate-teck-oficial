@@ -2,11 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using JsonIgnoreAttribute = System.Text.Json.Serialization.JsonIgnoreAttribute;
 
 namespace estimate_teck.Models;
 
 public partial class ProductividadPuntoFuncion
 {
+
     public int ProductividadId { get; set; }
 
     public int UsuarioId { get; set; }
@@ -30,8 +33,9 @@ public partial class ProductividadPuntoFuncion
 
     [JsonIgnore]
     [IgnoreDataMember]
+    
     public virtual ICollection<Estimacion> Estimacions { get; } = new List<Estimacion>();
-
+    [JsonPropertyName("productvidadpf")]
     [JsonIgnore]
     [IgnoreDataMember]
     public virtual Usuario? Usuario { get; set; } = null!;
