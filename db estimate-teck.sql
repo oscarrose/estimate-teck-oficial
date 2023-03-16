@@ -33,7 +33,7 @@ GO
 
 
 INSERT INTO  Cargo (Nombre,Descripcion) VALUES ('Frontend Development', 'Programador que trabaja la parte de la
-aplicación  con la que interactua el usuario');
+aplicaciï¿½n  con la que interactua el usuario');
 GO
 
 INSERT INTO cargo (Nombre,Descripcion) VALUES ('Backend Development','Programador que se encarga de trabajar
@@ -41,16 +41,23 @@ con la parte de la aplicacion que el usuario no puede ver');
 GO
 
 INSERT INTO cargo (Nombre,Descripcion) VALUES ('Full-Stacks Development','Programador que trabaja todos los 
-aspectos de una aplicación, incluidos Frontend y backend');
+aspectos de una aplicaciï¿½n, incluidos Frontend y backend');
 GO
 
 INSERT INTO cargo (Nombre,Descripcion) VALUES ('Mobile Development','Programador que trabaja las aplicaciones 
 Moviles');
 GO
 
-INSERT INTO cargo (Nombre,Descripcion) VALUES ('Diseñador UX','Es el profesional que gestiona la experiencia del usuario 
-con un producto digital. Su objetivo es que la interacción del usuario con el producto sea sencilla e intuitiva');
+INSERT INTO cargo (Nombre,Descripcion) VALUES ('Diseï¿½ador UX','Es el profesional que gestiona la experiencia del usuario 
+con un producto digital. Su objetivo es que la interacciï¿½n del usuario con el producto sea sencilla e intuitiva');
 GO
+
+INSERT INTO cargo (Nombre,Descripcion) VALUES ('Gerente general','N/A');
+GO
+
+INSERT INTO cargo (Nombre,Descripcion) VALUES ('Coordinadora de proyecto','N/A');
+GO
+
 
 CREATE TABLE Empleado
 (
@@ -63,9 +70,9 @@ CREATE TABLE Empleado
     Email VARCHAR(255) NOT NULL,
     Telefono_Residencial VARCHAR(15) NULL,
     Celular VARCHAR(15) NOT NULL,
-    Ciudad VARCHAR(255) NOT NULL,
-    Calle VARCHAR(255) NOT NULL,
-    Sector VARCHAR(255) NOT NULL,
+    Pais VARCHAR(255) NOT NULL,
+	Provincia VARCHAR(255) NOT NULL,
+    Direccion VARCHAR(255) NOT NULL,
     Fecha_Creacion DATETIME DEFAULT GETDATE()
 );
 GO
@@ -122,15 +129,15 @@ CREATE TABLE Cliente
 (
 	Cliente_Id INT NOT NULL IDENTITY CONSTRAINT Pk_Cliente Primary key (Cliente_Id),
 	Tipo_Id INT NOT NULL CONSTRAINT Fk_TipoClienteId FOREIGN KEY REFERENCES TipoCliente (Tipo_Id),
-	Nombre VARCHAR(25) NOT NULL,
-    Apellido VARCHAR(25) NOT NULL,
+	Nombre_Cliente VARCHAR(255) NOT NULL,
+	Tipo_identificacion VARCHAR(255) NOT NULL,
     Identificacion VARCHAR(15) NOT NULL,
     Email VARCHAR(255) NOT NULL,
     Telefono_Residencial VARCHAR(15) NULL,
     Celular VARCHAR(15) NOT NULL,
-    Ciudad VARCHAR(255) NOT NULL,
-    Calle VARCHAR(255) NOT NULL,
-    Sector VARCHAR(255) NOT NULL,
+	Pais VARCHAR(255) NOT NULL,
+	Estado VARCHAR(255) NULL,
+    Direccion VARCHAR(255) NOT NULL,
     Fecha_Creacion DATETIME DEFAULT GETDATE()
 
 );
