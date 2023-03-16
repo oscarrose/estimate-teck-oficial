@@ -82,9 +82,8 @@ namespace estimate_teck.Controllers
                     NivelMedio = productividadpf.NivelMedio,
                     NivelAlto = productividadpf.NivelAlto,
                     FechaCreacion = productividadpf.FechaCreacion,
-                    UsuarioId = 1,
+                    UsuarioId=productividadpf.UsuarioId,
                     EstadoId = 1
-
                 };
 
                 _context.ProductividadPuntoFuncions.Add(createProductividad);
