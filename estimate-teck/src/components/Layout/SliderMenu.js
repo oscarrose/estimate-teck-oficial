@@ -55,7 +55,7 @@ function SliderMenu({ collapsed }) {
       type: 'divider',
     },),
     (auth.rol === "Gerente general") &&
-    getItem(<Link to={'/null'}>Plataforma de desarrollo</Link>, "/null", <DeploymentUnitOutlined />, {
+    getItem(<Link to={'/productividadpf'}>Plataforma de desarrollo</Link>, "/productividadpf", <DeploymentUnitOutlined />, {
       type: 'divider',
     },),
     (auth.rol === "Gerente general") &&

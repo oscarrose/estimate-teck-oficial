@@ -8,9 +8,6 @@ const text = '¿Estás segura de cerrar session?';
 const UserInfo = () => {
 
     const { auth, CloseSession } = useAuth();
-
-    console.log("auth", auth);
-
     return (
         <>
             <div

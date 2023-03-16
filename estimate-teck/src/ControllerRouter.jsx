@@ -35,6 +35,7 @@ const ControllerRouter = () => {
         <Route path="/estimate" element={<AppRouter component={indexEstimate} />} />
         <Route path="/client" element={<AppRouter component={IndexAdminClient} />} />
         <Route path="/tariff" element={<AppRouter component={IndexTariff} />} />
+        <Route path="/productividadpf" element={<AppRouter component={IndexProductividad}/>}/>
       </Route>
 
       {/* protected routes solo para Gerente general*/}
@@ -43,7 +44,7 @@ const ControllerRouter = () => {
       </Route>
 
       <Route path='*' element={<Suspense fallback={<Spin />}><NotFound /></Suspense>} />
-      <Route path="/productividadpf" element={<AppRouter component={IndexProductividad}/>}/>
+      
     </Routes>
   );
 };

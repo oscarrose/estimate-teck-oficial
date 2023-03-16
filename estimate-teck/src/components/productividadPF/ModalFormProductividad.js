@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Form, Input, Spin, Button, message, Select } from "antd";
 import CallApi from "../../ServicesHttp/CallApi";
 import { estadoProductividad } from "./ItemSelectProductividad";
-//import { tipoClient } from "./ItemSelectClient";
+import useAuth from "../../hooks/useAuth";
 
 const { Option } = Select;
 
@@ -16,7 +16,7 @@ function ModalFormProductividad({
   const onReset = () => {
     form.resetFields();
   };
-
+  const {auth}=useAuth();
   //Asginar los valores a editar
   /* const edit = () => {
      form.setFieldsValue({
@@ -38,16 +38,16 @@ function ModalFormProductividad({
 
   //Para las peticciones de crear y actualizar
    const onSubmit = async (values) => {
-    const objTemp={
-      ...values
-    }
+    
     setLoandingSave(true);
     if (!controlFormProductividad.dataEdit) {
-     
-
-      await CallApi.post("ProductividadPuntoFuncions/CreateProductividad", objTemp)
+      const objNew={
+        ...values,
+        usuarioId:auth.idUsuario
+      }
+      await CallApi.post("ProductividadPuntoFuncions/CreateProductividad", objNew)
         .then((res) => {
-          console.log("res", res.data)
+          
           message.success("Registrada correctamente");
           onReset();
           setDataProductividad((prevData) => prevData.concat(res.data));
@@ -55,7 +55,6 @@ function ModalFormProductividad({
         })
         .catch((error) => {
           setLoandingSave(false);
-          console.log("Revisar", error.data)
           message.error("Error interno", error.message);
         });
 
@@ -66,8 +65,7 @@ function ModalFormProductividad({
         ...values,
         fechaCreacion: controlFormProductividad.dataEdit.fechaCreacion,
         productividadId: controlFormProductividad.dataEdit.productividadId,
-        
-        usuarioId:1
+        usuarioId:auth.idUsuario
       };
       
       await CallApi.put(
@@ -213,7 +211,7 @@ function ModalFormProductividad({
             )}
 
             <Button type="primary" htmlType="submit">
-              Guardar
+             {!controlFormProductividad.dataEdit ?("Crear nueva plataforma"):("Aceptar")}
             </Button>
           </Form>
         </Spin>
