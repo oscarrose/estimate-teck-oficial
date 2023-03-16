@@ -7,10 +7,13 @@ function TableEmpoyee({
   loanding,
   setEditEmployee,
 }) {
+  
   const columns = [
     {
       title: "Nombre",
-      dataIndex: "nombreCompleto",
+      render: ({ nombre, apellido }) => (
+        <p>{`${nombre} ${apellido}`}</p>
+      ),
     },
     {
       title: "Email",
@@ -27,21 +30,37 @@ function TableEmpoyee({
       width: 90
     },
     {
-      title: "Teléfono residencial",
-      dataIndex: "telefonoResidencial",
-      width: 110,
-    },
-    {
-      title: "Celular",
-      dataIndex: "celular",
-      width: 110,
-    },
-    {
       title: "Cargo",
       dataIndex: "cargo",
       width: 127,
     },
-
+    {
+      title: "Num. concacto",
+      children:[
+      {
+        title: "Celular",
+        dataIndex: "celular",
+        width: 110,
+      },
+      {
+        title: "Telefono ",
+        dataIndex: "telefonoResidencial",
+        width: 110,
+      },
+      
+    ]
+    },
+   
+    {
+      title: "País",
+      dataIndex: "pais",
+     
+    },
+    {
+      title: "Provincia",
+      dataIndex: "provincia",
+     
+    },
     {
       title: "Dirección",
       dataIndex: "direccion",
@@ -52,8 +71,6 @@ function TableEmpoyee({
       width: 127,
     },
     {
-      title: "Acciones",
-      width: 90,
       render: (record) => (
         <Space size="middle">
           <Button
@@ -70,8 +87,9 @@ function TableEmpoyee({
     },
   ].filter((item) => !item.hidden);
   return (
-    <div>
+    <div >
       <Table
+      
         columns={columns}
         dataSource={dataEmployee}
         loading={loanding}

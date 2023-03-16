@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Select, Spin, Button, message } from "antd";
+import { Modal, Form, Input, Upload, Select, Spin, Button, message } from "antd";
+import ImgCrop from "antd-img-crop";
+import { PlusOutlined, UploadOutlined } from "@ant-design/icons"
 import CallApi from "../../ServicesHttp/CallApi";
-import { cargo, estadoUsuarioEmpleado } from "./ItemsSelect";
+import { cargo, estadoUsuarioEmpleado, Countrys, ProvinciaRD } from "./ItemsSelect";
+
 const { Option } = Select;
 
 function ModalFormEmployee({
@@ -16,6 +19,9 @@ function ModalFormEmployee({
   const onReset = () => {
     form.resetFields();
   };
+  // const [country, setCountry] = useState('');
+  // const [state, setState] = useState('');
+  // const [city, setCity] = useState('');
 
   //Asginar los valores a editar
   const edit = () => {
@@ -31,15 +37,42 @@ function ModalFormEmployee({
       calle: editEmployee.calle,
       sector: editEmployee.sector,
       estadoId: editEmployee.estadoId,
+      provincia:editEmployee.provincia,
+      pais:editEmployee.pais,
+      direccion:editEmployee.direccion
     });
   };
+
+  // const [fileList, setFileList] = useState([
+  //   {
+  //   }
+  // ]);
+  // const onChange = ({ fileList: newFileList }) => {
+  //   setFileList(newFileList);
+  // };
+  // const onPreview = async (file) => {
+  //   let src = file.url;
+  //   if (!src) {
+  //     src = await new Promise((resolve) => {
+  //       const reader = new FileReader();
+  //       reader.readAsDataURL(file.originFileObj);
+  //       reader.onload = () => resolve(reader.result);
+  //     });
+  //   }
+  //   const image = new Image();
+  //   image.src = src;
+  //   const imgWindow = window.open(src);
+  //   imgWindow?.document.write(image.outerHTML);
+  // };
 
   const [loandingSave, setLoandingSave] = useState(false);
 
   //Para las peticciones de crear y actualizar
   const onSubmit = async (values) => {
+
     if (!editEmployee) {
-     
+      
+
       await CallApi.post("Empleados/CreateEmployee", values)
         .then((res) => {
           setLoandingSave(false);
@@ -49,7 +82,7 @@ function ModalFormEmployee({
         })
         .catch((error) => {
           message.error(error.response.data);
-          
+
           setLoandingSave(false);
         });
     } else {
@@ -59,6 +92,7 @@ function ModalFormEmployee({
         fechaCreacion: editEmployee.fechaCreacion,
         empleadoId: editEmployee.empleadoId,
       };
+    
       await CallApi.put(
         `Empleados/UpdateEmployee/${editEmployee.empleadoId}`,
         newValues
@@ -76,10 +110,12 @@ function ModalFormEmployee({
     }
   };
 
+
   return (
     <div>
       <Modal
-        width={800}
+
+        width={1000}
         centered
         open={modalFormEmployee}
         onCancel={() => {
@@ -98,9 +134,10 @@ function ModalFormEmployee({
 
         <Spin spinning={loandingSave}>
           <Form
-            className="grid gap-2 grid-rows-6 grid-cols-2"
+            className="grid gap-2 grid-rows-3 grid-cols-2"
             onFinish={onSubmit}
-            autoComplete="on"
+            //onSubmit={onSubmit}
+            autoComplete="off"
             form={form}
             setfieldsvalue={editEmployee !== null ? edit() : onReset()}
           >
@@ -117,6 +154,17 @@ function ModalFormEmployee({
             >
               <Input placeholder="Nombre" />
             </Form.Item>
+
+            {/* <Geography
+              locationTitle="Country"
+              isCountry
+              onChange={setCountry}
+            />
+            <Geography
+              locationTitle="State"
+              onChange={setState}
+              geoId={country}
+            /> */}
 
             <Form.Item
               name="apellido"
@@ -145,9 +193,13 @@ function ModalFormEmployee({
                   max: 13,
                   message: "Numero de cédula es muy largo",
                 },
+                {
+                  min: 13,
+                  message: "Numero de cédula es muy corto",
+                },
               ]}
             >
-              <Input placeholder="No.cédula" />
+              <Input placeholder="###-#######-#" />
             </Form.Item>
 
             <Form.Item
@@ -162,7 +214,7 @@ function ModalFormEmployee({
                 },
               ]}
             >
-              <Input type="email" placeholder="Email" />
+              <Input type="email" placeholder="###@####.###" />
             </Form.Item>
 
             <Form.Item
@@ -176,7 +228,7 @@ function ModalFormEmployee({
                 },
               ]}
             >
-              <Select placeholder=" Seleccione el tipo de cargo" allowClear>
+              <Select placeholder=" Seleccione la ocupacion en la empresa" allowClear>
                 {cargo.map((data) => (
                   <Option key={data.idCargo} value={data.idCargo}>
                     {data.nombre}
@@ -188,9 +240,14 @@ function ModalFormEmployee({
             <Form.Item
               name="telefonoResidencial"
               label="Teléfono residencial"
+              rules={[{
+                max:10,
+                  min:10,
+                  message:"El numero de telefono es invalido"
+              }]}
               hasFeedback
             >
-              <Input type="number" />
+              <Input type="number" placeholder="(###)#######"/>
             </Form.Item>
             <Form.Item
               name="celular"
@@ -200,54 +257,85 @@ function ModalFormEmployee({
                 {
                   require: true,
                   message: "El celular es requerido",
+                 
                 },
+                {
+                  max:10,
+                  min:10,
+                  message:"El numero de celular es invalido"
+                }
               ]}
             >
-              <Input type="number" />
+              <Input type="number" placeholder="(###)#######" />
+            </Form.Item>
+            <Form.Item
+              name="pais"
+              label="Pais"
+              rules={[
+                {
+                  required: true,
+                  message: "El pais es necesario!",
+                },
+              ]}
+              hasFeedback
+            >
+              <Select
+                placeholder="País de origen"
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+              >
+                {Countrys.map((option) => (
+                  <Option key={option} value={option}>
+                    {option}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+
+            <Form.Item name="provincia" label="Provincia"
+              rules={[
+                {
+                  required: true,
+                  message: "La provincia es necesaria!",
+                },
+              ]}
+              hasFeedback>
+              <Select
+                placeholder="Provincia donde esta establecido"
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+              >
+                {ProvinciaRD.map((option) => (
+                  <Option key={option} value={option}>
+                    {option}
+                  </Option>
+                ))}
+              </Select>
             </Form.Item>
 
             <Form.Item
-              name="ciudad"
-              label="Ciudad"
+              name="direccion"
+              label="Dirección"
               hasFeedback
               rules={[
                 {
                   required: true,
-                  message: "El nombre de la ciudad es requerido",
+                  message: "El campo es requerido",
                 },
               ]}
             >
-              <Input />
+              <Input placeholder="Sector, nombre de la calle, No. casa" />
             </Form.Item>
-
-            <Form.Item
-              name="calle"
-              label="Calle"
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: "El nombre de la calle es requerido",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              name="sector"
-              label="Sector"
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: "El nombre del sector es requerido",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-
             {editEmployee && (
               <Form.Item
                 name="estadoId"
@@ -269,19 +357,27 @@ function ModalFormEmployee({
                 </Select>
               </Form.Item>
             )}
-
             {!editEmployee && (
               <Button type="primary" htmlType="reset" danger>
                 Cancelar
               </Button>
             )}
-
             <Button type="primary" htmlType="submit">
               Guardar
             </Button>
+
           </Form>
+
         </Spin>
+
       </Modal>
+
+      {/* 
+            <Geography
+              locationTitle="Ciudad: "
+              onChange={setCity}
+              geoId={state}
+            /> */}
     </div>
   );
 }

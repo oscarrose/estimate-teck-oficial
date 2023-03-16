@@ -5,7 +5,7 @@ import { message, Form } from 'antd';
 import { Status } from './ItemStatus';
 import CallApi from "../../../ServicesHttp/CallApi"
 
-export default function ModalPasswordAndStatus({ visibleFormStatus, setVisibleFormStatus, changeUser,setUpdateTableUser, setChangeUser }) {
+export default function ModalChangeStatus({ visibleFormStatus, setVisibleFormStatus, changeUser,setUpdateTableUser }) {
 
 
     const [form] = Form.useForm();

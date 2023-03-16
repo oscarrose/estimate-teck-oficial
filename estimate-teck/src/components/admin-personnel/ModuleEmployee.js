@@ -24,15 +24,16 @@ function ModuloEmployee() {
           Nuevo empleado
         </Button>
       </div>
-      <div>
-        <TableEmpoyee
+      <div  className="content-center">
+        <TableEmpoyee  
           setModalFormEmployee={setModalFormEmployee}
           setEditEmployee={setEditEmployee}
           dataEmployee={dataEmployee}
           loanding={loanding}
         />
       </div>
-      <ModalFormEmployee
+     <div >
+     <ModalFormEmployee
       setUpdateTableEmployee={setUpdateTableEmployee}
        setEditEmployee={setEditEmployee}
         editEmployee={editEmployee}
@@ -40,6 +41,7 @@ function ModuloEmployee() {
         modalFormEmployee={modalFormEmployee}
         setModalFormEmployee={setModalFormEmployee}
       />
+     </div>
     </div>
   );
 }

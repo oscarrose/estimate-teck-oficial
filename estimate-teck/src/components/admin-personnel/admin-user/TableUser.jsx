@@ -1,29 +1,22 @@
 import React from "react";
-import { Button, Space, Table, message, Popconfirm } from "antd";
+import { Button, Space, Table, Tooltip, Popconfirm } from "antd";
 import { PauseOutlined, ReloadOutlined } from "@ant-design/icons";
-import CallApi from "../../../ServicesHttp/CallApi";
+
 function TableUser({
   dataUser,
   loanding,
   setVisibleFormStatus,
   setChangeUser,
-  setloanding
+  setUserResetPassword,
+  setControlFormUser
 }) {
 
 
-  //Para restablecer la contraseña
-  const resetPassword = (id) => {
-    setloanding(true);
-    CallApi.patch(`Usuarios/resetPasswordUser/${id}`
-    ).then(() => {
-      message.success("Contraseña restablecida")
-      setloanding(false);
-    }).catch((error) => {
-      setloanding(false);
-      message.error(error.message);
-    });
-  };
 
+  const handleResetPassword=(value)=>{
+    setUserResetPassword(value)
+    setControlFormUser(true)
+  }
 
   const columns = [
     {
@@ -50,31 +43,31 @@ function TableUser({
       width: 127,
     },
     {
-      title: "Acciones",
-
       render: (record) => (
         <Space size="middle">
-          <Button
+          <Tooltip title="Cambiar estado">
+            <Button
+              type="link"
+              onClick={() => {
+
+                setVisibleFormStatus(true);
+                setChangeUser(record.usuarioId);
+              }}
+            >
+              <PauseOutlined />
+            </Button>
+
+          </Tooltip>
+
+          <Tooltip title="Restablecer constraseña">
+            <Button
             type="link"
-            onClick={() => {
+            onClick={()=>handleResetPassword(record)}
+            >
+              <ReloadOutlined />
+            </Button>
+          </Tooltip>
 
-              setVisibleFormStatus(true);
-              setChangeUser(record.usuarioId);
-            }}
-          >
-            <PauseOutlined />
-          </Button>
-
-          <Popconfirm
-            title="Restablecer constraseña"
-            description="Estás segura de restablecer esta contraseña?"
-            onConfirm={() => resetPassword(record.usuarioId)}
-
-            okText="Yes"
-            cancelText="No"
-          >
-            <ReloadOutlined />
-          </Popconfirm>
 
 
         </Space>

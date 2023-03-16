@@ -6,6 +6,9 @@ const useModuleAdminPersonnel = () => {
   //Data para mostrar los datos en la table de empleado y en el select del
   const [dataEmployee, setDataEmployee] = useState([]);
 
+    //Data para mostrar los datos en la table de empleado y en el select del
+    const [dataEmployeeWithoutUser, setDataEmployeeWithoutUser] = useState([]);
+
   //Data para mostrar los datos en la table de usuario
   const [dataUser, setDataUser] = useState([]);
 
@@ -38,6 +41,23 @@ const useModuleAdminPersonnel = () => {
       });
   }, []);
 
+    /**
+   *Function para obtener los datos  de los empleados sin usuario
+   */
+   const fetchDataEmployeeWithoutUser = useCallback(async function () {
+    setloanding(true);
+    await CallApi.get("Empleados/AllEmployeesWithoutUser")
+      .then((res) => {
+        setDataEmployeeWithoutUser(res.data);
+        setloanding(false);
+      })
+      .catch((error) => {
+        setloanding(false);
+        message.error("Error Interno", error);
+      });
+  }, []);
+
+
 
   /**
  *Function para obtener los datos  para la tabla de empleados
@@ -59,6 +79,7 @@ const useModuleAdminPersonnel = () => {
 *Function para obtener los datos de los roles
 */
   const fetchDataRol = useCallback(async function () {
+   
     setloanding(true);
     await CallApi.get("Usuarios/GetAllRol")
       .then((res) => {
@@ -83,8 +104,13 @@ const useModuleAdminPersonnel = () => {
     fetchDataRol();
   }, []);
 
+  useEffect(() => {
+    fetchDataEmployeeWithoutUser();
+  }, [dataUser, fetchDataEmployeeWithoutUser]);
+
   return {
     dataEmployee,
+    dataEmployeeWithoutUser,
     setDataEmployee,
     loanding,
     setUpdateTableEmployee,

@@ -17,7 +17,7 @@ function IndexAdminPersonnel() {
     },
   ];
   const contentListNoTitle = {
-    employee: <ModuleEmployee  />,
+    employee: <ModuleEmployee/>,
     user: <ModuleUser />,
   };
 
