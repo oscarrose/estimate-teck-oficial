@@ -89,23 +89,19 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.ClienteId).HasColumnName("Cliente_Id");
 
-                entity.Property(e => e.Apellido)
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Calle)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.Celular)
                     .HasMaxLength(15)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Ciudad)
+                entity.Property(e => e.Direccion)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Email)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Estado)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
@@ -118,11 +114,12 @@ namespace estimate_teck.Data
                     .HasMaxLength(15)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Nombre)
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
+                entity.Property(e => e.NombreCliente)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("Nombre_Cliente");
 
-                entity.Property(e => e.Sector)
+                entity.Property(e => e.Pais)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
@@ -132,6 +129,11 @@ namespace estimate_teck.Data
                     .HasColumnName("Telefono_Residencial");
 
                 entity.Property(e => e.TipoId).HasColumnName("Tipo_Id");
+
+                entity.Property(e => e.TipoIdentificacion)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("Tipo_identificacion");
 
                 entity.HasOne(d => d.Tipo)
                     .WithMany(p => p.Clientes)

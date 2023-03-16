@@ -93,10 +93,10 @@ namespace estimate_teck.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         // Patch: api/Usuarios/id
-        [HttpPatch("resetPasswordUser/{id}")]
-        public async Task<IActionResult> resetPasswordUser(int id,[FromBody]  changePassword dataPassword)
+        [HttpPatch("resetPasswordUser")]
+        public async Task<IActionResult> resetPasswordUser([FromBody] resetPassword dataPassword)
         {
-            var user = await _context.Usuarios.FindAsync(id);
+            var user = await _context.Usuarios.FindAsync(dataPassword.userId);
             if (user == null) return NotFound("Usuario no encontrado");
 
             try
