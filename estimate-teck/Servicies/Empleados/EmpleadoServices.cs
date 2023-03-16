@@ -20,7 +20,7 @@ namespace estimate_teck.Servicies.Empleados
 
         public bool EmployeeIdExists(int id)
         {
-            return (_context.Usuarios?.Any(e => e.EmpleadoId == id)).GetValueOrDefault();
+            return (_context.Empleados?.Any(e => e.EmpleadoId == id)).GetValueOrDefault();
         }
 
         public async Task<IEnumerable<empleadoDto>> GetAllEmployees()
@@ -34,15 +34,13 @@ namespace estimate_teck.Servicies.Empleados
                 select new empleadoDto
                 {
                     EmpleadoId= employee.EmpleadoId,   
-                    NombreCompleto= string.Concat(employee.Nombre," ", employee.Apellido),
                     Nombre= employee.Nombre,
                     Apellido = employee.Apellido,
                     Estado =statusEmployee.Estado,
                     EstadoId= statusEmployee.EstadoId,
-                    Calle= employee.Calle,
-                    Sector= employee.Sector,
-                    Ciudad= employee.Ciudad,
-                    Direccion = String.Concat(employee.Ciudad, " ", employee.Sector, " ", employee.Calle),
+                    Pais=employee.Pais,
+                    Provincia=employee.Provincia,
+                    Direccion=employee.Direccion,
                     CargoId = employee.CargoId,
                     Cargo = cargo.Nombre,
                     Email = employee.Email,

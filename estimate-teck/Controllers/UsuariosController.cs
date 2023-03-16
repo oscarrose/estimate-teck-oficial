@@ -42,6 +42,7 @@ namespace estimate_teck.Controllers
             return Ok(allUsuarios);
         }
 
+       
         [HttpGet("GetAllRol")]
         public async Task<ActionResult<IEnumerable<Rol>>> getAllRol()
         {
@@ -93,16 +94,14 @@ namespace estimate_teck.Controllers
         /// <returns></returns>
         // Patch: api/Usuarios/id
         [HttpPatch("resetPasswordUser/{id}")]
-        public async Task<IActionResult> resetPasswordUser(int id)
+        public async Task<IActionResult> resetPasswordUser(int id,[FromBody]  changePassword dataPassword)
         {
             var user = await _context.Usuarios.FindAsync(id);
             if (user == null) return NotFound("Usuario no encontrado");
 
-
-
             try
             {
-                _usuarioService.CreatePasswordHash("123456",out byte[] passwordHash, out byte[] passwordSalt);
+                _usuarioService.CreatePasswordHash(dataPassword.newPassword,out byte[] passwordHash, out byte[] passwordSalt);
 
                 var patchDoc = new JsonPatchDocument<Usuario>();
                 patchDoc.Replace(user => user.PasswordHast, passwordHash);

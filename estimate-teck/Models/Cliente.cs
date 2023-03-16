@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 
 namespace estimate_teck.Models
 {
@@ -25,10 +23,7 @@ namespace estimate_teck.Models
         public string Sector { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
 
-        [JsonIgnore]
-        [IgnoreDataMember]
-        public virtual TipoCliente? Tipo { get; set; } = null!;
-       
+        public virtual TipoCliente Tipo { get; set; } = null!;
         public virtual ICollection<Proyecto> Proyectos { get; set; }
     }
 }

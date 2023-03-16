@@ -20,13 +20,38 @@ namespace estimate_teck.Controllers
         }
 
         [HttpGet("GetAllEmployee")]
-        public async Task<IActionResult> GetAllEmployee()
+        public async Task<ActionResult<IEnumerable<Empleado>>> GetAllEmployee()
         {
             if (_context.Empleados == null) return NotFound();
 
             return Ok(await _servicesEmployee.GetAllEmployees());
 
         }
+
+        // GET: Todos los empleados que no tienen usuarios
+        [HttpGet("AllEmployeesWithoutUser")]
+        public async Task<ActionResult<IEnumerable<Empleado>>> EmployeeWithoutUser()
+        {
+            if (_context.Empleados == null) return NotFound();
+            var employeeWithoutUser = await (
+                from e in _context.Empleados
+                join c in _context.Cargos on e.CargoId equals c.CargoId
+                join u in _context.Usuarios on e.EmpleadoId equals u.EmpleadoId into usuarioEmpleado
+                from g in usuarioEmpleado.DefaultIfEmpty()
+                where g == null && e.EstadoId==1
+                select new{
+                    e.Nombre,
+                    e.Apellido,
+                    e.EmpleadoId,
+                   cargo= e.Cargo.Nombre,
+                   e.Identificacion,
+                   e.Email,
+
+                }).ToListAsync();
+            return Ok(employeeWithoutUser);
+        }
+
+
         [HttpPost("CreateEmployee")]
         public async Task<ActionResult<Empleado>> CreateEmployee([FromBody] Empleado employee)
         {
@@ -42,19 +67,17 @@ namespace estimate_teck.Controllers
             {
                 _context.Empleados.Add(employee);
                 await _context.SaveChangesAsync();
-              var resulCargo = (_context.Cargos.Where(e => e.CargoId == employee.EstadoId).FirstOrDefault());
+                var resulCargo = (_context.Cargos.Where(e => e.CargoId == employee.EstadoId).FirstOrDefault());
 
                 var resultEmployee = new empleadoDto();
                 resultEmployee.EmpleadoId = employee.EmpleadoId;
-                resultEmployee.NombreCompleto = string.Concat(employee.Nombre, " ", employee.Apellido);
                 resultEmployee.Nombre = employee.Nombre;
                 resultEmployee.Apellido = employee.Apellido;
                 resultEmployee.Estado = "Activo";
                 resultEmployee.EstadoId = employee.EstadoId;
-                resultEmployee.Calle = employee.Calle;
-                resultEmployee.Sector = employee.Sector;
-                resultEmployee.Ciudad = employee.Ciudad;
-                resultEmployee.Direccion = String.Concat(employee.Ciudad, " ", employee.Sector, " ", employee.Calle);
+                resultEmployee.Pais = employee.Pais;
+                resultEmployee.Provincia = employee.Provincia;
+                resultEmployee.Direccion = employee.Direccion;
                 resultEmployee.CargoId = employee.CargoId;
                 resultEmployee.Cargo = resulCargo.Nombre;
                 resultEmployee.Email = employee.Email;
@@ -62,8 +85,6 @@ namespace estimate_teck.Controllers
                 resultEmployee.TelefonoResidencial = employee.TelefonoResidencial;
                 resultEmployee.Celular = employee.Celular;
                 resultEmployee.FechaCreacion = employee.FechaCreacion;
-
-
                 return Ok(resultEmployee);
             }
             catch (Exception)
@@ -89,24 +110,24 @@ namespace estimate_teck.Controllers
                 {
                     return BadRequest();
                 }
-                var DataEmployee = new Empleado()
-                {
-                    EmpleadoId = employee.EmpleadoId,
-                    Nombre = employee.Nombre,
-                    Apellido = employee.Apellido,
-                    CargoId = employee.CargoId,
-                    Email = employee.Email,
-                    EstadoId = employee.EstadoId,
-                    Identificacion = employee.Identificacion,
-                    TelefonoResidencial = employee.TelefonoResidencial,
-                    Calle = employee.Calle,
-                    Ciudad = employee.Ciudad,
-                    Sector = employee.Sector,
-                    Celular = employee.Celular,
-                    FechaCreacion = employee.FechaCreacion,
-                };
+                // var DataEmployee = new Empleado()
+                // {
+                //     EmpleadoId = employee.EmpleadoId,
+                //     Nombre = employee.Nombre,
+                //     Apellido = employee.Apellido,
+                //     CargoId = employee.CargoId,
+                //     Email = employee.Email,
+                //     EstadoId = employee.EstadoId,
+                //     Identificacion = employee.Identificacion,
+                //     TelefonoResidencial = employee.TelefonoResidencial,
+                //     Calle = employee.Calle,
+                //     Ciudad = employee.Ciudad,
+                //     Sector = employee.Sector,
+                //     Celular = employee.Celular,
+                //     FechaCreacion = employee.FechaCreacion,
+                // };
 
-                _context.Entry(DataEmployee).State = EntityState.Modified;
+                _context.Entry(employee).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
 
                 return NoContent();

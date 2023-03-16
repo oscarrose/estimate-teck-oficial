@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
- 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace estimate_teck.Models
 {
     public partial class Empleado
@@ -12,7 +10,7 @@ namespace estimate_teck.Models
         {
             Usuarios = new HashSet<Usuario>();
         }
-        [Key]
+
         public int EmpleadoId { get; set; }
         public int EstadoId { get; set; }
         public int CargoId { get; set; }
@@ -22,16 +20,14 @@ namespace estimate_teck.Models
         public string Email { get; set; } = null!;
         public string? TelefonoResidencial { get; set; }
         public string Celular { get; set; } = null!;
-        public string Ciudad { get; set; } = null!;
-        public string Calle { get; set; } = null!;
-        public string Sector { get; set; } = null!;
+        public string Pais { get; set; } = null!;
+        public string Provincia { get; set; } = null!;
+        public string Direccion { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
 
-        [JsonIgnore]
-        [IgnoreDataMember]
+        
         public virtual Cargo? Cargo { get; set; } = null!;
-        [JsonIgnore]
-        [IgnoreDataMember]
+    
         public virtual EstadoUsuarioEmpleado? Estado { get; set; } = null!;
         public virtual ICollection<Usuario> Usuarios { get; set; }
     }

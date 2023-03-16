@@ -44,7 +44,7 @@ namespace estimate_teck.Controllers
             }
             try
             {
-                _usuarioService.CreatePasswordHash("123456",out byte[] passwordHash, out byte[] passwordSalt);
+                _usuarioService.CreatePasswordHash(userRegister.password,out byte[] passwordHash, out byte[] passwordSalt);
 
                 var usuario = new Usuario
                 {
