@@ -70,8 +70,8 @@ function ModalFormEmployee({
           message.success("Datos del cliente actualizados");
           setLoandingSave(false);
           setControlFormClient({
-            ...controlFormClient,
             visible: false,
+            dataEdit:null
           });
 
         })

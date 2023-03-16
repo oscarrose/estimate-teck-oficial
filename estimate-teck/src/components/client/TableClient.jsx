@@ -56,7 +56,7 @@ function TableClient({
      
     },
     {
-      title: "estado",
+      title: "Ciudad",
       dataIndex: "estado",
      
     },

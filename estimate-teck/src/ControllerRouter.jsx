@@ -33,11 +33,12 @@ const ControllerRouter = () => {
       <Route element={<AuthRequired allRoles={[ServiciesRol.rol3, ServiciesRol.rol2]} />}>
         <Route path="/estimate" element={<AppRouter component={indexEstimate} />} />
         <Route path="/client" element={<AppRouter component={IndexAdminClient} />} />
+        <Route path="/tariff" element={<AppRouter component={IndexTariff} />} />
       </Route>
 
       {/* protected routes solo para Gerente general*/}
       <Route element={<AuthRequired allRoles={[ServiciesRol.rol1]} />}>
-        <Route path="/tariff" element={<AppRouter component={IndexTariff} />} />
+       
       </Route>
 
       <Route path='*' element={<Suspense fallback={<Spin />}><NotFound /></Suspense>} />

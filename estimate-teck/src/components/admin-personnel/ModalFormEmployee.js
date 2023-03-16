@@ -93,12 +93,12 @@ function ModalFormEmployee({
       await CallApi.put(
         `Empleados/UpdateEmployee/${editEmployee.empleadoId}`,
         newValues
-      )
-        .then(() => {
+      ).then(() => {
           message.success("Datos del empleado actualizados")
-          setUpdateTableEmployee((prevData) => !prevData);
-          setLoandingSave(false);
           setModalFormEmployee(false);
+          setEditEmployee(null);
+          setLoandingSave(false);
+          setUpdateTableEmployee((prevData) => !prevData);
         })
         .catch((error) => {
           setLoandingSave(false);
