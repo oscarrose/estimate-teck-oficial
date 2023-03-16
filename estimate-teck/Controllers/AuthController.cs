@@ -59,6 +59,7 @@ namespace estimate_teck.Controllers
                 _context.Usuarios.Add(usuario);
                 await _context.SaveChangesAsync();
 
+
                 var resultUserRegister = await (from userSave in _context.Usuarios
                                                 join employee in _context.Empleados on userSave.EmpleadoId equals employee.EmpleadoId
                                                 join rolUser in _context.Rols on userSave.IdRol equals rolUser.IdRol
