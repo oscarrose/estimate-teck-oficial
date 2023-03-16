@@ -4,6 +4,6 @@
     {
         public int idRol { get; set; }
         public int IdEmpleado { get; set; }
-        public string password { get; set; } = null!;
+        public string newPassword { get; set; } = null!;
     }
 }

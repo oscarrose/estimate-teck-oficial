@@ -44,7 +44,7 @@ namespace estimate_teck.Controllers
             }
             try
             {
-                _usuarioService.CreatePasswordHash(userRegister.password,out byte[] passwordHash, out byte[] passwordSalt);
+                _usuarioService.CreatePasswordHash(userRegister.newPassword,out byte[] passwordHash, out byte[] passwordSalt);
 
                 var usuario = new Usuario
                 {
@@ -86,7 +86,7 @@ namespace estimate_teck.Controllers
         }
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> Login([FromBody] UserLogin user)
+        public async Task<ActionResult> Login([FromBody] UserLogin user)
         {
             //obtener el empleado que tiene el usuario asignado
             var currentEmployee = _context.Empleados.Where(x => x.Email == user.UserEmail).FirstOrDefault();
@@ -111,7 +111,8 @@ namespace estimate_teck.Controllers
             string token = CreateToken(currentUser);
 
             return Ok(new
-            {
+            {  //token1=currentEmployee.Nombre,
+                //tokenAp=currentEmployee.Apellido,
                 idUsuario = currentUser.UsuarioId,
                 Email = user.UserEmail,
                 Rol = currentRol?.Nombre,

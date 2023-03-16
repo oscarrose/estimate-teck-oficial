@@ -90,9 +90,9 @@ namespace estimate_teck.Controllers
         /// method for reset password user
         /// </summary>
         /// <param name="resetPasswordUser"></param>
-        /// <param name="id"></param>
+        /// <param name="resetPassword"></param>
         /// <returns></returns>
-        // Patch: api/Usuarios/id
+        // Patch: api/Usuarios/resetPassword
         [HttpPatch("resetPasswordUser")]
         public async Task<IActionResult> resetPasswordUser([FromBody] resetPassword dataPassword)
         {
@@ -128,9 +128,9 @@ namespace estimate_teck.Controllers
         /// method for change password user
         /// </summary>
         /// <param name="changePasswordUser"></param>
-        /// <param name="id"></param>
+        /// <param name="changePassword"></param>
         /// <returns></returns>
-        // Patch: api/Usuarios/id
+        // Patch: api/Usuarios/changePassword
         [HttpPatch("changePasswordUser")]
         public async Task<IActionResult> changePasswordUser([FromBody] changePassword dataPassword)
         {
@@ -162,7 +162,7 @@ namespace estimate_teck.Controllers
                 return NoContent();
 
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
                 throw;
             }
