@@ -11,16 +11,22 @@ function TableClient({
 
   const columns = [
     {
-      title: "Nombre",
-      dataIndex: "nombreCompleto",
+      title: "Nombre cliente",
+      dataIndex: "nombreCliente",
     },
     {
       title: "Email",
       dataIndex: "email",
     },
     {
-      title: "Tipo",
-      dataIndex: "tipo",
+      title: "Tipo Cliente",
+      dataIndex: ['tipo','nombreTipoCliente'],
+      width: 127,
+    },
+   
+    {
+      title: "Tipo de identificación",
+      dataIndex: "tipoIdentificacion",
       width: 127,
     },
     {
@@ -29,16 +35,32 @@ function TableClient({
       width: 127,
     },
     {
-      title: "Teléfono residencial",
-      dataIndex: "telefonoResidencial",
-      width: 110,
+      title: "Num. concacto",
+      children:[
+      {
+        title: "Celular",
+        dataIndex: "celular",
+        width: 110,
+      },
+      {
+        title: "Telefono ",
+        dataIndex: "telefonoResidencial",
+        width: 110,
+      },
+      
+    ]
     },
     {
-      title: "Celular",
-      dataIndex: "celular",
-      width: 110,
+      title: "País",
+      dataIndex: "pais",
+     
     },
-
+    {
+      title: "estado",
+      dataIndex: "estado",
+     
+    },
+  
     {
       title: "Dirección",
       dataIndex: "direccion",
@@ -50,8 +72,7 @@ function TableClient({
       width: 127,
     },
     {
-      title: "Acciones",
-      width: 90,
+      
       render: (record) => (
         <Space size="middle">
           <Button

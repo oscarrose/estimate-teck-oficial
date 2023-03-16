@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Form, Input, Select, Spin, Button, message } from "antd";
 import CallApi from "../../ServicesHttp/CallApi";
 import { tipoClient } from "./ItemSelectClient";
+import { Countrys, ProvinciaRD } from "../admin-personnel/ItemsSelect";
 
 const { Option } = Select;
 
@@ -15,6 +16,7 @@ function ModalFormEmployee({
   const onReset = () => {
     form.resetFields();
   };
+
 
   //Asginar los valores a editar
   /* const edit = () => {
@@ -37,9 +39,12 @@ function ModalFormEmployee({
 
   //Para las peticciones de crear y actualizar
   const onSubmit = async (values) => {
+   
+
     setLoandingSave(true);
     if (!controlFormClient.dataEdit) {
-     
+      console.log("data", values)
+
       await CallApi.post("Client/CreateClient", values)
         .then((res) => {
           message.success("Registrado correctamente");
@@ -52,7 +57,7 @@ function ModalFormEmployee({
           message.error("Error interno", error.message);
         });
     } else {
-     
+
       const newValues = {
         ...values,
         fechaCreacion: controlFormClient.dataEdit.fechaCreacion,
@@ -64,7 +69,7 @@ function ModalFormEmployee({
         newValues
       )
         .then(() => {
-          setUpdateTableClient((prevData)=>!prevData)
+          setUpdateTableClient((prevData) => !prevData)
           message.success("Datos del cliente actualizados");
           setLoandingSave(false);
           setControlFormClient({
@@ -111,35 +116,23 @@ function ModalFormEmployee({
             autoComplete="on"
             form={form}
             initialValues={controlFormClient.dataEdit}
-            //setfieldsvalue={controlFormClient.dataEdit !== null ? edit() : onReset()}
+          //setfieldsvalue={controlFormClient.dataEdit !== null ? edit() : onReset()}
           >
-            <Form.Item
-              name="nombre"
-              label="Nombre"
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: "El nombre es requerido",
-                },
-              ]}
-            >
-              <Input placeholder="Nombre" />
-            </Form.Item>
 
             <Form.Item
-              name="apellido"
-              label="Apellido"
+              name="nombreCliente"
+              label="Nombre de cliente"
               hasFeedback
               rules={[
                 {
                   required: true,
-                  message: "El apellido es requerido",
+                  message: "El nombre del cliente es requerido",
                 },
               ]}
             >
-              <Input placeholder="Apellido" />
+              <Input placeholder="Nombre del cliente" />
             </Form.Item>
+
 
             {
               <Form.Item
@@ -164,13 +157,45 @@ function ModalFormEmployee({
             }
 
             <Form.Item
+              name="tipoIdentificacion"
+              label="Tipo de identificación"
+              hasFeedback
+              rules={[
+                {
+                  required: true,
+                  message: "El tipo de identifiación es requerido",
+                },
+              ]}
+            >
+              <Select
+                showSearch
+                placeholder="Seleccione tipo de identificación"
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                filterSort={(optionA, optionB) =>
+                  optionA.children
+                    .toLowerCase()
+                    .localeCompare(optionB.children.toLowerCase())
+                }
+              >
+                <Option value="RNC">RNC</Option>
+                <Select.Option value="CEDULA">Cédula</Select.Option>
+                <Option value="PASAPORTE">Pasaporte</Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item
               name="identificacion"
               label="Identificación"
               hasFeedback
               rules={[
                 {
                   required: true,
-                  message: "El identificación es requerido",
+                  message: "La identificación es requerida",
                 },
                 {
                   max: 13,
@@ -178,7 +203,7 @@ function ModalFormEmployee({
                 },
               ]}
             >
-              <Input placeholder="Identificacación" />
+              <Input placeholder="RCN/Cédula/Pasaporte" />
             </Form.Item>
 
             <Form.Item
@@ -199,9 +224,14 @@ function ModalFormEmployee({
             <Form.Item
               name="telefonoResidencial"
               label="Teléfono residencial"
+              rules={[{
+                max: 10,
+                min: 10,
+                message: "El numero de telefono es invalido"
+              }]}
               hasFeedback
             >
-              <Input type="number" />
+              <Input type="number" placeholder="(###)#######" />
             </Form.Item>
             <Form.Item
               name="celular"
@@ -211,53 +241,87 @@ function ModalFormEmployee({
                 {
                   require: true,
                   message: "El celular es requerido",
+
                 },
+                {
+                  max: 10,
+                  min: 10,
+                  message: "El numero de celular es invalido"
+                }
               ]}
             >
-              <Input type="number" />
+              <Input type="number" placeholder="(###)#######" />
+            </Form.Item>
+            <Form.Item
+              name="pais"
+              label="Pais"
+              rules={[
+                {
+                  required: true,
+                  message: "El pais es necesario!",
+                },
+              ]}
+              hasFeedback
+            >
+              <Select
+                placeholder="Seleccione el país"
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+              >
+                {Countrys.map((option) => (
+                  <Option key={option} value={option}>
+                    {option}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+
+            <Form.Item name="estado" label="Provincia"
+              rules={[
+                {
+                  required: true,
+                  message: "La provincia es necesaria!",
+                },
+              ]}
+              hasFeedback>
+              <Select
+                placeholder="Provincia donde esta establecido"
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+              >
+                {ProvinciaRD.map((option) => (
+                  <Option key={option} value={option}>
+                    {option}
+                  </Option>
+                ))}
+              </Select>
             </Form.Item>
 
             <Form.Item
-              name="ciudad"
-              label="Ciudad"
+              name="direccion"
+              label="Dirección"
               hasFeedback
               rules={[
                 {
                   required: true,
-                  message: "El nombre de la ciudad es requerido",
+                  message: "El campo es requerido",
                 },
               ]}
             >
-              <Input />
+              <Input placeholder="Ciudad, nombre de la calle, No. casa" />
             </Form.Item>
 
-            <Form.Item
-              name="calle"
-              label="Calle"
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: "El nombre de la calle es requerido",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
 
-            <Form.Item
-              name="sector"
-              label="Sector"
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: "El nombre del sector es requerido",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
 
             {!controlFormClient.dataEdit && (
               <Button type="primary" htmlType="reset" danger>
@@ -269,6 +333,8 @@ function ModalFormEmployee({
               Guardar
             </Button>
           </Form>
+
+
         </Spin>
       </Modal>
     </div>

@@ -66,7 +66,6 @@ function IndexAdminClient() {
         setControlFormClient={setControlFormClient}
         controlFormClient={controlFormClient}
       />
-
       <ModalFormClient
      
         key={controlFormClient.dataEdit}

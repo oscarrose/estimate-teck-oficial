@@ -21,7 +21,7 @@ function ModalFormUser({ dataEmployeeWithoutUser, dataRol, controlFormUser, setC
     setloanding(true);
     if (!userResetPassowrd) {
       //Para las peticciones de crear usuario
-      console.log("saved", values)
+     
       await CallApi.post("Auth/RegisterUser", values)
         .then((res) => {
           setLoandingSave(false);
@@ -37,9 +37,12 @@ function ModalFormUser({ dataEmployeeWithoutUser, dataRol, controlFormUser, setC
 
 
     } else {
-      console.log("rest",userResetPassowrd.usuarioId)
+      const newValues={
+        ...values,
+        userId:userResetPassowrd.usuarioId
+      }
       //Para restablecer la contraseña
-      CallApi.patch(`Usuarios/resetPasswordUser/${userResetPassowrd.usuarioId}`, values
+      CallApi.patch("Usuarios/resetPasswordUser", newValues
       ).then(() => {
         message.success("Contraseña restablecida")
         setloanding(false);
@@ -144,7 +147,7 @@ function ModalFormUser({ dataEmployeeWithoutUser, dataRol, controlFormUser, setC
 
 
             <Form.Item
-              name="password"
+              name="newPassword"
               label="Contraseña por defecto"
               hasFeedback
               rules={[
