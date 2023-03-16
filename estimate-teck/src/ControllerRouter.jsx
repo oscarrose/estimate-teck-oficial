@@ -12,6 +12,7 @@ import IndexAdminPersonnel from "./components/admin-personnel/IndexAdminPersonne
 import indexEstimate from "./components/estimate/indexEstimate";
 import IndexTariff from "./components/Tariff/IndexTariff";
 import IndexAdminClient from "./components/client/IndexAdminClient";
+import IndexProductividad from "./components/productividadPF/IndexProductividad";
 import ProfileUser from "./components/admin-personnel/PageProfile/ProfileUser";
 const ControllerRouter = () => {
   return (
@@ -42,6 +43,7 @@ const ControllerRouter = () => {
       </Route>
 
       <Route path='*' element={<Suspense fallback={<Spin />}><NotFound /></Suspense>} />
+      <Route path="/productividadpf" element={<AppRouter component={IndexProductividad}/>}/>
     </Routes>
   );
 };
