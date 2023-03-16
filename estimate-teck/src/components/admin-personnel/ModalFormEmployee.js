@@ -69,10 +69,8 @@ function ModalFormEmployee({
 
   //Para las peticciones de crear y actualizar
   const onSubmit = async (values) => {
-
+    setLoandingSave(true)
     if (!editEmployee) {
-      
-
       await CallApi.post("Empleados/CreateEmployee", values)
         .then((res) => {
           setLoandingSave(false);
@@ -81,9 +79,8 @@ function ModalFormEmployee({
           onReset();
         })
         .catch((error) => {
-          message.error(error.response.data);
-
           setLoandingSave(false);
+          message.error(error.response.data);
         });
     } else {
       const newValues = {

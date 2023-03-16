@@ -39,12 +39,9 @@ function ModalFormEmployee({
 
   //Para las peticciones de crear y actualizar
   const onSubmit = async (values) => {
-   
-
     setLoandingSave(true);
     if (!controlFormClient.dataEdit) {
-      console.log("data", values)
-
+     
       await CallApi.post("Client/CreateClient", values)
         .then((res) => {
           message.success("Registrado correctamente");

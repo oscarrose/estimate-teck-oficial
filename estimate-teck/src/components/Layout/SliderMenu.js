@@ -8,22 +8,74 @@ import {
   DeploymentUnitOutlined,
   FileTextOutlined,
   TeamOutlined,
-  SettingOutlined
+  SettingOutlined,
+  HomeOutlined
 } from "@ant-design/icons";
 import { Menu, Layout, theme } from "antd";
+import useAuth from "../../hooks/useAuth"
 
+const { Sider } = Layout;
 
-const { Sider} = Layout;
+function SliderMenu({ collapsed }) {
 
-function SliderMenu({collapsed}) {
- 
-
+  const { auth } = useAuth();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  function getItem(label, key, icon, type) {
+    return {
+      key,
+      icon,
+      label,
+      type,
+    };
+  }
+
+  const items = [
+    getItem(<Link to={'/home'}>Inicio</Link>, "/home", <HomeOutlined />, {
+      type: 'divider',
+    },),
+
+    (auth.rol === "Gerente general" || auth.rol === "Encargado de proyectos") &&
+    getItem(<Link to={'/estimate'}>Estimacion</Link>, "/estimate", <CalendarOutlined />, {
+      type: 'divider',
+    },),
+
+    (auth.rol === "Gerente general" || auth.rol === "Encargado de proyectos") &&
+    getItem(<Link to={'/client'}>Clientes</Link>, "/client", <UserOutlined />, {
+      type: 'divider',
+    },),
+
+    (auth.rol === "Gerente de TIC") && getItem(<Link to="/admin-personnel">Manejo del personal</Link>, "/admin-personnel", <TeamOutlined />, {
+      type: 'divider',
+    },),
+
+    (auth.rol === "Gerente general") &&
+    getItem(<Link to={'/tariff'}>Tarifario</Link>, "/tariff", <HistoryOutlined />, {
+      type: 'divider',
+    },),
+    (auth.rol === "Gerente general") &&
+    getItem(<Link to={'/null'}>Plataforma de desarrollo</Link>, "/null", <DeploymentUnitOutlined />, {
+      type: 'divider',
+    },),
+    (auth.rol === "Gerente general") &&
+    getItem(<Link to={'/null1'}>Reportes</Link>, "/null1", <FileTextOutlined />, {
+      type: 'divider',
+    },),
+
+   
+
+    getItem(<Link to="/profile">Cuenta</Link>, "/profile", <SettingOutlined />, {
+      type: 'divider',
+    },),
+
+
+
+  ];
+
   return (
     <>
-     
+
       <Sider
         trigger={null}
         collapsible
@@ -38,50 +90,10 @@ function SliderMenu({collapsed}) {
         </div>
         <Menu
           mode="inline"
-          defaultSelectedKeys={["1"]}
-          style={{
-            height: "100%",
-            borderRight: 0,
-          }}
-          items={[
-            {
-              key: "/estimate",
-              icon: <CalendarOutlined />,
-              label: <Link to={'/estimate'}>Estimacion</Link>,
-            },
-            {
-              key: "/tariff",
-              icon: <HistoryOutlined />,
-              label: <Link to={'/tariff'}>Tarifario</Link>
-            },
-            {
-              key: "/client",
-              icon: <UserOutlined />,
-              label: <Link to={'/client'}>Clientes</Link>,
-            },
-            {
-              key: "4",
-              icon: <DeploymentUnitOutlined />,
-              label: "Plataforma de desarrollo",
-            },
-            {
-              key: "5",
-              icon: <FileTextOutlined />,
-              label: "Reportes",
-            },
-            {
-              key: "/admin-personnel",
-              icon: <TeamOutlined />,
-              label:<Link to="/admin-personnel">Manejo del personal</Link>
-             
-            },
-            {
-              key: "/profile",
-              icon:<SettingOutlined />,
-              label:<Link to="/profile">Cuenta</Link>
-             
-            },
-          ]}
+
+          //defaultSelectedKeys={["/home"]}
+
+          items={items}
         />
       </Sider>
     </>

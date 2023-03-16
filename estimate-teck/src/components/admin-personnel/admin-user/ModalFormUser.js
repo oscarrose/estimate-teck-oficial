@@ -18,7 +18,7 @@ function ModalFormUser({ dataEmployeeWithoutUser, dataRol, controlFormUser, setC
 
   //Para ejecutar las petticiones de crear y restablecer contraseña
   const onSubmit = async (values) => {
-    setloanding(true);
+    setLoandingSave(true);
     if (!userResetPassowrd) {
       //Para las peticciones de crear usuario
      
@@ -45,10 +45,10 @@ function ModalFormUser({ dataEmployeeWithoutUser, dataRol, controlFormUser, setC
       CallApi.patch("Usuarios/resetPasswordUser", newValues
       ).then(() => {
         message.success("Contraseña restablecida")
-        setloanding(false);
+        setLoandingSave(false);
         setControlFormUser(false);
       }).catch((error) => {
-        setloanding(false);
+        setLoandingSave(false);
         message.error(error.message);
       });
     }
