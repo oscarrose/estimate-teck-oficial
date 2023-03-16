@@ -77,9 +77,12 @@ function ModalFormProductividad({
         .then(() => {
           setUpdateTableProductividad((prevData) => !prevData)
           message.success("Datos de la plataforma actualizados");
+          
           setLoandingSave(false);
           setControlFormProductividad({
-            ...controlFormProductividad,
+            
+            
+            dataEdit:null,
             visible: false,
           });
 
