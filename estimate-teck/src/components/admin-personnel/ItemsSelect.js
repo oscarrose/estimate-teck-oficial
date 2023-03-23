@@ -27,7 +27,12 @@ const cargo = [
 
     {
         idCargo: 7,
-        nombre: "Coordinadora de proyecto"
+        nombre: "Encargado de proyectos"
+    }, 
+
+    {
+        idCargo: 8,
+        nombre: "Gerente de TIC"
     }, 
   
 ]
