@@ -26,14 +26,14 @@ CREATE TABLE Cargo
 (
     Cargo_Id INT NOT NULL IDENTITY CONSTRAINT Pk_cargo_Id PRIMARY KEY(Cargo_Id),
     Nombre VARCHAR(100) NOT NULL,
-    Descripcion VARCHAR(255) NOT NULL
+    Descripcion VARCHAR(max) NOT NULL
 );
 GO
 -- INSERT CARGO--
 
 
 INSERT INTO  Cargo (Nombre,Descripcion) VALUES ('Frontend Development', 'Programador que trabaja la parte de la
-aplicaci�n  con la que interactua el usuario');
+aplicaciï¿½n  con la que interactua el usuario');
 GO
 
 INSERT INTO cargo (Nombre,Descripcion) VALUES ('Backend Development','Programador que se encarga de trabajar
@@ -41,22 +41,27 @@ con la parte de la aplicacion que el usuario no puede ver');
 GO
 
 INSERT INTO cargo (Nombre,Descripcion) VALUES ('Full-Stacks Development','Programador que trabaja todos los 
-aspectos de una aplicaci�n, incluidos Frontend y backend');
+aspectos de una aplicación, incluidos Frontend y backend');
 GO
 
 INSERT INTO cargo (Nombre,Descripcion) VALUES ('Mobile Development','Programador que trabaja las aplicaciones 
 Moviles');
 GO
 
-INSERT INTO cargo (Nombre,Descripcion) VALUES ('Dise�ador UX','Es el profesional que gestiona la experiencia del usuario 
-con un producto digital. Su objetivo es que la interacci�n del usuario con el producto sea sencilla e intuitiva');
+INSERT INTO cargo (Nombre,Descripcion) VALUES ('Diseñador UX','Es el profesional que gestiona la experiencia del usuario 
+con un producto digital. Su objetivo es que la interacción del usuario con el producto sea sencilla e intuitiva');
 GO
+
 
 INSERT INTO cargo (Nombre,Descripcion) VALUES ('Gerente general','N/A');
 GO
 
-INSERT INTO cargo (Nombre,Descripcion) VALUES ('Coordinadora de proyecto','N/A');
+INSERT INTO cargo (Nombre,Descripcion) VALUES ('Encargado de proyectos','N/A');
 GO
+
+INSERT INTO cargo (Nombre,Descripcion) VALUES ('Gerente de TIC','N/A');
+GO
+
 
 
 CREATE TABLE Empleado
