@@ -20,29 +20,27 @@ namespace estimate_teck.Controllers
 
         // GET: api/<ClientController>
         [HttpGet("GetAllClient")]
-        public async Task<ActionResult<IEnumerable<ClienteDTO>>> GetAllClient()
+        public async Task<ActionResult<IEnumerable<Cliente>>> GetAllClient()
         {
             if (_context.Clientes == null) return NotFound();
 
             var AllClient = await (
                 from c in _context.Clientes
                 join tc in _context.TipoClientes on c.TipoId equals tc.TipoId
-                select new ClienteDTO()
+                select new Cliente()
                 {
                     ClienteId = c.ClienteId,
-                    Nombre = c.Nombre,
-                    Apellido = c.Apellido,
-                    NombreCompleto = String.Concat(c.Nombre, " ", c.Apellido),
-                    TipoId = c.TipoId,
-                    Tipo = tc.NombreTipoCliente,
+                    NombreCliente=c.NombreCliente,
+                    Tipo=c.Tipo,
+                    TipoId=c.TipoId,
+                    TipoIdentificacion=c.TipoIdentificacion,
                     Identificacion = c.Identificacion,
                     Email = c.Email,
                     TelefonoResidencial = c.TelefonoResidencial,
-                    Direccion = String.Concat(c.Ciudad, " ", c.Sector, " ", c.Calle),
                     Celular = c.Celular,
-                    Ciudad = c.Ciudad,
-                    Calle = c.Calle,
-                    Sector = c.Sector,
+                    Pais=c.Pais,
+                    Estado=c.Estado,
+                    Direccion=c.Direccion,
                     FechaCreacion = c.FechaCreacion
 
                 }).ToListAsync();
@@ -73,29 +71,29 @@ namespace estimate_teck.Controllers
             {
                 _context.Clientes.Add(client);
                 await _context.SaveChangesAsync();
-                var resulTipoClient = (_context.TipoClientes.Where(e => e.TipoId == client.TipoId).FirstOrDefault());
+                // var resulTipoClient = (_context.TipoClientes.Where(e => e.TipoId == client.TipoId).FirstOrDefault());
 
-                var Resultcliente = new ClienteDTO()
-                {
-                    ClienteId = client.ClienteId,
-                    NombreCompleto = string.Concat(client.Nombre, " ", client.Apellido),
-                    Nombre = client.Nombre,
-                    Apellido = client.Apellido,
-                    TipoId = client.TipoId,
-                    Tipo = resulTipoClient.NombreTipoCliente,
-                    Calle = client.Calle,
-                    Sector = client.Sector,
-                    Ciudad = client.Ciudad,
-                    Direccion = String.Concat(client.Ciudad, " ", client.Sector, " ", client.Calle),
-                    Email = client.Email,
-                    Identificacion = client.Identificacion,
-                    TelefonoResidencial = client.TelefonoResidencial,
-                    Celular = client.Celular,
-                    FechaCreacion = client.FechaCreacion
-                };
+                // var Resultcliente = new ClienteDTO()
+                // {
+                //     ClienteId = client.ClienteId,
+                //     NombreCompleto = string.Concat(client.Nombre, " ", client.Apellido),
+                //     Nombre = client.Nombre,
+                //     Apellido = client.Apellido,
+                //     TipoId = client.TipoId,
+                //     Tipo = resulTipoClient.NombreTipoCliente,
+                //     Calle = client.Calle,
+                //     Sector = client.Sector,
+                //     Ciudad = client.Ciudad,
+                //     Direccion = String.Concat(client.Ciudad, " ", client.Sector, " ", client.Calle),
+                //     Email = client.Email,
+                //     Identificacion = client.Identificacion,
+                //     TelefonoResidencial = client.TelefonoResidencial,
+                //     Celular = client.Celular,
+                //     FechaCreacion = client.FechaCreacion
+                // };
 
 
-                return Ok(Resultcliente);
+                return Ok(client);
             }
             catch (Exception)
             {

@@ -45,9 +45,10 @@ namespace estimate_teck.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=localhost; Database=estimate_teck;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer("Data source=localhost; Initial catalog=estimate_teck; User Id=sa; password=admin123@");
             }
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CaracteristicaSistema>(entity =>
@@ -88,23 +89,19 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.ClienteId).HasColumnName("Cliente_Id");
 
-                entity.Property(e => e.Apellido)
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Calle)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.Celular)
                     .HasMaxLength(15)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Ciudad)
+                entity.Property(e => e.Direccion)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Email)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Estado)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
@@ -117,11 +114,12 @@ namespace estimate_teck.Data
                     .HasMaxLength(15)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Nombre)
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
+                entity.Property(e => e.NombreCliente)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("Nombre_Cliente");
 
-                entity.Property(e => e.Sector)
+                entity.Property(e => e.Pais)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
@@ -131,6 +129,11 @@ namespace estimate_teck.Data
                     .HasColumnName("Telefono_Residencial");
 
                 entity.Property(e => e.TipoId).HasColumnName("Tipo_Id");
+
+                entity.Property(e => e.TipoIdentificacion)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("Tipo_identificacion");
 
                 entity.HasOne(d => d.Tipo)
                     .WithMany(p => p.Clientes)
@@ -255,17 +258,13 @@ namespace estimate_teck.Data
                     .HasMaxLength(25)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Calle)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.CargoId).HasColumnName("Cargo_Id");
 
                 entity.Property(e => e.Celular)
                     .HasMaxLength(15)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Ciudad)
+                entity.Property(e => e.Direccion)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
@@ -290,7 +289,11 @@ namespace estimate_teck.Data
                     .HasMaxLength(25)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Sector)
+                entity.Property(e => e.Pais)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Provincia)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
@@ -464,6 +467,8 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.ProductividadId).HasColumnName("Productividad_Id");
 
+                entity.Property(e => e.EstadoId).HasColumnName("Estado_Id");
+
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
                     .HasColumnName("Fecha_Creacion")
@@ -474,6 +479,12 @@ namespace estimate_teck.Data
                     .IsUnicode(false);
 
                 entity.Property(e => e.UsuarioId).HasColumnName("Usuario_Id");
+
+                entity.HasOne(d => d.Estado)
+                    .WithMany(p => p.ProductividadPuntoFuncions)
+                    .HasForeignKey(d => d.EstadoId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Fk_EstadoProductividad_Id");
 
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.ProductividadPuntoFuncions)
@@ -693,6 +704,5 @@ namespace estimate_teck.Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
     }
 }

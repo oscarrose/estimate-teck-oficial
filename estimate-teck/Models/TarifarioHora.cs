@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
-namespace estimate_teck.Models
+namespace estimate_teck.Models;
+
+public partial class TarifarioHora
 {
+
     public partial class TarifarioHora
     {
         public int TarifarioId { get; set; }
@@ -21,4 +24,5 @@ namespace estimate_teck.Models
         [IgnoreDataMember]
         public virtual Usuario? Usuario { get; set; } = null!;
     }
+
 }

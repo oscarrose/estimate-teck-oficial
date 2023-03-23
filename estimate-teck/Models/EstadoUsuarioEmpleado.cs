@@ -8,6 +8,7 @@ namespace estimate_teck.Models
         public EstadoUsuarioEmpleado()
         {
             Empleados = new HashSet<Empleado>();
+            ProductividadPuntoFuncions = new HashSet<ProductividadPuntoFuncion>();
             Usuarios = new HashSet<Usuario>();
         }
 
@@ -15,6 +16,7 @@ namespace estimate_teck.Models
         public string Estado { get; set; } = null!;
 
         public virtual ICollection<Empleado> Empleados { get; set; }
+        public virtual ICollection<ProductividadPuntoFuncion> ProductividadPuntoFuncions { get; set; }
         public virtual ICollection<Usuario> Usuarios { get; set; }
     }
 }
