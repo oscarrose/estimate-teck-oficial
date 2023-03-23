@@ -21,6 +21,7 @@ namespace estimate_teck.Controllers
             _context = context;
         }
 
+
         // GET: api/Proyectos
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Proyecto>>> GetProyectos()
