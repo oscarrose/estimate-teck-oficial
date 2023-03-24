@@ -153,6 +153,7 @@ CREATE TABLE TarifarioHora
 	Tarifario_Id int not null identity constraint Pk_TarifarioId primary key (Tarifario_Id),
 	Cargo_Id INT NOT NULL CONSTRAINT Fk_Cargo_Usuario FOREIGN KEY REFERENCES Cargo(Cargo_Id),
 	Empleado_Id INT NOT NULL CONSTRAINT Fk_EmpleadoTarifario_Id FOREIGN KEY REFERENCES Empleado(Empleado_Id),
+	Usuario_Id INT NOT NULL CONSTRAINT Fk_Usuario_Id FOREIGN KEY REFERENCES Usuario(Usuario_Id),
 	MontoTarifa money not null,
 	Fecha_Creacion DATETIME DEFAULT GETDATE()
 );
