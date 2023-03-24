@@ -10,10 +10,11 @@ import HomeApp from "./components/pages/HomeApp";
 import AppRouter from "./AppRouter";
 import IndexAdminPersonnel from "./components/admin-personnel/IndexAdminPersonnel";
 import indexEstimate from "./components/estimate/indexEstimate";
-import IndexTariff from "./components/Tariff/IndexTariff";
+//import IndexTariff from "./components/Tariff/IndexTariff";
 import IndexAdminClient from "./components/client/IndexAdminClient";
 import IndexProductividad from "./components/productividadPF/IndexProductividad";
 import ProfileUser from "./components/admin-personnel/PageProfile/ProfileUser";
+import IndexTarifario from "./components/tarifarioHora/IndexTarifario";
 const ControllerRouter = () => {
   return (
     <Routes>
@@ -34,8 +35,9 @@ const ControllerRouter = () => {
       <Route element={<AuthRequired allRoles={[ServiciesRol.rol3, ServiciesRol.rol2]} />}>
         <Route path="/estimate" element={<AppRouter component={indexEstimate} />} />
         <Route path="/client" element={<AppRouter component={IndexAdminClient} />} />
-        <Route path="/tariff" element={<AppRouter component={IndexTariff} />} />
+        <Route path="/tarifarioHora" element={<AppRouter component={IndexTarifario} />} />
         <Route path="/productividadpf" element={<AppRouter component={IndexProductividad}/>}/>
+        
       </Route>
 
       {/* protected routes solo para Gerente general*/}

@@ -3,10 +3,10 @@ import { message } from "antd";
 import CallApi from "../ServicesHttp/CallApi";
 
 const useModuleAdminPersonnel = () => {
-  //Data para mostrar los datos en la table de empleado y en el select del
+  //Data para mostrar los datos en la table de empleado
   const [dataEmployee, setDataEmployee] = useState([]);
 
-    //Data para mostrar los datos en la table de empleado y en el select del
+    //Data para mostrar los datos en la table de empleado y en el select del usuario
     const [dataEmployeeWithoutUser, setDataEmployeeWithoutUser] = useState([]);
 
   //Data para mostrar los datos en la table de usuario
