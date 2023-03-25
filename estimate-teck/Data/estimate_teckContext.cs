@@ -45,7 +45,7 @@ namespace estimate_teck.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data source=localhost; Initial catalog=estimate_teck; User Id=sa; password=admin123@");
+                optionsBuilder.UseSqlServer("Server=localhost; Database=estimate_teck;Trusted_Connection=True; TrustServerCertificate=True");
             }
         }
 
@@ -74,9 +74,7 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.CargoId).HasColumnName("Cargo_Id");
 
-                entity.Property(e => e.Descripcion)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                entity.Property(e => e.Descripcion).IsUnicode(false);
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
@@ -617,9 +615,12 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.CargoId).HasColumnName("Cargo_Id");
 
+                entity.Property(e => e.EmpleadoId).HasColumnName("Empleado_Id");
+
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
-                    .HasColumnName("Fecha_Creacion");
+                    .HasColumnName("Fecha_Creacion")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.MontoTarifa).HasColumnType("money");
 
@@ -630,6 +631,12 @@ namespace estimate_teck.Data
                     .HasForeignKey(d => d.CargoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_Cargo_Usuario");
+
+                entity.HasOne(d => d.Empleado)
+                    .WithMany(p => p.TarifarioHoras)
+                    .HasForeignKey(d => d.EmpleadoId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Fk_EmpleadoTarifario_Id");
 
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.TarifarioHoras)

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using estimate_teck.Data;
 using estimate_teck.Models;
+using estimate_teck.DTO;
 
 namespace estimate_teck.Controllers
 
@@ -31,17 +32,18 @@ namespace estimate_teck.Controllers
                from T in _context.TarifarioHoras
                from user in _context.Usuarios
                join cgo in _context.Cargos on T.CargoId equals cgo.CargoId
-               join U in _context.Usuarios on T.UsuarioId equals U.UsuarioId
                join E in _context.Empleados on user.EmpleadoId equals E.EmpleadoId
+
                select new TarifarioHoraDTO()
                {
 
                    TarifarioId = T.TarifarioId,
+                   UsuarioId= T.UsuarioId,
                    CargoId = T.CargoId,
                    CargoName = cgo.Nombre,
-                   UsuarioId = T.UsuarioId,
+                   EmpleadoId = T.EmpleadoId,
                    MontoTarifa = T.MontoTarifa,
-                  EmpleadoName= string.Concat(E.Nombre, " ", E.Apellido),
+                   EmpleadoName= string.Concat(E.Nombre, " ", E.Apellido),
                    FechaCreacion = T.FechaCreacion
 
                }).ToListAsync();
@@ -74,25 +76,31 @@ namespace estimate_teck.Controllers
                 var createTarifarioHora = new TarifarioHora
                 {
                     TarifarioId = T.TarifarioId,
+                    UsuarioId= T.UsuarioId,
                     CargoId = T.CargoId,
-                    UsuarioId = T.UsuarioId,
+                    EmpleadoId = T.EmpleadoId,
                     MontoTarifa = T.MontoTarifa,
-                    FechaCreacion = T.FechaCreacion
+                    FechaCreacion = DateTime.Now,
+                    
+               
                 };
 
                 _context.TarifarioHoras.Add(createTarifarioHora);
                 await _context.SaveChangesAsync();
-                var resultUsuario = (_context.Usuarios.Where(U => U.UsuarioId == createTarifarioHora.UsuarioId).FirstOrDefault());
-              //  var resultCargo = (_context.Cargos.Where(cgo => cgo.CargoId == resultCargo.CargoId).FirstOrDefault());
+                //var resultUsuario = (_context.Usuarios.Where(U => U.UsuarioId == createTarifarioHora.UsuarioId).FirstOrDefault());
+                var resultCargo = (_context.Cargos.Where(cgo => cgo.CargoId == createTarifarioHora.CargoId).FirstOrDefault());
+                var resultEmple = (_context.Empleados.Where(e=>e.EmpleadoId == createTarifarioHora.EmpleadoId).FirstOrDefault());
 
 
                 var resultTarifario = new TarifarioHoraDTO()
                 {
                     TarifarioId = createTarifarioHora.TarifarioId,
+                    UsuarioId= createTarifarioHora.UsuarioId,
                     CargoId = createTarifarioHora.CargoId,
-                    UsuarioId = resultUsuario.UsuarioId,
-                    MontoTarifa = createTarifarioHora.MontoTarifa,
-                    FechaCreacion = createTarifarioHora.FechaCreacion
+                    CargoName=resultCargo.Nombre,
+                    EmpleadoId = createTarifarioHora.EmpleadoId,
+                    EmpleadoName = string.Concat(resultEmple.Nombre, " ", resultEmple.Apellido),
+                    MontoTarifa = createTarifarioHora.MontoTarifa
 
                 };
 

@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace estimate_teck.Models;
-
-public partial class Cargo
+namespace estimate_teck.Models
 {
-    public int CargoId { get; set; }
+    public partial class Cargo
+    {
+        public Cargo()
+        {
+            Empleados = new HashSet<Empleado>();
+            ParticipanteEstimacions = new HashSet<ParticipanteEstimacion>();
+            TarifarioHoras = new HashSet<TarifarioHora>();
+        }
 
-    public string Nombre { get; set; } = null!;
+        public int CargoId { get; set; }
+        public string Nombre { get; set; } = null!;
+        public string Descripcion { get; set; } = null!;
 
-    public string Descripcion { get; set; } = null!;
-
-    public virtual ICollection<Empleado> Empleados { get; } = new List<Empleado>();
-
-    public virtual ICollection<ParticipanteEstimacion> ParticipanteEstimacions { get; } = new List<ParticipanteEstimacion>();
-
-    public virtual ICollection<TarifarioHora> TarifarioHoras { get; } = new List<TarifarioHora>();
+        public virtual ICollection<Empleado> Empleados { get; set; }
+        public virtual ICollection<ParticipanteEstimacion> ParticipanteEstimacions { get; set; }
+        public virtual ICollection<TarifarioHora> TarifarioHoras { get; set; }
+    }
 }
