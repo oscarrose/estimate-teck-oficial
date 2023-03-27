@@ -37,7 +37,7 @@ function SliderMenu({ collapsed }) {
     },),
 
     (auth.rol === "Gerente general" || auth.rol === "Encargado de proyectos") &&
-    getItem(<Link to={'/estimate'}>Estimacion</Link>, "/estimate", <CalendarOutlined />, {
+    getItem(<Link to={'/projects'}>Proyectos</Link>, "/projects", <CalendarOutlined />, {
       type: 'divider',
     },),
 

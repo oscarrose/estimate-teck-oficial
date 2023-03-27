@@ -9,11 +9,13 @@ import Login from "./components/login/Login";
 import HomeApp from "./components/pages/HomeApp";
 import AppRouter from "./AppRouter";
 import IndexAdminPersonnel from "./components/admin-personnel/IndexAdminPersonnel";
-import indexEstimate from "./components/estimate/indexEstimate";
+import indexProject from "./components/projects/indexProjects";
 import IndexTariff from "./components/Tariff/IndexTariff";
 import IndexAdminClient from "./components/client/IndexAdminClient";
 import IndexProductividad from "./components/productividadPF/IndexProductividad";
 import ProfileUser from "./components/admin-personnel/PageProfile/ProfileUser";
+import FormProjects from "./components/projects/FormProjects";
+
 const ControllerRouter = () => {
   return (
     <Routes>
@@ -32,10 +34,12 @@ const ControllerRouter = () => {
 
       {/* protected routes para Gerente general y enc.proyecto*/}
       <Route element={<AuthRequired allRoles={[ServiciesRol.rol3, ServiciesRol.rol2]} />}>
-        <Route path="/estimate" element={<AppRouter component={indexEstimate} />} />
+        <Route path="/projects" element={<AppRouter component={indexProject} />} />
         <Route path="/client" element={<AppRouter component={IndexAdminClient} />} />
         <Route path="/tariff" element={<AppRouter component={IndexTariff} />} />
         <Route path="/productividadpf" element={<AppRouter component={IndexProductividad}/>}/>
+
+        <Route path="/register/projects" element={<AppRouter component={FormProjects}/>}/>
       </Route>
 
       {/* protected routes solo para Gerente general*/}

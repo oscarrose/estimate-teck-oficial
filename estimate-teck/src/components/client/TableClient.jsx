@@ -1,12 +1,15 @@
 import React from "react";
 import { Button, Space, Table } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 
 function TableClient({
   dataClient,
   loading,
   setControlFormClient,
   controlFormClient,
+  openTableClient,
+  setClientAtProject,
+  setOpenTableClient
 }) {
 
   const columns = [
@@ -20,10 +23,10 @@ function TableClient({
     },
     {
       title: "Tipo Cliente",
-      dataIndex: ['tipo','nombreTipoCliente'],
+      dataIndex: ['tipo', 'nombreTipoCliente'],
       width: 127,
     },
-   
+
     {
       title: "Tipo de identificación",
       dataIndex: "tipoIdentificacion",
@@ -36,31 +39,31 @@ function TableClient({
     },
     {
       title: "Num. concacto",
-      children:[
-      {
-        title: "Celular",
-        dataIndex: "celular",
-        width: 110,
-      },
-      {
-        title: "Telefono ",
-        dataIndex: "telefonoResidencial",
-        width: 110,
-      },
-      
-    ]
+      children: [
+        {
+          title: "Celular",
+          dataIndex: "celular",
+          width: 110,
+        },
+        {
+          title: "Telefono ",
+          dataIndex: "telefonoResidencial",
+          width: 110,
+        },
+
+      ]
     },
     {
       title: "País",
       dataIndex: "pais",
-     
+
     },
     {
       title: "Ciudad",
       dataIndex: "estado",
-     
+
     },
-  
+
     {
       title: "Dirección",
       dataIndex: "direccion",
@@ -72,21 +75,34 @@ function TableClient({
       width: 127,
     },
     {
-      
+
       render: (record) => (
         <Space size="middle">
-          <Button
+          {openTableClient ? <Button
+            size="middle"
             type="link"
             onClick={() => {
-              setControlFormClient({
-                ...controlFormClient,
-                visible: true,
-                dataEdit: record,
-              });
-            }}
+               setClientAtProject(record); 
+               setOpenTableClient(false) 
+              }}
           >
-            <EditOutlined />
+            <PlusOutlined />
           </Button>
+            :
+            <Button
+              type="link"
+              onClick={() => {
+                setControlFormClient({
+                  ...controlFormClient,
+                  visible: true,
+                  dataEdit: record,
+                });
+              }}
+            >
+              <EditOutlined />
+            </Button>}
+
+
         </Space>
       ),
     },
