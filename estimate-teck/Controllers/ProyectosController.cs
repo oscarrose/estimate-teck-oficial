@@ -23,10 +23,28 @@ namespace estimate_teck.Controllers
 
 
         // GET: api/Proyectos
-        [HttpGet]
+        [HttpGet("listProject")]
         public async Task<ActionResult<IEnumerable<Proyecto>>> GetProyectos()
         {
-            return await _context.Proyectos.ToListAsync();
+            var listProject = await (
+                from p in _context.Proyectos
+                join c in _context.Clientes on p.ClienteId equals c.ClienteId
+                join u in _context.Usuarios on p.UsuarioId equals u.UsuarioId
+                join employee in _context.Empleados on u.EmpleadoId equals employee.EmpleadoId
+                join e in _context.EstadoProyectos on p.EstadoProyectoId equals e.EstadoProyectoId
+                select new Proyecto()
+                {
+                    ProyectoId = p.ProyectoId,
+                    NombreProyecto = p.NombreProyecto,
+                    Cliente = new Cliente() { NombreCliente = c.NombreCliente },
+                    EstadoProyecto=new EstadoProyecto(){
+                        NombreEstadoProyecto=e.NombreEstadoProyecto
+                    },
+                    Usuario = new Usuario() { Empleado =employee },
+                    Descripcion=p.Descripcion,
+                    FechaCreacion=p.FechaCreacion
+                }).ToListAsync();
+            return listProject;
         }
 
         // GET: api/Proyectos/5
@@ -76,7 +94,7 @@ namespace estimate_teck.Controllers
 
         // POST: api/Proyectos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("RegisterProject")]
         public async Task<ActionResult<Proyecto>> PostProyecto(Proyecto proyecto)
         {
             _context.Proyectos.Add(proyecto);

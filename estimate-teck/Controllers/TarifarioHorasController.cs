@@ -42,7 +42,7 @@ namespace estimate_teck.Controllers
                    UsuarioId = T.UsuarioId,
                    MontoTarifa = T.MontoTarifa,
                   EmpleadoName= string.Concat(E.Nombre, " ", E.Apellido),
-                   FechaCreacion = T.FechaCreacion
+                   //FechaCreacion = T.FechaCreacion
 
                }).ToListAsync();
             return Ok(AllTarifarioHora);
@@ -92,7 +92,7 @@ namespace estimate_teck.Controllers
                     CargoId = createTarifarioHora.CargoId,
                     UsuarioId = resultUsuario.UsuarioId,
                     MontoTarifa = createTarifarioHora.MontoTarifa,
-                    FechaCreacion = createTarifarioHora.FechaCreacion
+                   // FechaCreacion = createTarifarioHora.FechaCreacion
 
                 };
 

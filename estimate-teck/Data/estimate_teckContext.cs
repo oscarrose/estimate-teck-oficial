@@ -74,9 +74,7 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.CargoId).HasColumnName("Cargo_Id");
 
-                entity.Property(e => e.Descripcion)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                entity.Property(e => e.Descripcion).IsUnicode(false);
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
@@ -503,15 +501,13 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.Descripcion).IsUnicode(false);
 
-                entity.Property(e => e.EstadoProyectoId).HasColumnName("EstadoProyecto_Id");
+                entity.Property(e => e.EstadoProyectoId)
+                    .HasColumnName("EstadoProyecto_Id")
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.FechaFinalizacion).HasColumnType("datetime");
-
-                entity.Property(e => e.FechaInicio).HasColumnType("datetime");
 
                 entity.Property(e => e.NombreProyecto).IsUnicode(false);
 
@@ -617,9 +613,12 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.CargoId).HasColumnName("Cargo_Id");
 
+                entity.Property(e => e.EmpleadoId).HasColumnName("Empleado_Id");
+
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
-                    .HasColumnName("Fecha_Creacion");
+                    .HasColumnName("Fecha_Creacion")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.MontoTarifa).HasColumnType("money");
 
@@ -630,6 +629,12 @@ namespace estimate_teck.Data
                     .HasForeignKey(d => d.CargoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_Cargo_Usuario");
+
+                entity.HasOne(d => d.Empleado)
+                    .WithMany(p => p.TarifarioHoras)
+                    .HasForeignKey(d => d.EmpleadoId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Fk_EmpleadoTarifario_Id");
 
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.TarifarioHoras)
