@@ -25,8 +25,9 @@ namespace estimate_teck.Models
         public string Direccion { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
 
-        public virtual Cargo Cargo { get; set; } = null!;
-        public virtual EstadoUsuarioEmpleado Estado { get; set; } = null!;
+        public virtual Cargo? Cargo { get; set; } = null!;
+        public virtual EstadoUsuarioEmpleado? Estado { get; set; } = null!;
+
         public virtual ICollection<TarifarioHora> TarifarioHoras { get; set; }
         public virtual ICollection<Usuario> Usuarios { get; set; }
     }

@@ -19,11 +19,13 @@ namespace estimate_teck.Models
         public string? Descripcion { get; set; }
         public DateTime? FechaCreacion { get; set; }
 
+
         [JsonIgnore]
         [JsonPropertyName("Proyecto")]
         public virtual Proyecto? Proyecto { get; set; } = null!;
 
         [JsonIgnore]
         public virtual ICollection<ComponenteFuncionale>? ComponenteFuncionales { get; set; }
+
     }
 }

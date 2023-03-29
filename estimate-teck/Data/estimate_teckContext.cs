@@ -501,15 +501,13 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.Descripcion).IsUnicode(false);
 
-                entity.Property(e => e.EstadoProyectoId).HasColumnName("EstadoProyecto_Id");
+                entity.Property(e => e.EstadoProyectoId)
+                    .HasColumnName("EstadoProyecto_Id")
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.FechaFinalizacion).HasColumnType("datetime");
-
-                entity.Property(e => e.FechaInicio).HasColumnType("datetime");
 
                 entity.Property(e => e.NombreProyecto).IsUnicode(false);
 

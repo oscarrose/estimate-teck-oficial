@@ -1,3 +1,4 @@
+
 ﻿namespace estimate_teck.DTO
 {
     public class TarifarioHoraDTO
@@ -11,5 +12,6 @@
         public string EmpleadoName { get; set; } = string.Empty;
         public decimal MontoTarifa { get; set; }
         public DateTime? FechaCreacion { get; set; }
+
     }
 }

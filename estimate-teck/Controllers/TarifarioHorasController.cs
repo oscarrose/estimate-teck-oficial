@@ -43,8 +43,10 @@ namespace estimate_teck.Controllers
                    CargoName = cgo.Nombre,
                    EmpleadoId = T.EmpleadoId,
                    MontoTarifa = T.MontoTarifa,
+
                    EmpleadoName= string.Concat(E.Nombre, " ", E.Apellido),
                    FechaCreacion = T.FechaCreacion
+
 
                }).ToListAsync();
             return Ok(AllTarifarioHora);
@@ -101,6 +103,7 @@ namespace estimate_teck.Controllers
                     EmpleadoId = createTarifarioHora.EmpleadoId,
                     EmpleadoName = string.Concat(resultEmple.Nombre, " ", resultEmple.Apellido),
                     MontoTarifa = createTarifarioHora.MontoTarifa
+
 
                 };
 
@@ -165,19 +168,6 @@ namespace estimate_teck.Controllers
             return NoContent();
         }
      
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // DELETE: api/TarifarioHoras/5
         //[HttpDelete("{id}")]
