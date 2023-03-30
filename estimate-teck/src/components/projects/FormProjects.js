@@ -40,7 +40,7 @@ export default function FormProjects() {
             ...values,
             usuarioId:auth.idUsuario,
             clienteId:clienteAtProject.clienteId,
-            estadoProyectoId:12
+            estadoProyectoId:1
         }
       
         await CallApi.post("Proyectos/RegisterProject", newValues)

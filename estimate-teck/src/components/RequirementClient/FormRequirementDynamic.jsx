@@ -1,14 +1,25 @@
 import React from 'react'
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Form, Divider, Button, notification, Select, Input, Col, Row } from "antd";
-import useAuth from '../../hooks/useAuth';
+import { Form, Divider, Button, Select, Input, Col, Row } from "antd";
+import { tipoRequerimeinto } from './ItemsSelect';
 
-const FormRequirementDynamic = ({ afiliado, setMinor, dependentFormState }) => {
-    const { auth } = useAuth();
+const { Option } = Select;
 
+const FormRequirementDynamic = ({ ProyectoId, editRequirement }) => {
+
+    console.log("cc", editRequirement)
+
+    let newEditRequirement={};
+
+    if(editRequirement){
+        newEditRequirement={
+            editRequirement
+        }
+    }
+   
     return (
-        <Form.List name="requirementDynamic"
-        // initialValue={[newDataupdate]}
+        <Form.List name="RequerimientosClientes"
+            initialValue={[editRequirement]}
         >
             {(fields, { add, remove }) => {
                 return (
@@ -16,7 +27,7 @@ const FormRequirementDynamic = ({ afiliado, setMinor, dependentFormState }) => {
                         {fields.map((field, index) => (
 
                             <div key={field.key} className='ant-advanced-form'>
-                                {/* {dependentFormState.dependentUpdate ? "" : <Divider>Nuevo requerimiento</Divider>} */}
+                                {editRequirement ? "" : <Divider>Nuevo requerimiento</Divider>}
                                 <Row gutter={{
                                     xs: 8,
                                     sm: 16,
@@ -24,8 +35,8 @@ const FormRequirementDynamic = ({ afiliado, setMinor, dependentFormState }) => {
                                     lg: 24
                                 }} >
                                     <Form.Item
-                                        name={[index, "requerimientoId"]}
-                                        initialValue={afiliado}
+                                        name={[index, "proyectoId"]}
+                                        initialValue={ProyectoId}
                                         hidden={true}
                                     >
                                         <Input />
@@ -33,8 +44,9 @@ const FormRequirementDynamic = ({ afiliado, setMinor, dependentFormState }) => {
 
                                     <Col className='gutter-row' span={8}>
                                         <Form.Item
-                                            name={[index, "tipoRequerimiento"]}
+                                            name={[index, "TipoRequerimientoId"]}
                                             label="Tipo requerimiento"
+                                           
                                             rules={[
                                                 {
                                                     required: true,
@@ -42,29 +54,28 @@ const FormRequirementDynamic = ({ afiliado, setMinor, dependentFormState }) => {
                                                 }
                                             ]}
                                         >
-                                            <Select
-                                                options={[
-                                                    {
-                                                        value: "Funcional",
-                                                        label: "Funcional"
-                                                    },
-                                                    {
-                                                        value: "No funcional",
-                                                        label: "No funcional"
-                                                    },
-
-
-
-                                                ]}
-                                            />
+                                            <Select>
+                                                {tipoRequerimeinto.map((data) => (
+                                                    <Option key={data.tipoRequerimiento_Id} value={data.tipoRequerimiento_Id}>
+                                                        {data.nombre}
+                                                    </Option>
+                                                ))}
+                                            </Select>
 
                                         </Form.Item>
                                     </Col>
 
                                     <Col className='gutter-row' span={14}>
                                         <Form.Item
-                                            name={[index, "descripcion"]}
+                                            name={[index, "Descripcion"]}
+                                           
                                             label="Descripción"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: "Describir el requerimiento es requerido"
+                                                }
+                                            ]}
                                         >
                                             <Input.TextArea showCount maxLength={200} />
                                         </Form.Item>
@@ -85,16 +96,18 @@ const FormRequirementDynamic = ({ afiliado, setMinor, dependentFormState }) => {
                             </div>
                         ))}
                         <Divider />
-                        <Form.Item>
-                            <Button
-                                //para crear el botton de add form.item
-                                type="default"
-                                onClick={() => add()}
-                                style={{ marginLeft: "46rem" }}
-                            >
-                                <PlusOutlined /> Agregar requerimiento
-                            </Button>
-                        </Form.Item>
+                        {editRequirement &&
+                            <Form.Item>
+                                <Button
+                                    //para crear el botton de add form.item
+                                    type="default"
+                                    onClick={() => add()}
+                                    style={{ marginLeft: "46rem" }}
+                                >
+                                    <PlusOutlined /> Agregar requerimiento
+                                </Button>
+                            </Form.Item>
+                        }
                     </div>
                 )
             }}

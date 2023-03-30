@@ -2,39 +2,28 @@ import React, { useState } from 'react'
 import { Drawer, Form, Input, Button, Spin, message } from 'antd'
 import CallApi from '../../ServicesHttp/CallApi';
 import FormRequirementDynamic from './FormRequirementDynamic';
-const FormRequirement = () => {
+const FormRequirement = ({ openForm, setOpenForm, 
+    idProyecto,editRequirement,setEditRequirement }) => {
 
 
+    console.log("edit",editRequirement)
     const [isLoading, setLoanding] = useState(false);
 
     const [form] = Form.useForm();
 
-    const registerRequirement = async (value) => {
+    //funcion para registrar los requerimientos
+    const registerRequirement = async (values) => {
         setLoanding(true)
-
-        // if (value.ibarffaaDependientes === undefined) {
-        //     return message.warning("No hay datos agregados")
-        // }
-        // await axiosPrivate.post('RecursosFacturaIbarffaa/RegisterDependent', value, {
-        //     signal: controller.signal
-        // }).then(() => {
-        //     form.resetFields()
-        //     setUpdateTable((updateTable) => !updateTable)
-        //     setLoanding(false)
-        //     setDependentFormState({
-        //         ...dependentFormState,
-        //         openDependent: false
-        //     })
-        //     message.success("Guardado correctamente")
-        // }).catch((error) => {
-        //     setLoanding(false)
-        //     message.error(error.response.data ?? error.message);
-        //     if (error.response.status === 401) {
-        //         controller.abort();
-        //         message.error("Sesión caducada");
-        //     }
-
-        // });
+        await CallApi.post("RequerimientosClientes/RegisterRequirement", values).then(() => {
+            form.resetFields()
+            setLoanding(false)
+            setOpenForm(false)
+            message.success("Guardado correctamente")
+        }).catch((error) => {
+            console.log("err", error)
+            setLoanding(false)
+            message.error(error.response.data ?? error.message);
+        });
 
     }
 
@@ -67,38 +56,39 @@ const FormRequirement = () => {
         // });
 
     }
-    // const validateForm = () => {
-    //     form.validateFields().then((values) => {
-    //         if (values.ibarffaaDependientes[0].idDependiente) {
-    //             updateDependent(values.ibarffaaDependientes[0])
-    //         } else {
-    //             registerDependent(values)
-    //         }
-    //     })
-    // }
+    const validateForm = () => {
+        form.validateFields().then((values) => {
+            registerRequirement(values)
+        })
+    }
 
     return (
         <>
-            <Drawer title={"Formulario"}
-                placement="right" onClose={null}
-                open={true} width={1000}>
+            <Drawer title={!editRequirement? "Registrar requerimientos":"Actualizar requerimiento"}
+                placement="right" onClose={() => {
+                    setOpenForm(false);
+                    setEditRequirement(null)
+                    
+                }}
+                open={openForm} width={1000}>
                 <Spin spinning={isLoading}>
                     <Form
                         form={form}
                         layout="vertical"
                         name='formRequirement'
                     >
-                        {/* <Form.Item
-                            name="idPropetario"
-                            initialValue={afiliado}
-                            hidden={true}
-                        >
-                            <Input />
-                        </Form.Item> */}
-                        <FormRequirementDynamic />
+                        
+                        <FormRequirementDynamic
+                        editRequirement={editRequirement}
+                            ProyectoId={idProyecto}
+                        />
                         <Form.Item >
-                            <Button type="primary">
-                                Guardar
+                            <Button
+                                type="primary"
+                                onClick={() => validateForm()}
+
+                            >
+                                Guardar requerimientos
                             </Button>
                         </Form.Item>
 

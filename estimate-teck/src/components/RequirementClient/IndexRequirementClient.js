@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Button, message, Typography } from "antd";
+import { Button, message, Spin, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useParams } from 'react-router-dom';
 import CallApi from "../../ServicesHttp/CallApi";
@@ -14,6 +14,12 @@ function IndexRequerClient() {
   const [loading, setLoanding] = useState(false);
 
   const [dataRequeriment, setDataRequeriment] = useState([]);
+
+  //estado para controlar la vista del formulario 
+  const [openForm, setOpenForm]=useState(false);
+
+  //Estado para editar requerimiento
+  const [editRequirement, setEditRequirement]=useState(null);
 
   /**
    *Function para obtener los datos  para la tabla de requerimiento
@@ -39,23 +45,31 @@ function IndexRequerClient() {
     <div className="grid grid-rows-2 grid-cols-1 bg-white container mx-auto">
       <div className='container mx-auto p-5'>
         <Title>Requerimientos del cliente</Title>
-        <Button
+       <Spin spinning={loading}>
+       <Button
           className="mr-10"
           type="primary"
           icon={<PlusOutlined />}
           onClick={() =>
-            null
+            setOpenForm(true)
           }
         >
           agregar requerimientos
         </Button>
         <div>
           <ListRequeriment
+          setEditRequirement={setEditRequirement}
+          setOpenForm={setOpenForm}
             dataRequeriment={dataRequeriment}
           />
         </div>
+       </Spin>
       </div>
-      <FormRequirement />
+      <FormRequirement 
+      setEditRequirement={setEditRequirement}
+      editRequirement={editRequirement}
+      idProyecto={idProyecto}
+      openForm={openForm} setOpenForm={setOpenForm}/>
 
     </div>
   );

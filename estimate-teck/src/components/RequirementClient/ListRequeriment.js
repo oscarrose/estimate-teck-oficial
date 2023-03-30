@@ -1,7 +1,7 @@
 import { List } from 'antd';
 import React from 'react';
 
-function ListRequeriment({dataRequeriment}) {
+function ListRequeriment({dataRequeriment,setOpenForm,setEditRequirement}) {
 
   
   const data=dataRequeriment.map((item) =>({
@@ -32,7 +32,11 @@ function ListRequeriment({dataRequeriment}) {
       <List.Item
         key={item.requerimientoId}
         actions={[
-          <a onClick={() => console.log(item)}>
+          <a onClick={() =>{
+            setOpenForm(true)
+            setEditRequirement(item)
+          
+          }}>
             Editar
           </a>
         ]}
