@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using JsonIgnoreAttribute = System.Text.Json.Serialization.JsonIgnoreAttribute;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace estimate_teck.Models
 {
@@ -15,17 +14,16 @@ namespace estimate_teck.Models
 
         public int RequerimientoId { get; set; }
         public int ProyectoId { get; set; }
-        public string? TipoRequerimiento { get; set; }
-        public string? Descripcion { get; set; }
+        public int TipoRequerimientoId { get; set; }
+        public string Descripcion { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
-
-
+        
         [JsonIgnore]
-        [JsonPropertyName("Proyecto")]
+        [IgnoreDataMember]
         public virtual Proyecto? Proyecto { get; set; } = null!;
-
         [JsonIgnore]
-        public virtual ICollection<ComponenteFuncionale>? ComponenteFuncionales { get; set; }
-
+        [IgnoreDataMember]
+        public virtual TipoRequerimiento? TipoRequerimiento { get; set; } = null!;
+        public virtual ICollection<ComponenteFuncionale> ComponenteFuncionales { get; set; }
     }
 }

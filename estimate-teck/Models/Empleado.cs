@@ -27,7 +27,6 @@ namespace estimate_teck.Models
 
         public virtual Cargo? Cargo { get; set; } = null!;
         public virtual EstadoUsuarioEmpleado? Estado { get; set; } = null!;
-
         public virtual ICollection<TarifarioHora> TarifarioHoras { get; set; }
         public virtual ICollection<Usuario> Usuarios { get; set; }
     }

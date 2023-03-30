@@ -23,7 +23,7 @@ namespace estimate_teck.Models
         public string Direccion { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
 
-        public virtual TipoCliente Tipo { get; set; } = null!;
+        public virtual TipoCliente? Tipo { get; set; } = null!;
         public virtual ICollection<Proyecto> Proyectos { get; set; }
     }
 }

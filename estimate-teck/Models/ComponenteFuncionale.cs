@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace estimate_teck.Models
 {
@@ -10,9 +12,14 @@ namespace estimate_teck.Models
         public int RequerimientoId { get; set; }
         public int TipoComponenteId { get; set; }
         public string Complejidad { get; set; } = null!;
-
-        public virtual Estimacion Estimacion { get; set; } = null!;
-        public virtual RequerimientosCliente Requerimiento { get; set; } = null!;
-        public virtual TipoComponente TipoComponente { get; set; } = null!;
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual Estimacion? Estimacion { get; set; } = null!;
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual RequerimientosCliente? Requerimiento { get; set; } = null!;
+         [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual TipoComponente? TipoComponente { get; set; } = null!;
     }
 }

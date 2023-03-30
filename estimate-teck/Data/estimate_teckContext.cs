@@ -38,6 +38,7 @@ namespace estimate_teck.Data
         public virtual DbSet<TarifarioHora> TarifarioHoras { get; set; } = null!;
         public virtual DbSet<TipoCliente> TipoClientes { get; set; } = null!;
         public virtual DbSet<TipoComponente> TipoComponentes { get; set; } = null!;
+        public virtual DbSet<TipoRequerimiento> TipoRequerimientos { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -45,7 +46,7 @@ namespace estimate_teck.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=localhost; Database=estimate_teck;Trusted_Connection=True; TrustServerCertificate=True");
+                optionsBuilder.UseSqlServer("Data source=localhost; Initial catalog=estimate_teck; User Id=sa; password=admin123@");
             }
         }
 
@@ -578,15 +579,19 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.ProyectoId).HasColumnName("Proyecto_Id");
 
-                entity.Property(e => e.TipoRequerimiento)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.TipoRequerimientoId).HasColumnName("TipoRequerimiento_Id");
 
                 entity.HasOne(d => d.Proyecto)
                     .WithMany(p => p.RequerimientosClientes)
                     .HasForeignKey(d => d.ProyectoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_ProyectoRequerimiento_Id");
+
+                entity.HasOne(d => d.TipoRequerimiento)
+                    .WithMany(p => p.RequerimientosClientes)
+                    .HasForeignKey(d => d.TipoRequerimientoId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Fk_requerimiento_tipo_Id");
             });
 
             modelBuilder.Entity<Rol>(entity =>
@@ -667,6 +672,18 @@ namespace estimate_teck.Data
                 entity.Property(e => e.NombreComponente)
                     .HasMaxLength(100)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TipoRequerimiento>(entity =>
+            {
+                entity.ToTable("TipoRequerimiento");
+
+                entity.Property(e => e.TipoRequerimientoId).HasColumnName("tipoRequerimiento_Id");
+
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("nombre");
             });
 
             modelBuilder.Entity<Usuario>(entity =>

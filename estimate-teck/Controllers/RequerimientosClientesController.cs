@@ -18,26 +18,28 @@ namespace estimate_teck.Controllers
             _context = context;
         }
 
-        [HttpGet("GetAllRequerimientos")]
-        public async Task<ActionResult<IEnumerable<RequerimientosDTO>>> GetRequerimientos()
+        [HttpGet("RequerimientoByProyecto/{id}")]
+        public async Task<ActionResult<IEnumerable<RequerimientosDTO>>> GetRequerimientos(int id)
         {
-            var AllRequerimientos = await (
+            var Requerimientos = await (
                 from r in _context.RequerimientosClientes
-                join p in _context.Proyectos on r.ProyectoId equals p.ProyectoId 
-
-
+                join p in _context.Proyectos on r.ProyectoId equals p.ProyectoId
+                join tipoReq in _context.TipoRequerimientos on r.TipoRequerimientoId equals tipoReq.TipoRequerimientoId
+                where r.ProyectoId == id
                 select new RequerimientosDTO()
                 {
-                    RequerimientoId= r.RequerimientoId,
-                    ProyectoId= r.ProyectoId,
-                    NombreProyecto= p.NombreProyecto,
-                    TipoRequerimiento= r.TipoRequerimiento,
-                    Descripcion= r.Descripcion,
-                    FechaCreacion= p.FechaCreacion,
-                   
-                    
+                    RequerimientoId = r.RequerimientoId,
+                    ProyectoId = r.ProyectoId,
+                    NombreProyecto = p.NombreProyecto,
+                    TipoRequerimiento = tipoReq.Nombre,
+                    TipoRequerimientoId=r.TipoRequerimientoId,
+                    Descripcion = r.Descripcion,
+                    FechaCreacion = p.FechaCreacion,
+
                 }).ToListAsync();
-            return Ok(AllRequerimientos);
+
+
+            return Ok(Requerimientos);
 
         }
 
@@ -45,48 +47,24 @@ namespace estimate_teck.Controllers
 
         private bool RequerimientoExists(int IdRequerimiento)
         {
-            return (_context.RequerimientosClientes?.Any(c => c.RequerimientoId== IdRequerimiento)).GetValueOrDefault();
+            return (_context.RequerimientosClientes?.Any(c => c.RequerimientoId == IdRequerimiento)).GetValueOrDefault();
         }
 
-        [HttpPost("CreateRequerimiento")]
-        public async Task<ActionResult<RequerimientosCliente>> CreateRequerimiento([FromBody] RequerimientosCliente requerimiento)
+        [HttpPost("RegisterRequirement")]
+        public async Task<ActionResult<RegisterRequirement>> CreateRequerimiento([FromBody] RegisterRequirement requerimiento)
         {
             if (_context.RequerimientosClientes == null)
             {
-                return Problem("Entity set 'estimate_teckContext.ProductividadPuntosFuncion'  is null.");
+                return Problem("Entity set 'estimate_teckContext.RequerimientosClientes' is null.");
 
-            }
-
-            if (RequerimientoExists(requerimiento.RequerimientoId))
-            {
-                return BadRequest("Ya esta plataforma esta registrada");
             }
 
             try
             {
-                var createRequerimiento = new RequerimientosCliente
-                {
-                    RequerimientoId = requerimiento.RequerimientoId,
-                    ProyectoId = requerimiento.ProyectoId,
-                    TipoRequerimiento = requerimiento.TipoRequerimiento,
-                    Descripcion= requerimiento.Descripcion,
-                    FechaCreacion = requerimiento.FechaCreacion
-                };
-
-                _context.RequerimientosClientes.Add(createRequerimiento);
+                _context.RequerimientosClientes.AddRange(requerimiento.RequerimientosClientes);
                 await _context.SaveChangesAsync();
-                var resultProyecto = (_context.Proyectos.Where(p => p.ProyectoId == createRequerimiento.ProyectoId).FirstOrDefault());
-
-                var resultRequerimiento = new RequerimientosDTO()
-                {
-                    RequerimientoId = createRequerimiento.RequerimientoId,
-                    ProyectoId = createRequerimiento.ProyectoId,
-                    NombreProyecto = resultProyecto.NombreProyecto,
-                    TipoRequerimiento = createRequerimiento.TipoRequerimiento,
-                    Descripcion = createRequerimiento.Descripcion,
-                    FechaCreacion = createRequerimiento.FechaCreacion
-                };
-                return Ok(resultRequerimiento);
+            
+                return Ok(requerimiento);
 
             }
             catch (Exception)
@@ -94,6 +72,9 @@ namespace estimate_teck.Controllers
                 throw;
             }
         }
+
+
+
 
         [HttpPut("PutRequerimientos/{id}")]
         public async Task<IActionResult> PutRequerimientos(int id, [FromBody] RequerimientosCliente requerimientos)
