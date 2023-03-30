@@ -51,7 +51,7 @@ function SliderMenu({ collapsed }) {
     },),
 
     (auth.rol === "Gerente general") &&
-    getItem(<Link to={'/tariff'}>Tarifario</Link>, "/tariff", <HistoryOutlined />, {
+    getItem(<Link to={'/tarifarioHora'}>Tarifario</Link>, "/tarifarioHora", <HistoryOutlined />, {
       type: 'divider',
     },),
     (auth.rol === "Gerente general") &&
