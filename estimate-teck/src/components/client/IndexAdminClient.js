@@ -1,9 +1,9 @@
-import React, { useEffect, useState,useCallback } from "react";
-import { Button, message } from "antd";
+import React, { useState } from "react";
+import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import TableClient from "./TableClient";
 import ModalFormClient from "./ModalFormClient";
-import CallApi from "../../ServicesHttp/CallApi";
+import useClient from "../../hooks/useClient";
 
 function IndexAdminClient() {
   //Para controlar el formulario y tabla  de cliente
@@ -12,35 +12,7 @@ function IndexAdminClient() {
     dataEdit: null,
   });
 
-  //Para la data de la tabla de cliente
-  const [dataClient, setDataClient] = useState([]);
-
-  /*Para saber cuando actualizar la tabla 
-  luego de un cambio en los datos de algun cliente*/
-  const [updateTableClient, setUpdateTableClient] = useState(false);
-
-  //Para saber cuando se estan obteniendo los datos de la tabla de clente
-  const [loading, setLoanding] = useState(false);
-
-  /**
-   *Function para obtener los datos  para la tabla de empleados
-   */
-   const fetchDataClient = useCallback(async function () {
-    setLoanding(true);
-    await CallApi.get("Client/GetAllClient")
-      .then((res) => {
-        setDataClient(res.data);
-        setLoanding(false);
-      })
-      .catch((error) => {
-        setLoanding(false);
-        message.error("Error Interno", error.message);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetchDataClient();
-  }, [updateTableClient]);
+  const {dataClient,loading,setUpdateTableClient,setDataClient}=useClient();
 
   return (
     <div className="grid grid-rows-2 bg-white container mx-auto">
@@ -67,7 +39,6 @@ function IndexAdminClient() {
         controlFormClient={controlFormClient}
       />
       <ModalFormClient
-     
         key={controlFormClient.dataEdit}
         setUpdateTableClient={setUpdateTableClient}
         setDataClient={setDataClient}
