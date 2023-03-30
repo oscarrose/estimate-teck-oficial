@@ -15,7 +15,7 @@ import IndexAdminClient from "./components/client/IndexAdminClient";
 import IndexProductividad from "./components/productividadPF/IndexProductividad";
 import ProfileUser from "./components/admin-personnel/PageProfile/ProfileUser";
 import FormProjects from "./components/projects/FormProjects";
-
+import IndexRequerClient from "./components/RequirementClient/IndexRequirementClient";
 const ControllerRouter = () => {
   return (
     <Routes>
@@ -40,6 +40,8 @@ const ControllerRouter = () => {
         <Route path="/productividadpf" element={<AppRouter component={IndexProductividad}/>}/>
 
         <Route path="/register/projects" element={<AppRouter component={FormProjects}/>}/>
+        
+        <Route path="/project/requirementClient/:idProyecto" element={<AppRouter component={IndexRequerClient}/>}/>
       </Route>
 
       {/* protected routes solo para Gerente general*/}

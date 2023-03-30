@@ -13,7 +13,7 @@ function IndexProductividad() {
   });
 
   //Para la data de la tabla de productividad
-  const [dataProductividad, setDataProductividad] = useState([]);
+  const [dataProductividad, setDataProductividad] = useState({});
 
   /*Para saber cuando actualizar la tabla 
   luego de un cambio en los datos de algun Productividad*/
@@ -61,7 +61,7 @@ function IndexProductividad() {
           Nueva plataforma
         </Button>
       </div>
-
+    
       <TableProductividad
         dataProductividad={dataProductividad}
         loading={loading}
