@@ -97,6 +97,7 @@ namespace estimate_teck.Controllers
                 var resultTarifario = new TarifarioHoraDTO()
                 {
                     TarifarioId = createTarifarioHora.TarifarioId,
+                    FechaCreacion=createTarifarioHora.FechaCreacion,
                     UsuarioId= createTarifarioHora.UsuarioId,
                     CargoId = createTarifarioHora.CargoId,
                     CargoName=resultCargo.Nombre,

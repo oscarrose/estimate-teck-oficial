@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace estimate_teck.Models
 {
@@ -12,8 +14,14 @@ namespace estimate_teck.Models
         public decimal MontoTarifa { get; set; }
         public DateTime? FechaCreacion { get; set; }
 
-        public virtual Cargo Cargo { get; set; } = null!;
-        public virtual Empleado Empleado { get; set; } = null!;
-        public virtual Usuario Usuario { get; set; } = null!;
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual Cargo? Cargo { get; set; } = null!;
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual Empleado? Empleado { get; set; } = null!;
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual Usuario? Usuario { get; set; } = null!;
     }
 }
