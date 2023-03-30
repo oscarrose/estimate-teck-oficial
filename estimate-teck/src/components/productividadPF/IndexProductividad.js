@@ -13,7 +13,7 @@ function IndexProductividad() {
   });
 
   //Para la data de la tabla de productividad
-  const [dataProductividad, setDataProductividad] = useState({});
+  const [dataProductividad, setDataProductividad] = useState([]);
 
   /*Para saber cuando actualizar la tabla 
   luego de un cambio en los datos de algun Productividad*/
@@ -29,7 +29,7 @@ function IndexProductividad() {
     setLoanding(true);
     await CallApi.get("ProductividadPuntoFuncions/GetAllProductividad")
       .then((res) => {
-       
+        console.log("hola", res.data)
         setDataProductividad(res.data);
         setLoanding(false);
       })

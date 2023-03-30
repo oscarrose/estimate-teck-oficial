@@ -29,6 +29,7 @@ function IndexRequerClient() {
     await CallApi.get(`RequerimientosClientes/RequerimientoByProyecto/${idProyecto}`)
       .then((res) => {
         setDataRequeriment(res.data);
+        //console.log("de", res.data)
         setLoanding(false);
       })
       .catch((error) => {

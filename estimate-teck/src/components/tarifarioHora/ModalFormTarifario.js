@@ -47,6 +47,7 @@ function ModalFormTarifario({
         ...values,
         usuarioId:auth.idUsuario
       }
+      console.log("ho", objNew)
       
       await CallApi.post("TarifarioHoras/CreateTarifarioHora", objNew)
         .then((res) => {

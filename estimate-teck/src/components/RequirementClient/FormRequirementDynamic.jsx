@@ -44,9 +44,9 @@ const FormRequirementDynamic = ({ ProyectoId, editRequirement }) => {
 
                                     <Col className='gutter-row' span={8}>
                                         <Form.Item
-                                            name={[index, "TipoRequerimientoId"]}
+                                            name={[index, "tipoRequerimientoId"]}
                                             label="Tipo requerimiento"
-                                           
+                                          // initialValue={}
                                             rules={[
                                                 {
                                                     required: true,
@@ -67,7 +67,7 @@ const FormRequirementDynamic = ({ ProyectoId, editRequirement }) => {
 
                                     <Col className='gutter-row' span={14}>
                                         <Form.Item
-                                            name={[index, "Descripcion"]}
+                                            name={[index, "descripcion"]}
                                            
                                             label="Descripción"
                                             rules={[
@@ -96,7 +96,7 @@ const FormRequirementDynamic = ({ ProyectoId, editRequirement }) => {
                             </div>
                         ))}
                         <Divider />
-                        {editRequirement &&
+                        {!editRequirement &&
                             <Form.Item>
                                 <Button
                                     //para crear el botton de add form.item

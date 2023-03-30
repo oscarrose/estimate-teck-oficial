@@ -73,6 +73,7 @@ function TableProductividad({
 
   return (
     <div>
+
       <Table
         columns={columns}
         dataSource={dataProductividad}
