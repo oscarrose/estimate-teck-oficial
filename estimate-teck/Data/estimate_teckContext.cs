@@ -25,6 +25,7 @@ namespace estimate_teck.Data
         public virtual DbSet<DetalleEstimacion> DetalleEstimacions { get; set; } = null!;
         public virtual DbSet<Empleado> Empleados { get; set; } = null!;
         public virtual DbSet<EstadoProyecto> EstadoProyectos { get; set; } = null!;
+        public virtual DbSet<EstadoRequerimiento> EstadoRequerimientos { get; set; } = null!;
         public virtual DbSet<EstadoUsuarioEmpleado> EstadoUsuarioEmpleados { get; set; } = null!;
         public virtual DbSet<Estimacion> Estimacions { get; set; } = null!;
         public virtual DbSet<HistorialProyecto> HistorialProyectos { get; set; } = null!;
@@ -326,6 +327,15 @@ namespace estimate_teck.Data
                     .HasColumnName("Nombre_EstadoProyecto");
             });
 
+            modelBuilder.Entity<EstadoRequerimiento>(entity =>
+            {
+                entity.ToTable("EstadoRequerimiento");
+
+                entity.Property(e => e.NombreEstadoRequerimiento)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<EstadoUsuarioEmpleado>(entity =>
             {
                 entity.HasKey(e => e.EstadoId)
@@ -573,6 +583,10 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.Descripcion).IsUnicode(false);
 
+                entity.Property(e => e.EstadoId)
+                    .HasColumnName("Estado_Id")
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
@@ -580,6 +594,12 @@ namespace estimate_teck.Data
                 entity.Property(e => e.ProyectoId).HasColumnName("Proyecto_Id");
 
                 entity.Property(e => e.TipoRequerimientoId).HasColumnName("TipoRequerimiento_Id");
+
+                entity.HasOne(d => d.Estado)
+                    .WithMany(p => p.RequerimientosClientes)
+                    .HasForeignKey(d => d.EstadoId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Fk_EstadoRequerimiento_Id");
 
                 entity.HasOne(d => d.Proyecto)
                     .WithMany(p => p.RequerimientosClientes)

@@ -25,6 +25,7 @@ namespace estimate_teck.Controllers
                 from r in _context.RequerimientosClientes
                 join p in _context.Proyectos on r.ProyectoId equals p.ProyectoId
                 join tipoReq in _context.TipoRequerimientos on r.TipoRequerimientoId equals tipoReq.TipoRequerimientoId
+                join est in _context.EstadoRequerimientos on r.EstadoId equals est.EstadoRequerimientoId
                 where r.ProyectoId == id
                 select new RequerimientosDTO()
                 {
@@ -32,7 +33,9 @@ namespace estimate_teck.Controllers
                     ProyectoId = r.ProyectoId,
                     NombreProyecto = p.NombreProyecto,
                     TipoRequerimiento = tipoReq.Nombre,
-                    TipoRequerimientoId=r.TipoRequerimientoId,
+                    TipoRequerimientoId = r.TipoRequerimientoId,
+                    EstadoId=r.EstadoId,
+                    Estado=est.NombreEstadoRequerimiento,
                     Descripcion = r.Descripcion,
                     FechaCreacion = p.FechaCreacion,
 
@@ -56,14 +59,13 @@ namespace estimate_teck.Controllers
             if (_context.RequerimientosClientes == null)
             {
                 return Problem("Entity set 'estimate_teckContext.RequerimientosClientes' is null.");
-
             }
 
             try
             {
                 _context.RequerimientosClientes.AddRange(requerimiento.RequerimientosClientes);
                 await _context.SaveChangesAsync();
-            
+
                 return Ok(requerimiento);
 
             }
@@ -79,17 +81,13 @@ namespace estimate_teck.Controllers
         [HttpPut("PutRequerimientos/{id}")]
         public async Task<IActionResult> PutRequerimientos(int id, [FromBody] RequerimientosCliente requerimientos)
         {
+
+            if (!RequerimientoExists(id))
+            {
+                return NotFound();
+            }
             try
             {
-                if (!RequerimientoExists(id))
-                {
-                    return NotFound();
-                }
-
-                if (id != requerimientos.RequerimientoId)
-                {
-                    return BadRequest("Datos inconsistente");
-                }
 
                 _context.Entry(requerimientos).State = EntityState.Modified;
                 await _context.SaveChangesAsync();

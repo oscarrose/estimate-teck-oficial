@@ -37,59 +37,67 @@ namespace estimate_teck.Controllers
                     ProyectoId = p.ProyectoId,
                     NombreProyecto = p.NombreProyecto,
                     Cliente = new Cliente() { NombreCliente = c.NombreCliente },
-                    EstadoProyecto=new EstadoProyecto(){
-                        NombreEstadoProyecto=e.NombreEstadoProyecto
+                    EstadoProyecto = new EstadoProyecto()
+                    {
+                        NombreEstadoProyecto = e.NombreEstadoProyecto
                     },
-                    Usuario = new Usuario() { Empleado =employee },
-                    Descripcion=p.Descripcion,
-                    FechaCreacion=p.FechaCreacion
+                    Usuario = new Usuario() { Empleado = employee },
+                    Descripcion = p.Descripcion,
+                    FechaCreacion = p.FechaCreacion
                 }).ToListAsync();
             return listProject;
         }
 
         // GET: api/Proyectos/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Proyecto>> GetProyecto(int id)
+        [HttpGet("oneProject/{id}")]
+        public async Task<IActionResult> oneProject(int id)
         {
-            var proyecto = await _context.Proyectos.FindAsync(id);
+            var project = await (from proj in _context.Proyectos
+                                 where proj.ProyectoId == id
+                                 select new
+                                 {
+                                     proj.ProyectoId,
+                                     proj.NombreProyecto,
+                                     proj.EstadoProyectoId,
+                                     proj.Cliente,
+                                     proj.Cliente.Tipo.NombreTipoCliente,
+                                     proj.UsuarioId,
+                                     proj.FechaCreacion,
+                                     proj.Descripcion,
+                                     proj.ClienteId
+                                 }).FirstOrDefaultAsync();
 
-            if (proyecto == null)
+            if (project == null)
             {
                 return NotFound();
             }
 
-            return proyecto;
+            return Ok(project);
         }
 
         // PUT: api/Proyectos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("updateProject/{id}")]
         public async Task<IActionResult> PutProyecto(int id, Proyecto proyecto)
         {
-            if (id != proyecto.ProyectoId)
+
+            if (!ProyectoExists(id))
             {
-                return BadRequest();
+                return NotFound();
             }
-
-            _context.Entry(proyecto).State = EntityState.Modified;
-
             try
             {
+                _context.Entry(proyecto).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
+                return NoContent();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProyectoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
-            return NoContent();
+
         }
 
         // POST: api/Proyectos
@@ -97,10 +105,18 @@ namespace estimate_teck.Controllers
         [HttpPost("RegisterProject")]
         public async Task<ActionResult<Proyecto>> PostProyecto(Proyecto proyecto)
         {
-            _context.Proyectos.Add(proyecto);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Proyectos.Add(proyecto);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProyecto", new { id = proyecto.ProyectoId }, proyecto);
+                return NoContent();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         // DELETE: api/Proyectos/5
