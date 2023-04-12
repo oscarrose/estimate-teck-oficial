@@ -1,12 +1,9 @@
 import React, { useState } from 'react'
-import { Drawer, Form, Input, Button, Spin, message } from 'antd'
+import { Drawer, Form, Button, Spin, message } from 'antd'
 import CallApi from '../../ServicesHttp/CallApi';
 import FormRequirementDynamic from './FormRequirementDynamic';
-const FormRequirement = ({ openForm, setOpenForm, 
-    idProyecto,editRequirement,setEditRequirement }) => {
+const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequirement,setUpdateTable,idProyecto,setDataRequeriment }) => {
 
-
-    console.log("edit",editRequirement)
     const [isLoading, setLoanding] = useState(false);
 
     const [form] = Form.useForm();
@@ -14,61 +11,57 @@ const FormRequirement = ({ openForm, setOpenForm,
     //funcion para registrar los requerimientos
     const registerRequirement = async (values) => {
         setLoanding(true)
-        await CallApi.post("RequerimientosClientes/RegisterRequirement", values).then(() => {
+        await CallApi.post("RequerimientosClientes/RegisterRequirement", values).then((res) => {
+            setUpdateTable((updateTable) => !updateTable)
             form.resetFields()
-            setLoanding(false)
             setOpenForm(false)
             message.success("Guardado correctamente")
-        }).catch((error) => {
-            console.log("err", error)
             setLoanding(false)
-            message.error(error.response.data ?? error.message);
+        }).catch((error) => {
+            message.error(error.message);
+            setLoanding(false)
+          
         });
 
     }
 
-    const updateDependent = async (value) => {
+    const updateRequirement = async (values) => {
         setLoanding(true)
-        // let newValue = {
-        //     ...dependentFormState.updateDependent,
-        //     ...value
-        // }
-        // await axiosPrivate.put(`RecursosFacturaIbarffaa/updateDependent?IdDependiente=${newValue.idDependiente}`, newValue, {
-        //     signal: controller.signal
-        // }).then(() => {
+        let newValue = {
+            ...editRequirement,
+            ...values.RequerimientosClientes[0]
+        }
+        console.log("edit", newValue)
+        await CallApi.put(`RequerimientosClientes/PutRequerimientos/${newValue.requerimientoId}`, newValue)
+        .then(() => {
+            setEditRequirement(null)
+            setLoanding(false)
+            setOpenForm(false)
+            setUpdateTable((updateTable) => !updateTable)
+            message.success("Actualizado correctamente")
 
-        //     setUpdateTable((updateTable) => !updateTable)
-        //     setLoanding(false)
-        //     setDependentFormState({
-        //         ...dependentFormState,
-        //         dependentUpdate: null,
-        //         openDependent: false
-        //     })
-        //     message.success("Actualizado correctamente")
-
-        // }).catch((error) => {
-        //     setLoanding(false)
-        //     if (error.response.status === 401) {
-        //         controller.abort();
-        //         message.error("Sesión caducada");
-        //     }
-        //     message.error( error.message ?? error.response.data );
-        // });
+        }).catch((error) => {
+            setLoanding(false)
+            message.error( error.message ?? error.response.data );
+        });
 
     }
     const validateForm = () => {
         form.validateFields().then((values) => {
-            registerRequirement(values)
+            if (editRequirement) {
+                updateRequirement(values)
+            } else {
+                registerRequirement(values)
+            }
         })
     }
 
     return (
         <>
-            <Drawer title={!editRequirement? "Registrar requerimientos":"Actualizar requerimiento"}
+            <Drawer title={!editRequirement ? "Registrar requerimientos" : "Actualizar requerimiento"}
                 placement="right" onClose={() => {
                     setOpenForm(false);
                     setEditRequirement(null)
-                    
                 }}
                 open={openForm} width={1000}>
                 <Spin spinning={isLoading}>
@@ -77,10 +70,11 @@ const FormRequirement = ({ openForm, setOpenForm,
                         layout="vertical"
                         name='formRequirement'
                     >
-                        
+
                         <FormRequirementDynamic
-                        editRequirement={editRequirement}
-                            ProyectoId={idProyecto}
+                            editRequirement={editRequirement}
+
+                         ProyectoId={idProyecto}
                         />
                         <Form.Item >
                             <Button
@@ -88,7 +82,7 @@ const FormRequirement = ({ openForm, setOpenForm,
                                 onClick={() => validateForm()}
 
                             >
-                                Guardar requerimientos
+                                {editRequirement ? " Guardar cambio" : " Guardar requerimientos"}
                             </Button>
                         </Form.Item>
 

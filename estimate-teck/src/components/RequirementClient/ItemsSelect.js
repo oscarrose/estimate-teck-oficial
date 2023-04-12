@@ -16,4 +16,19 @@ const tipoRequerimeinto = [
         "nombre": "Requisitos de Software Funcionales"
     }
 ]
-export {tipoRequerimeinto};
+
+const estadoRequeriment = [
+    {
+        "EstadoRequerimientoId": 1,
+        "NombreEstadoRequerimiento": "En revisión"
+    },
+    {
+        "EstadoRequerimientoId": 2,
+        "NombreEstadoRequerimiento": "Aprobado"
+    },
+    {
+        "EstadoRequerimientoId": 3,
+        "NombreEstadoRequerimiento": "Rechazado"
+    }
+]
+export { tipoRequerimeinto, estadoRequeriment };

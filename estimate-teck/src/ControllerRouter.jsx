@@ -9,7 +9,8 @@ import Login from "./components/login/Login";
 import HomeApp from "./components/pages/HomeApp";
 import AppRouter from "./AppRouter";
 import IndexAdminPersonnel from "./components/admin-personnel/IndexAdminPersonnel";
-
+import IndexEstimate from "./components/estimate/IndexEstimate";
+import FormMainEstimate from "./components/estimate/FormMainEstimate";
 
 import IndexTarifario from "./components/tarifarioHora/IndexTarifario";
 
@@ -44,8 +45,16 @@ const ControllerRouter = () => {
         <Route path="/productividadpf" element={<AppRouter component={IndexProductividad}/>}/>
 
         <Route path="/register/projects" element={<AppRouter component={FormProjects}/>}/>
+
+        <Route path="edit/projects/:idProject" element={<AppRouter component={FormProjects}/>}/>
         
         <Route path="/project/requirementClient/:idProyecto" element={<AppRouter component={IndexRequerClient}/>}/>
+
+
+        <Route path="/project/estimate/:idProyecto" element={<AppRouter component={IndexEstimate}/>}/>
+
+        <Route path="/form-estimate/project/:idProyecto" element={<AppRouter component={FormMainEstimate}/>}/>
+
 
       </Route>
 

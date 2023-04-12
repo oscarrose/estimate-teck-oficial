@@ -1,22 +1,13 @@
 import React from 'react'
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form, Divider, Button, Select, Input, Col, Row } from "antd";
-import { tipoRequerimeinto } from './ItemsSelect';
+import { tipoRequerimeinto, estadoRequeriment } from './ItemsSelect';
 
 const { Option } = Select;
 
-const FormRequirementDynamic = ({ ProyectoId, editRequirement }) => {
+const FormRequirementDynamic = ({ editRequirement,ProyectoId }) => {
 
-    console.log("cc", editRequirement)
 
-    let newEditRequirement={};
-
-    if(editRequirement){
-        newEditRequirement={
-            editRequirement
-        }
-    }
-   
     return (
         <Form.List name="RequerimientosClientes"
             initialValue={[editRequirement]}
@@ -41,12 +32,20 @@ const FormRequirementDynamic = ({ ProyectoId, editRequirement }) => {
                                     >
                                         <Input />
                                     </Form.Item>
+                                    <Form.Item
+                                        name={[index, "estadoId"]}
+                                        initialValue={1}
+                                        hidden={true}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+
 
                                     <Col className='gutter-row' span={8}>
                                         <Form.Item
                                             name={[index, "tipoRequerimientoId"]}
                                             label="Tipo requerimiento"
-                                          // initialValue={}
+
                                             rules={[
                                                 {
                                                     required: true,
@@ -65,10 +64,33 @@ const FormRequirementDynamic = ({ ProyectoId, editRequirement }) => {
                                         </Form.Item>
                                     </Col>
 
+                                    {editRequirement && (<Col className='gutter-row' span={8}>
+                                        <Form.Item
+                                            name={[index, "estadoId"]}
+                                            label="Estado"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: "El estado es requerido"
+                                                }
+                                            ]}
+                                        >
+                                            <Select>
+                                                {estadoRequeriment.map((data) => (
+                                                    <Option key={data.EstadoRequerimientoId} value={data.EstadoRequerimientoId}>
+                                                        {data.NombreEstadoRequerimiento}
+                                                    </Option>
+                                                ))}
+                                            </Select>
+
+                                        </Form.Item>
+                                    </Col>)}
+
+
                                     <Col className='gutter-row' span={14}>
                                         <Form.Item
                                             name={[index, "descripcion"]}
-                                           
+
                                             label="Descripción"
                                             rules={[
                                                 {

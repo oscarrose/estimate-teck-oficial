@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, message, Spin, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useParams } from 'react-router-dom';
@@ -13,13 +13,16 @@ function IndexRequerClient() {
   //Para saber cuando se estan obteniendo los datos
   const [loading, setLoanding] = useState(false);
 
+  //para obtener los datos de los requerimientos
   const [dataRequeriment, setDataRequeriment] = useState([]);
 
+  const [updateTable, setUpdateTable] = useState(false);
+
   //estado para controlar la vista del formulario 
-  const [openForm, setOpenForm]=useState(false);
+  const [openForm, setOpenForm] = useState(false);
 
   //Estado para editar requerimiento
-  const [editRequirement, setEditRequirement]=useState(null);
+  const [editRequirement, setEditRequirement] = useState(null);
 
   /**
    *Function para obtener los datos  para la tabla de requerimiento
@@ -29,7 +32,6 @@ function IndexRequerClient() {
     await CallApi.get(`RequerimientosClientes/RequerimientoByProyecto/${idProyecto}`)
       .then((res) => {
         setDataRequeriment(res.data);
-        //console.log("de", res.data)
         setLoanding(false);
       })
       .catch((error) => {
@@ -40,37 +42,41 @@ function IndexRequerClient() {
 
   useEffect(() => {
     fetchRequirementByProject();
-  }, []);
+  }, [updateTable]);
 
   return (
     <div className="grid grid-rows-2 grid-cols-1 bg-white container mx-auto">
       <div className='container mx-auto p-5'>
         <Title>Requerimientos del cliente</Title>
-       <Spin spinning={loading}>
-       <Button
-          className="mr-10"
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() =>
-            setOpenForm(true)
-          }
-        >
-          agregar requerimientos
-        </Button>
-        <div>
-          <ListRequeriment
-          setEditRequirement={setEditRequirement}
-          setOpenForm={setOpenForm}
-            dataRequeriment={dataRequeriment}
-          />
-        </div>
-       </Spin>
+        <Spin spinning={loading}>
+          <Button
+            className="mr-10"
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() =>
+              setOpenForm(true)
+            }
+          >
+            agregar requerimientos
+          </Button>
+          <div>
+            <ListRequeriment
+              setEditRequirement={setEditRequirement}
+              setOpenForm={setOpenForm}
+              dataRequeriment={dataRequeriment}
+            />
+          </div>
+        </Spin>
       </div>
-      <FormRequirement 
-      setEditRequirement={setEditRequirement}
-      editRequirement={editRequirement}
-      idProyecto={idProyecto}
-      openForm={openForm} setOpenForm={setOpenForm}/>
+      <FormRequirement
+      setDataRequeriment={setDataRequeriment}
+        setEditRequirement={setEditRequirement}
+        editRequirement={editRequirement}
+        key={editRequirement}
+        setUpdateTable={setUpdateTable}
+        idProyecto={idProyecto}
+        openForm={openForm}
+        setOpenForm={setOpenForm} />
 
     </div>
   );

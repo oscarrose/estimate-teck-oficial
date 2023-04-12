@@ -1,7 +1,8 @@
-import React, { useState, useEffect,useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, message } from "antd";
 import TableProject from "./TableProject";
+import FormProjects from "./FormProjects";
 import CallApi from "../../ServicesHttp/CallApi";
 import { Link } from "react-router-dom";
 
@@ -9,6 +10,8 @@ function IndexEstimate() {
 
 
   const [dataTableProject, setDataTableProject] = useState([]);
+
+ 
   const [loading, setLoading] = useState(false)
 
   /**
@@ -18,7 +21,6 @@ function IndexEstimate() {
     setLoading(true);
     await CallApi.get("Proyectos/listProject")
       .then((res) => {
-        console.log(res.data)
         setDataTableProject(res.data);
         setLoading(false);
       })
@@ -51,12 +53,17 @@ function IndexEstimate() {
       </div>
       <div>
         <TableProject
+        
           dataTableProject={dataTableProject}
         />
+
+        
+
       </div>
 
 
     </div>
-  );}
+  );
+}
 
 export default IndexEstimate;
