@@ -47,7 +47,7 @@ namespace estimate_teck.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data source=localhost; Initial catalog=estimate_teck; User Id=sa; password=admin123@");
+                optionsBuilder.UseSqlServer("Server=localhost; Database=estimate_teck;Trusted_Connection=True; TrustServerCertificate=True");
             }
         }
 
@@ -280,6 +280,8 @@ namespace estimate_teck.Data
                     .HasColumnType("datetime")
                     .HasColumnName("Fecha_Creacion")
                     .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.FechaNacimiento).HasColumnType("datetime");
 
                 entity.Property(e => e.Identificacion)
                     .HasMaxLength(15)

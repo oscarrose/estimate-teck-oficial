@@ -17,6 +17,7 @@ namespace estimate_teck.Models
         public string Nombre { get; set; } = null!;
         public string Apellido { get; set; } = null!;
         public string Identificacion { get; set; } = null!;
+        public DateTime? FechaNacimiento { get; set; }
         public string Email { get; set; } = null!;
         public string? TelefonoResidencial { get; set; }
         public string Celular { get; set; } = null!;
