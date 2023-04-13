@@ -70,6 +70,7 @@ function TableEmpoyee({
       dataIndex: "fechaCreacion",
       width: 127,
     },
+
     {
       render: (record) => (
         <Space size="middle">
