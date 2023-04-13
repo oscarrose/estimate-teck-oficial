@@ -269,10 +269,26 @@ VALUES
     ('Requisitos de Software Funcionales')
 GO
 
+CREATE TABLE EstadoRequerimiento
+(
+    EstadoRequerimientoId int not null identity constraint Pk_EstadoRequerimientoId primary key(EstadoRequerimientoId),
+    NombreEstadoRequerimiento VARCHAR(50)
+);
+GO
+
+INSERT INTO EstadoRequerimiento
+    (NombreEstadoRequerimiento)
+VALUES
+    ('En revisión'),
+    ('Aprobado'),
+    ('Rechazado');
+GO
+
 CREATE TABLE RequerimientosCliente
 (
     Requerimiento_Id int not null identity constraint Pk_RequerimientoCliente_Id primary key (Requerimiento_Id),
     Proyecto_Id int not null constraint Fk_ProyectoRequerimiento_Id foreign key references Proyecto (Proyecto_Id),
+    Estado_Id int DEFAULT 1 not null constraint Fk_EstadoRequerimiento_Id foreign key references EstadoRequerimiento(EstadoRequerimientoId),
     TipoRequerimiento_Id INT NOT NULL CONSTRAINT Fk_requerimiento_tipo_Id FOREIGN key REFERENCES TipoRequerimiento(tipoRequerimiento_Id),
     Descripcion VARCHAR(max) NOT NULL,
     FechaCreacion DATETIME DEFAULT GETDATE()
@@ -295,6 +311,16 @@ CREATE TABLE TipoComponente
     TipoComponente_Id int not null identity constraint Pk_TipoComponente_Id primary key (TipoComponente_Id),
     NombreComponente varchar (100)
 );
+GO
+
+INSERT INTO TipoComponente
+    (NombreComponente)
+VALUES
+    ('Entradas Externas'),
+    ('Salidas Externas'),
+    ('Consultas Externas'),
+    ('Archivos Lógicos Internos'),
+    ('Interfaces Externas');
 GO
 
 CREATE TABLE Estimacion
