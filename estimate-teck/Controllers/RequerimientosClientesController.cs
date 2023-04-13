@@ -34,20 +34,34 @@ namespace estimate_teck.Controllers
                     NombreProyecto = p.NombreProyecto,
                     TipoRequerimiento = tipoReq.Nombre,
                     TipoRequerimientoId = r.TipoRequerimientoId,
-                    EstadoId=r.EstadoId,
-                    Estado=est.NombreEstadoRequerimiento,
+                    EstadoId = r.EstadoId,
+                    Estado = est.NombreEstadoRequerimiento,
                     Descripcion = r.Descripcion,
                     FechaCreacion = p.FechaCreacion,
 
                 }).ToListAsync();
-
-
             return Ok(Requerimientos);
 
         }
 
-        //Metodo para validar si existe o no el requisito
 
+        [HttpGet("RequerimientdByEstimate/{id}")]
+        public async Task<ActionResult<IEnumerable<RequerimientosDTO>>> GetRequerimientByEstimate(int id)
+        {
+            var Requerimientos = await (
+                from r in _context.RequerimientosClientes
+                where r.ProyectoId == id && r.EstadoId == 2
+                select new RequerimientosCliente()
+                {
+                    RequerimientoId = r.RequerimientoId,
+                    Descripcion = r.Descripcion,
+                }).ToListAsync();
+            return Ok(Requerimientos);
+
+        }
+
+
+        //Metodo para validar si existe o no el requisito
         private bool RequerimientoExists(int IdRequerimiento)
         {
             return (_context.RequerimientosClientes?.Any(c => c.RequerimientoId == IdRequerimiento)).GetValueOrDefault();
