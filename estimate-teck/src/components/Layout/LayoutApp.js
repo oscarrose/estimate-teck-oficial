@@ -29,7 +29,7 @@ const LayoutApp = ({children}) => {
           }}
           className="container mx-auto"
         >
-         {children}
+       {children}
         </Content>
       </Layout>
     </Layout>
