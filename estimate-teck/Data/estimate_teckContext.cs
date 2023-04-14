@@ -61,13 +61,13 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.Caracteristica).IsUnicode(false);
 
-                entity.Property(e => e.EstimacionId).HasColumnName("Estimacion_Id");
+                entity.Property(e => e.ProyectoId).HasColumnName("Proyecto_Id");
 
-                entity.HasOne(d => d.Estimacion)
+                entity.HasOne(d => d.Proyecto)
                     .WithMany(p => p.CaracteristicaSistemas)
-                    .HasForeignKey(d => d.EstimacionId)
+                    .HasForeignKey(d => d.ProyectoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Fk_estimacion_id_caracteristica_sistema");
+                    .HasConstraintName("Fk_proyecto_id_caracteristica_sistema");
             });
 
             modelBuilder.Entity<Cargo>(entity =>
@@ -156,17 +156,17 @@ namespace estimate_teck.Data
                     .IsUnicode(false)
                     .HasColumnName("complejidad");
 
-                entity.Property(e => e.EstimacionId).HasColumnName("Estimacion_Id");
+                entity.Property(e => e.ProyectoId).HasColumnName("Proyecto_Id");
 
                 entity.Property(e => e.RequerimientoId).HasColumnName("Requerimiento_id");
 
                 entity.Property(e => e.TipoComponenteId).HasColumnName("Tipo_componente_id");
 
-                entity.HasOne(d => d.Estimacion)
+                entity.HasOne(d => d.Proyecto)
                     .WithMany(p => p.ComponenteFuncionales)
-                    .HasForeignKey(d => d.EstimacionId)
+                    .HasForeignKey(d => d.ProyectoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Fk_estimacion_id_componente_funcionales");
+                    .HasConstraintName("Fk_proyecto_id_componente_funcionales");
 
                 entity.HasOne(d => d.Requerimiento)
                     .WithMany(p => p.ComponenteFuncionales)
@@ -194,21 +194,21 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.Baja).HasColumnName("baja");
 
-                entity.Property(e => e.EstimacionId).HasColumnName("Estimacion_id");
-
                 entity.Property(e => e.Media).HasColumnName("media");
 
-                entity.Property(e => e.TipoConponenteId).HasColumnName("Tipo_conponente_id");
+                entity.Property(e => e.ProyectoId).HasColumnName("Proyecto_id");
 
-                entity.HasOne(d => d.Estimacion)
+                entity.Property(e => e.TipoComponenteId).HasColumnName("Tipo_componente_id");
+
+                entity.HasOne(d => d.Proyecto)
                     .WithMany(p => p.ConteoTipoComponentes)
-                    .HasForeignKey(d => d.EstimacionId)
+                    .HasForeignKey(d => d.ProyectoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Fk_estimacion_id_conteo_componente");
+                    .HasConstraintName("Fk_proyecto_id_conteo_componente");
 
-                entity.HasOne(d => d.TipoConponente)
+                entity.HasOne(d => d.TipoComponente)
                     .WithMany(p => p.ConteoTipoComponentes)
-                    .HasForeignKey(d => d.TipoConponenteId)
+                    .HasForeignKey(d => d.TipoComponenteId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_tipo_componente_conteo_componente");
             });
@@ -264,6 +264,15 @@ namespace estimate_teck.Data
                     .HasMaxLength(15)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Ciudad)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreadoPor)
+                    .HasMaxLength(25)
+                    .IsUnicode(false)
+                    .HasColumnName("Creado_por");
+
                 entity.Property(e => e.Direccion)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -280,6 +289,10 @@ namespace estimate_teck.Data
                     .HasColumnType("datetime")
                     .HasColumnName("Fecha_Creacion")
                     .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.FechaNacimiento)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Fecha_Nacimiento");
 
                 entity.Property(e => e.Identificacion)
                     .HasMaxLength(15)
@@ -528,19 +541,19 @@ namespace estimate_teck.Data
                     .WithMany(p => p.Proyectos)
                     .HasForeignKey(d => d.ClienteId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Fk_ClienteProyecto_Id");
+                    .HasConstraintName("Fk_ClienteP_royecto_Id");
 
                 entity.HasOne(d => d.EstadoProyecto)
                     .WithMany(p => p.Proyectos)
                     .HasForeignKey(d => d.EstadoProyectoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Fk_EstadoProyecto_Id");
+                    .HasConstraintName("Fk_Estado_Proyecto_Id");
 
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.Proyectos)
                     .HasForeignKey(d => d.UsuarioId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Fk_UsuarioProyecto_Id");
+                    .HasConstraintName("Fk_Usuario_Proyecto_Id");
             });
 
             modelBuilder.Entity<PuntoFuncionAjustado>(entity =>
@@ -553,17 +566,17 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.Baja).HasColumnName("baja");
 
-                entity.Property(e => e.EstimacionId).HasColumnName("Estimacion_id");
-
                 entity.Property(e => e.Media).HasColumnName("media");
+
+                entity.Property(e => e.ProyectoId).HasColumnName("Proyecto_id");
 
                 entity.Property(e => e.TipoConponenteId).HasColumnName("Tipo_conponente_id");
 
-                entity.HasOne(d => d.Estimacion)
+                entity.HasOne(d => d.Proyecto)
                     .WithMany(p => p.PuntoFuncionAjustados)
-                    .HasForeignKey(d => d.EstimacionId)
+                    .HasForeignKey(d => d.ProyectoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Fk_estimacion_id_punto_funcion_ajustado");
+                    .HasConstraintName("Fk_Proyecto_id_punto_funcion_ajustado");
 
                 entity.HasOne(d => d.TipoConponente)
                     .WithMany(p => p.PuntoFuncionAjustados)
@@ -727,7 +740,7 @@ namespace estimate_teck.Data
                     .WithMany(p => p.Usuarios)
                     .HasForeignKey(d => d.EmpleadoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Fk_EmpleadoUsuarioId");
+                    .HasConstraintName("Fk_Empleado_UsuarioId");
 
                 entity.HasOne(d => d.EstadoUsuario)
                     .WithMany(p => p.Usuarios)

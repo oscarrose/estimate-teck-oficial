@@ -20,7 +20,6 @@ namespace estimate_teck.Models
         public int? NivelMedio { get; set; }
         public int? NivelAlto { get; set; }
         public DateTime? FechaCreacion { get; set; }
-
         [JsonIgnore]
         [IgnoreDataMember]
         public virtual EstadoUsuarioEmpleado? Estado { get; set; } = null!;

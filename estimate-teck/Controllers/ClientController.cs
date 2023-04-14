@@ -27,6 +27,8 @@ namespace estimate_teck.Controllers
             var AllClient = await (
                 from c in _context.Clientes
                 join tc in _context.TipoClientes on c.TipoId equals tc.TipoId
+                // join us in _context.Usuarios on c.UsuarioId equals us.UsuarioId
+                // join emp in _context.Empleados on us.EmpleadoId equals emp.EmpleadoId
                 select new Cliente()
                 {
                     ClienteId = c.ClienteId,

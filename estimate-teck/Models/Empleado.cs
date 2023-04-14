@@ -14,14 +14,17 @@ namespace estimate_teck.Models
         public int EmpleadoId { get; set; }
         public int EstadoId { get; set; }
         public int CargoId { get; set; }
+        public string? CreadoPor { get; set; }
         public string Nombre { get; set; } = null!;
         public string Apellido { get; set; } = null!;
         public string Identificacion { get; set; } = null!;
+        public DateTime FechaNacimiento { get; set; }
         public string Email { get; set; } = null!;
         public string? TelefonoResidencial { get; set; }
         public string Celular { get; set; } = null!;
         public string Pais { get; set; } = null!;
         public string Provincia { get; set; } = null!;
+        public string Ciudad { get; set; } = null!;
         public string Direccion { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
 
