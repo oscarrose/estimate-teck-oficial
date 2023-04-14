@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Upload, Select, Spin, Button, message } from "antd";
+import { Modal, Form, Input, Upload, Select, Spin, Button, message, DatePicker } from "antd";
 import ImgCrop from "antd-img-crop";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons"
 import CallApi from "../../ServicesHttp/CallApi";
+import moment from 'moment';
 import { cargo, estadoUsuarioEmpleado, Countrys, ProvinciaRD } from "./ItemsSelect";
-
+import useAuth from '../../hooks/useAuth';
 const { Option } = Select;
+const dateFormat = 'YYYY-MM-DD';
 
 function ModalFormEmployee({
   setUpdateTableEmployee,
@@ -19,6 +21,10 @@ function ModalFormEmployee({
   const onReset = () => {
     form.resetFields();
   };
+
+  const { auth } = useAuth();
+
+  console.log("aa", auth)
   // const [country, setCountry] = useState('');
   // const [state, setState] = useState('');
   // const [city, setCity] = useState('');
@@ -34,12 +40,13 @@ function ModalFormEmployee({
       telefonoResidencial: editEmployee.telefonoResidencial,
       cargoId: editEmployee.cargoId,
       ciudad: editEmployee.ciudad,
+      fechaNacimiento: moment(editEmployee.fechaNacimiento, dateFormat),
       calle: editEmployee.calle,
       sector: editEmployee.sector,
       estadoId: editEmployee.estadoId,
-      provincia:editEmployee.provincia,
-      pais:editEmployee.pais,
-      direccion:editEmployee.direccion
+      provincia: editEmployee.provincia,
+      pais: editEmployee.pais,
+      direccion: editEmployee.direccion
     });
   };
 
@@ -71,7 +78,12 @@ function ModalFormEmployee({
   const onSubmit = async (values) => {
     setLoandingSave(true)
     if (!editEmployee) {
-      await CallApi.post("Empleados/CreateEmployee", values)
+      const valuesNew = {
+        ...values,
+        creadoPor: auth.emailUsuario
+      }
+      console.log("dcee", valuesNew)
+      await CallApi.post("Empleados/CreateEmployee", valuesNew)
         .then((res) => {
           setLoandingSave(false);
           message.success("Registrado correctamente");
@@ -89,17 +101,17 @@ function ModalFormEmployee({
         fechaCreacion: editEmployee.fechaCreacion,
         empleadoId: editEmployee.empleadoId,
       };
-    
+
       await CallApi.put(
         `Empleados/UpdateEmployee/${editEmployee.empleadoId}`,
         newValues
       ).then(() => {
-          message.success("Datos del empleado actualizados")
-          setModalFormEmployee(false);
-          setEditEmployee(null);
-          setLoandingSave(false);
-          setUpdateTableEmployee((prevData) => !prevData);
-        })
+        message.success("Datos del empleado actualizados")
+        setModalFormEmployee(false);
+        setEditEmployee(null);
+        setLoandingSave(false);
+        setUpdateTableEmployee((prevData) => !prevData);
+      })
         .catch((error) => {
           setLoandingSave(false);
           message.error("Error interno", error.response.data);
@@ -199,6 +211,22 @@ function ModalFormEmployee({
               <Input placeholder="###-#######-#" />
             </Form.Item>
 
+
+            <Form.Item
+              name="fechaNacimiento"
+              label="Fecha nacimiento"
+              hasFeedback
+              rules={[
+                {
+                  required: true,
+                  message: "La fecha de nacimiento es requerida",
+                },
+
+              ]}
+            >
+              <DatePicker format={dateFormat} />
+            </Form.Item>
+
             <Form.Item
               name="email"
               label="Email"
@@ -238,13 +266,13 @@ function ModalFormEmployee({
               name="telefonoResidencial"
               label="Teléfono residencial"
               rules={[{
-                max:10,
-                  min:10,
-                  message:"El numero de telefono es invalido"
+                max: 10,
+                min: 10,
+                message: "El numero de telefono es invalido"
               }]}
               hasFeedback
             >
-              <Input type="number" placeholder="(###)#######"/>
+              <Input type="number" placeholder="(###)#######" />
             </Form.Item>
             <Form.Item
               name="celular"
@@ -254,12 +282,12 @@ function ModalFormEmployee({
                 {
                   require: true,
                   message: "El celular es requerido",
-                 
+
                 },
                 {
-                  max:10,
-                  min:10,
-                  message:"El numero de celular es invalido"
+                  max: 10,
+                  min: 10,
+                  message: "El numero de celular es invalido"
                 }
               ]}
             >
@@ -276,22 +304,7 @@ function ModalFormEmployee({
               ]}
               hasFeedback
             >
-              <Select
-                placeholder="País de origen"
-                showSearch
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option.children
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
-              >
-                {Countrys.map((option) => (
-                  <Option key={option} value={option}>
-                    {option}
-                  </Option>
-                ))}
-              </Select>
+              <Input />
             </Form.Item>
 
             <Form.Item name="provincia" label="Provincia"
@@ -302,22 +315,18 @@ function ModalFormEmployee({
                 },
               ]}
               hasFeedback>
-              <Select
-                placeholder="Provincia donde esta establecido"
-                showSearch
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option.children
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
-              >
-                {ProvinciaRD.map((option) => (
-                  <Option key={option} value={option}>
-                    {option}
-                  </Option>
-                ))}
-              </Select>
+              <Input />
+            </Form.Item>
+
+            <Form.Item name="ciudad" label="Ciudad"
+              rules={[
+                {
+                  required: true,
+                  message: "La ciudad es necesaria!",
+                },
+              ]}
+              hasFeedback>
+              <Input />
             </Form.Item>
 
             <Form.Item

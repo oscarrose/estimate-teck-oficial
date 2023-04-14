@@ -34,6 +34,7 @@ const useModuleAdminPersonnel = () => {
       .then((res) => {
         setDataEmployee(res.data);
         setloanding(false);
+        console.log("dee",res.data)
       })
       .catch((error) => {
         setloanding(false);

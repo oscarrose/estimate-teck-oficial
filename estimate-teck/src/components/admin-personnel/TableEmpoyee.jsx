@@ -25,6 +25,10 @@ function TableEmpoyee({
       width: 127,
     },
     {
+      title: "F.nacimiento",
+      dataIndex: "fechaNacimiento",
+    },
+    {
       title: "Estado",
       dataIndex: "estado",
       width: 90
@@ -62,8 +66,17 @@ function TableEmpoyee({
      
     },
     {
+      title: "Ciudad",
+      dataIndex: "ciudad",
+     
+    },
+    {
       title: "Dirección",
       dataIndex: "direccion",
+    },
+    {
+      title: "Creado por",
+      dataIndex: "creadoPor",
     },
     {
       title: "Fecha creación",

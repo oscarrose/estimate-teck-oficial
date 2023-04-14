@@ -110,7 +110,7 @@ function Step1Form({ idProyecto, setStep,componentSystem,setComponentSystem }) {
                                                 },
                                             ]}
                                         >
-                                            <Input disabled={true} />
+                                            <Input.TextArea disabled={true} />
                                         </Form.Item>
                                         <Form.Item
                                             {...restField}
