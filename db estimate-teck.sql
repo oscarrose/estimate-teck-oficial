@@ -94,19 +94,23 @@ GO
 
 
 
+
 CREATE TABLE Empleado
 (
     Empleado_Id INT NOT NULL IDENTITY(1,1) CONSTRAINT Pk_empleadoId PRIMARY KEY(empleado_Id),
     Estado_Id INT NOT NULL DEFAULT 1 CONSTRAINT FK_Estado_UsuarioEmpleado FOREIGN KEY REFERENCES Estado_Usuario_Empleado(Estado_Id),
     Cargo_Id INT NOT NULL CONSTRAINT Fk_Cargo_Empleado FOREIGN KEY REFERENCES Cargo(Cargo_Id),
+    Creado_por VARCHAR(25) NULL,
     Nombre VARCHAR(25) NOT NULL,
     Apellido VARCHAR(25) NOT NULL,
     Identificacion VARCHAR(15) NOT NULL,
+    Fecha_Nacimiento DATETIME NOT NULL,
     Email VARCHAR(255) NOT NULL,
     Telefono_Residencial VARCHAR(15) NULL,
     Celular VARCHAR(15) NOT NULL,
     Pais VARCHAR(255) NOT NULL,
     Provincia VARCHAR(255) NOT NULL,
+    Ciudad VARCHAR(255) NOT NULL,
     Direccion VARCHAR(255) NOT NULL,
     Fecha_Creacion DATETIME DEFAULT GETDATE()
 );
@@ -137,13 +141,10 @@ VALUES
     ('Gerente general');
 GO
 
-
-
-
 CREATE TABLE Usuario
 (
     Usuario_Id INT NOT NULL IDENTITY CONSTRAINT Pk_Usuario PRIMARY KEY (Usuario_Id),
-    Empleado_Id INT NOT NULL CONSTRAINT Fk_EmpleadoUsuarioId FOREIGN KEY REFERENCES Empleado (Empleado_Id),
+    Empleado_Id INT NOT NULL CONSTRAINT Fk_Empleado_UsuarioId FOREIGN KEY REFERENCES Empleado(Empleado_Id),
     EstadoUsuario_Id INT NOT NULL CONSTRAINT FK_Estado_Usuario FOREIGN KEY REFERENCES Estado_Usuario_Empleado(Estado_Id),
     Id_rol INT NOT NULL CONSTRAINT Fk_RolUsuario FOREIGN KEY REFERENCES Rol (Id_rol),
     PasswordHast VARBINARY(Max) NOT NULL,
@@ -185,6 +186,7 @@ CREATE TABLE Cliente
 (
     Cliente_Id INT NOT NULL IDENTITY CONSTRAINT Pk_Cliente Primary key (Cliente_Id),
     Tipo_Id INT NOT NULL CONSTRAINT Fk_TipoClienteId FOREIGN KEY REFERENCES TipoCliente (Tipo_Id),
+    --Usuario_Id INT NOT NULL CONSTRAINT Fk_Cliente_Creado_Usuario_Id FOREIGN KEY REFERENCES Usuario(Usuario_Id),
     Nombre_Cliente VARCHAR(255) NOT NULL,
     Tipo_identificacion VARCHAR(255) NOT NULL,
     Identificacion VARCHAR(15) NOT NULL,
@@ -193,6 +195,7 @@ CREATE TABLE Cliente
     Celular VARCHAR(15) NOT NULL,
     Pais VARCHAR(255) NOT NULL,
     Estado VARCHAR(255) NULL,
+    --Ciudad VARCHAR(255) NULL,
     Direccion VARCHAR(255) NOT NULL,
     Fecha_Creacion DATETIME DEFAULT GETDATE()
 
@@ -242,9 +245,9 @@ GO
 CREATE TABLE Proyecto
 (
     Proyecto_Id INT NOT NULL IDENTITY CONSTRAINT Pk_ProyectoId Primary key (Proyecto_Id),
-    EstadoProyecto_Id INT NOT NULL DEFAULT 1 CONSTRAINT Fk_EstadoProyecto_Id FOREIGN KEY REFERENCES EstadoProyecto (EstadoProyecto_Id),
-    Usuario_Id INT NOT NULL CONSTRAINT Fk_UsuarioProyecto_Id FOREIGN KEY REFERENCES Usuario(Usuario_Id),
-    Cliente_Id INT NOT NULL CONSTRAINT Fk_ClienteProyecto_Id FOREIGN KEY REFERENCES Cliente(Cliente_Id),
+    EstadoProyecto_Id INT NOT NULL DEFAULT 1 CONSTRAINT Fk_Estado_Proyecto_Id FOREIGN KEY REFERENCES EstadoProyecto(EstadoProyecto_Id),
+    Usuario_Id INT NOT NULL CONSTRAINT Fk_Usuario_Proyecto_Id FOREIGN KEY REFERENCES Usuario(Usuario_Id),
+    Cliente_Id INT NOT NULL CONSTRAINT Fk_ClienteP_royecto_Id FOREIGN KEY REFERENCES Cliente(Cliente_Id),
     NombreProyecto VARCHAR(max) NOT NULL,
     Descripcion VARCHAR(max) NULL,
     --FechaInicio datetime,
@@ -351,7 +354,7 @@ GO
 CREATE TABLE Caracteristica_sistema
 (
     Caracteristica_sistema_id INT NOT NULL IDENTITY CONSTRAINT PK_caracteristica_sistema_Id PRIMARY KEY(Caracteristica_sistema_id),
-    Estimacion_Id INT NOT NULL CONSTRAINT Fk_estimacion_id_caracteristica_sistema FOREIGN KEY REFERENCES Estimacion(Estimacion_Id),
+    Proyecto_Id INT NOT NULL CONSTRAINT Fk_proyecto_id_caracteristica_sistema FOREIGN KEY REFERENCES Proyecto(Proyecto_Id),
     Caracteristica VARCHAR(MAX) NOT NULL,
     Puntaje INT NOT NULL
 );
@@ -380,7 +383,7 @@ GO
 CREATE TABLE Componente_funcionales
 (
     Componente_funcionales_id INT NOT NULL IDENTITY CONSTRAINT Pk_Conponente_funcionales_Id PRIMARY KEY(Componente_funcionales_id),
-    Estimacion_Id INT NOT NULL CONSTRAINT Fk_estimacion_id_componente_funcionales FOREIGN KEY REFERENCES Estimacion(Estimacion_Id),
+    Proyecto_Id INT NOT NULL CONSTRAINT Fk_proyecto_id_componente_funcionales FOREIGN KEY REFERENCES Proyecto(Proyecto_Id),
     Requerimiento_id INT NOT NULL CONSTRAINT Fk_requerimiento_id_componente_funcionales FOREIGN KEY REFERENCES RequerimientosCliente(Requerimiento_Id),
     Tipo_componente_id INT NOT NULL CONSTRAINT Fk_tipo_componente_componente_funcional FOREIGN KEY REFERENCES TipoComponente(TipoComponente_Id),
     complejidad VARCHAR(8) NOT NULL
@@ -390,8 +393,8 @@ GO
 CREATE TABLE Conteo_tipo_componente
 (
     Conteo_componente_id INT NOT NULL IDENTITY CONSTRAINT Pk_conteo_tipo_componente PRIMARY KEY(Conteo_componente_id),
-    Tipo_conponente_id INT NOT NULL CONSTRAINT Fk_tipo_componente_conteo_componente FOREIGN KEY REFERENCES TipoComponente(TipoComponente_Id),
-    Estimacion_id INT NOT NULL CONSTRAINT Fk_estimacion_id_conteo_componente FOREIGN KEY REFERENCES Estimacion(Estimacion_Id),
+    Tipo_componente_id INT NOT NULL CONSTRAINT Fk_tipo_componente_conteo_componente FOREIGN KEY REFERENCES TipoComponente(TipoComponente_Id),
+    Proyecto_id INT NOT NULL CONSTRAINT Fk_proyecto_id_conteo_componente FOREIGN KEY REFERENCES Proyecto(Proyecto_Id),
     baja INT NOT NULL,
     media INT NOT NULL,
     alta INT NOT NULL
@@ -402,7 +405,7 @@ CREATE TABLE Punto_funcion_ajustado
 (
     Punto_funcion_ajustado_id INT NOT NULL IDENTITY CONSTRAINT Pk_punto_funcion_ajustado PRIMARY KEY(Punto_funcion_ajustado_id),
     Tipo_conponente_id INT NOT NULL CONSTRAINT Fk_tipo_componente_punto_funcion_ajustado FOREIGN KEY REFERENCES TipoComponente(TipoComponente_Id),
-    Estimacion_id INT NOT NULL CONSTRAINT Fk_estimacion_id_punto_funcion_ajustado FOREIGN KEY REFERENCES Estimacion(Estimacion_Id),
+    Proyecto_id INT NOT NULL CONSTRAINT Fk_Proyecto_id_punto_funcion_ajustado FOREIGN KEY REFERENCES Proyecto(Proyecto_Id),
     baja INT NOT NULL,
     media INT NOT NULL,
     alta INT NOT NULL
