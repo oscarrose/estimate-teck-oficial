@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, message, Spin, Typography } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined,DeleteOutlined } from "@ant-design/icons";
 import { useParams } from 'react-router-dom';
 import CallApi from "../../ServicesHttp/CallApi";
 import ListRequeriment from "./ListRequeriment";
 import FormRequirement from "./FormRequirement";
+
 const { Title } = Typography;
 function IndexRequerClient() {
 
@@ -44,8 +45,42 @@ function IndexRequerClient() {
     fetchRequirementByProject();
   }, [updateTable]);
 
+  const [data, setData] = useState([
+
+    {
+      req: "el sistema retirara",
+      id: 1,
+      softR: [
+        {
+          rs: "ingresar pass",
+          id: 1
+        },
+        {
+          rs: "ingresar email",
+          id: 2
+        }
+      ]
+    },
+    {
+      req: "el sistema retirara",
+      id: 1,
+      softR: [
+        {
+          rs: "ingresar pass",
+          id: 1
+        },
+        {
+          rs: "ingresar email",
+          id: 2
+        }
+      ]
+    }
+    
+  ])
+
   return (
     <div className="grid grid-rows-2 grid-cols-1 bg-white container mx-auto">
+     
       <div className='container mx-auto p-5'>
         <Title>Requerimientos del cliente</Title>
         <Spin spinning={loading}>

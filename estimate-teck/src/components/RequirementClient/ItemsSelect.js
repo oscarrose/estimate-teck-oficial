@@ -6,14 +6,6 @@ const tipoRequerimeinto = [
     {
         "tipoRequerimiento_Id": 2,
         "nombre": "Requisitos No Funcionales"
-    },
-    {
-        "tipoRequerimiento_Id": 3,
-        "nombre": "Requisitos Futuros"
-    },
-    {
-        "tipoRequerimiento_Id": 4,
-        "nombre": "Requisitos de Software Funcionales"
     }
 ]
 

@@ -1,26 +1,35 @@
 import React, { useState } from 'react'
-import { Drawer, Form, Button, Spin, message } from 'antd'
+import { Drawer, Form, Button, Spin, message, Space } from 'antd'
+import { useNavigate } from 'react-router-dom';
 import CallApi from '../../ServicesHttp/CallApi';
 import FormRequirementDynamic from './FormRequirementDynamic';
-const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequirement,setUpdateTable,idProyecto,setDataRequeriment }) => {
+import useEstimate from '../../hooks/useEstimate';
+let rute = process.env.REACT_APP_RUTE_VM
+const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequirement, setUpdateTable, idProyecto, setDataRequeriment }) => {
 
     const [isLoading, setLoanding] = useState(false);
 
     const [form] = Form.useForm();
+    const navigate = useNavigate();
+    const { setDataIaRequirement } = useEstimate();
 
     //funcion para registrar los requerimientos
     const registerRequirement = async (values) => {
         setLoanding(true)
-        await CallApi.post("RequerimientosClientes/RegisterRequirement", values).then((res) => {
-            setUpdateTable((updateTable) => !updateTable)
+        await CallApi.post("http://localhost:8080/software-requirements", values).then((res) => {
+            console.log("node", res.data.body)
+            setDataIaRequirement(res.data.body)
             form.resetFields()
             setOpenForm(false)
-            message.success("Guardado correctamente")
             setLoanding(false)
+            navigate(rute + `project/requirement-generations/${idProyecto}`, { replace: true });
+            //setUpdateTable((updateTable) => !updateTable)
+            //message.success("Guardado correctamente")
+
         }).catch((error) => {
             message.error(error.message);
             setLoanding(false)
-          
+
         });
 
     }
@@ -33,17 +42,17 @@ const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequir
         }
         console.log("edit", newValue)
         await CallApi.put(`RequerimientosClientes/PutRequerimientos/${newValue.requerimientoId}`, newValue)
-        .then(() => {
-            setEditRequirement(null)
-            setLoanding(false)
-            setOpenForm(false)
-            setUpdateTable((updateTable) => !updateTable)
-            message.success("Actualizado correctamente")
+            .then(() => {
+                setEditRequirement(null)
+                setLoanding(false)
+                setOpenForm(false)
+                setUpdateTable((updateTable) => !updateTable)
+                message.success("Actualizado correctamente")
 
-        }).catch((error) => {
-            setLoanding(false)
-            message.error( error.message ?? error.response.data );
-        });
+            }).catch((error) => {
+                setLoanding(false)
+                message.error(error.message ?? error.response.data);
+            });
 
     }
     const validateForm = () => {
@@ -59,11 +68,11 @@ const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequir
     return (
         <>
             <Drawer title={!editRequirement ? "Registrar requerimientos" : "Actualizar requerimiento"}
-                placement="right" onClose={() => {
+                placement="top" size='large' onClose={() => {
                     setOpenForm(false);
                     setEditRequirement(null)
                 }}
-                open={openForm} width={1000}>
+                open={openForm} >
                 <Spin spinning={isLoading}>
                     <Form
                         form={form}
@@ -74,7 +83,7 @@ const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequir
                         <FormRequirementDynamic
                             editRequirement={editRequirement}
 
-                         ProyectoId={idProyecto}
+                            ProyectoId={idProyecto}
                         />
                         <Form.Item >
                             <Button

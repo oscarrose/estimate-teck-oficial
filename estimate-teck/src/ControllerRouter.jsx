@@ -20,6 +20,7 @@ import IndexProductividad from "./components/productividadPF/IndexProductividad"
 import ProfileUser from "./components/admin-personnel/PageProfile/ProfileUser";
 import FormProjects from "./components/projects/FormProjects";
 import IndexRequerClient from "./components/RequirementClient/IndexRequirementClient";
+import FormReqisiteIA from "./components/RequirementClient/FormRequisiteIA";
 
 const ControllerRouter = () => {
   return (
@@ -49,6 +50,9 @@ const ControllerRouter = () => {
         <Route path="edit/projects/:idProject" element={<AppRouter component={FormProjects}/>}/>
         
         <Route path="/project/requirementClient/:idProyecto" element={<AppRouter component={IndexRequerClient}/>}/>
+
+         
+        <Route path="/project/requirement-generations/:idProyecto" element={<AppRouter component={FormReqisiteIA}/>}/>
 
 
         <Route path="/project/estimate/:idProyecto" element={<AppRouter component={IndexEstimate}/>}/>

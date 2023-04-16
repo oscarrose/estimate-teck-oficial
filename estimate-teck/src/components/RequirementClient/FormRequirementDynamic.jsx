@@ -5,11 +5,11 @@ import { tipoRequerimeinto, estadoRequeriment } from './ItemsSelect';
 
 const { Option } = Select;
 
-const FormRequirementDynamic = ({ editRequirement,ProyectoId }) => {
+const FormRequirementDynamic = ({ editRequirement, ProyectoId }) => {
 
 
     return (
-        <Form.List name="RequerimientosClientes"
+        <Form.List name="prompt"
             initialValue={[editRequirement]}
         >
             {(fields, { add, remove }) => {
@@ -26,22 +26,22 @@ const FormRequirementDynamic = ({ editRequirement,ProyectoId }) => {
                                     lg: 24
                                 }} >
                                     <Form.Item
-                                        name={[index, "proyectoId"]}
-                                        initialValue={ProyectoId}
+                                        name={[index, "id"]}
+                                        initialValue={index}
                                         hidden={true}
                                     >
                                         <Input />
                                     </Form.Item>
-                                    <Form.Item
+                                    {/* <Form.Item
                                         name={[index, "estadoId"]}
                                         initialValue={1}
                                         hidden={true}
                                     >
                                         <Input />
-                                    </Form.Item>
+                                    </Form.Item> */}
 
 
-                                    <Col className='gutter-row' span={8}>
+                                    {/* <Col className='gutter-row' span={8}>
                                         <Form.Item
                                             name={[index, "tipoRequerimientoId"]}
                                             label="Tipo requerimiento"
@@ -62,8 +62,8 @@ const FormRequirementDynamic = ({ editRequirement,ProyectoId }) => {
                                             </Select>
 
                                         </Form.Item>
-                                    </Col>
-
+                                    </Col> */}
+                                    {/* 
                                     {editRequirement && (<Col className='gutter-row' span={8}>
                                         <Form.Item
                                             name={[index, "estadoId"]}
@@ -84,18 +84,18 @@ const FormRequirementDynamic = ({ editRequirement,ProyectoId }) => {
                                             </Select>
 
                                         </Form.Item>
-                                    </Col>)}
+                                    </Col>)} */}
 
 
                                     <Col className='gutter-row' span={14}>
                                         <Form.Item
-                                            name={[index, "descripcion"]}
+                                            name={[index, "requisito"]}
 
-                                            label="Descripción"
+                                            label="Requerimiento"
                                             rules={[
                                                 {
                                                     required: true,
-                                                    message: "Describir el requerimiento es requerido"
+                                                    message: "Describir el requerimiento es necesario"
                                                 }
                                             ]}
                                         >
@@ -124,7 +124,7 @@ const FormRequirementDynamic = ({ editRequirement,ProyectoId }) => {
                                     //para crear el botton de add form.item
                                     type="default"
                                     onClick={() => add()}
-                                    style={{ marginLeft: "46rem" }}
+
                                 >
                                     <PlusOutlined /> Agregar requerimiento
                                 </Button>
