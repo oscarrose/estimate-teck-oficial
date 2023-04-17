@@ -15,8 +15,8 @@ const testIa = async (req, res) => {
 const generationSoftwareRequirements = async (req, res) => {
 
     const { prompt } = req.body;
-    const newPrompt = `escribeme los requisitos funcionales de software especificos, de no existir ignoralo,de estos los siguientes requerimientos de usuarios:\n ${JSON.stringify(prompt)} \ndevolver la respuesta separada por coma, en el siguiente formato JSON: [{"id":N,"requisito":"El requerimiento de usuario","requisitoSf":[respuesta de los requerisitos funcionales de software],}]`;
-    console.log(newPrompt)
+    
+    const newPrompt = `escribeme los requisitos funcionales de software especificos, de no existir ignoralo,de estos los siguientes requerimientos de usuarios:\n ${JSON.stringify(prompt)} \ndevolver la respuesta separada por coma, en el siguiente formato JSON:[{"id":X,"tipoRequerimientoId":tipoRequerimientoId,"requisito":"El requerimiento de usuario","requisitoSf":[{"id":X,"requerimientoSf":"requerisito funcional de software"},],}]`;
   
     try {
         const dataIA = await completionIA({ prompt: newPrompt });
@@ -28,7 +28,7 @@ const generationSoftwareRequirements = async (req, res) => {
             status: 500, detailsError: error
         })
     }
-    
+
 }
 
 export { testIa, generationSoftwareRequirements }

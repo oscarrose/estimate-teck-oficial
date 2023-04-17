@@ -4,6 +4,7 @@ using estimate_teck.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace estimate_teck.Controllers
 {
@@ -18,43 +19,44 @@ namespace estimate_teck.Controllers
             _context = context;
         }
 
-        [HttpGet("RequerimientoByProyecto/{id}")]
-        public async Task<ActionResult<IEnumerable<RequerimientosDTO>>> GetRequerimientos(int id)
+        // [HttpGet("RequerimientoByProyecto/{id}")]
+        // public async Task<ActionResult<IEnumerable<RequerimientosDTO>>> GetRequerimientos(int id)
+        // {
+        //     var Requerimientos = await (
+        //         from r in _context.RequerimientosClientes
+        //         join p in _context.Proyectos on r.ProyectoId equals p.ProyectoId
+        //         join tipoReq in _context.TipoRequerimientos on r.TipoRequerimientoId equals tipoReq.TipoRequerimientoId
+        //         join est in _context.EstadoRequerimientos on r.EstadoId equals est.EstadoRequerimientoId
+        //         where r.ProyectoId == id
+        //         select new RequerimientosDTO()
+        //         {
+        //             RequerimientoId = r.RequerimientoId,
+        //             ProyectoId = r.ProyectoId,
+        //             NombreProyecto = p.NombreProyecto,
+        //             TipoRequerimiento = tipoReq.Nombre,
+        //             TipoRequerimientoId = r.TipoRequerimientoId,
+        //             EstadoId = r.EstadoId,
+        //             Estado = est.NombreEstadoRequerimiento,
+
+        //             FechaCreacion = p.FechaCreacion,
+
+        //         }).ToListAsync();
+        //     return Ok(Requerimientos);
+
+        // }
+
+
+        [HttpGet("SWRequerimentsForEstimate/{id}")]
+        public async Task<ActionResult<IEnumerable<RequerimientosSoftware>>> GetSWRequerimientForEstimate(int id)
         {
             var Requerimientos = await (
-                from r in _context.RequerimientosClientes
-                join p in _context.Proyectos on r.ProyectoId equals p.ProyectoId
-                join tipoReq in _context.TipoRequerimientos on r.TipoRequerimientoId equals tipoReq.TipoRequerimientoId
-                join est in _context.EstadoRequerimientos on r.EstadoId equals est.EstadoRequerimientoId
-                where r.ProyectoId == id
-                select new RequerimientosDTO()
+                from requirClient in _context.RequerimientosClientes
+                join requiSw in _context.RequerimientosSoftwares on requirClient.RequerimientoId equals requiSw.RequerimientosClienteId
+                where requirClient.ProyectoId == id && requirClient.EstadoId == 2
+                select new RequerimientosSoftware()
                 {
-                    RequerimientoId = r.RequerimientoId,
-                    ProyectoId = r.ProyectoId,
-                    NombreProyecto = p.NombreProyecto,
-                    TipoRequerimiento = tipoReq.Nombre,
-                    TipoRequerimientoId = r.TipoRequerimientoId,
-                    EstadoId = r.EstadoId,
-                    Estado = est.NombreEstadoRequerimiento,
-                    Descripcion = r.Descripcion,
-                    FechaCreacion = p.FechaCreacion,
+                    RequerimientoSf = requiSw.RequerimientoSf,
 
-                }).ToListAsync();
-            return Ok(Requerimientos);
-
-        }
-
-
-        [HttpGet("RequerimientdByEstimate/{id}")]
-        public async Task<ActionResult<IEnumerable<RequerimientosDTO>>> GetRequerimientByEstimate(int id)
-        {
-            var Requerimientos = await (
-                from r in _context.RequerimientosClientes
-                where r.ProyectoId == id && r.EstadoId == 2
-                select new RequerimientosCliente()
-                {
-                    RequerimientoId = r.RequerimientoId,
-                    Descripcion = r.Descripcion,
                 }).ToListAsync();
             return Ok(Requerimientos);
 
@@ -68,24 +70,44 @@ namespace estimate_teck.Controllers
         }
 
         [HttpPost("RegisterRequirement")]
-        public async Task<ActionResult<RegisterRequirement>> CreateRequerimiento([FromBody] RegisterRequirement requerimiento)
+        public async Task<IActionResult> CreateRequerimiento([FromBody] List<RequerimientosClienteDTO> requerimientos)
         {
             if (_context.RequerimientosClientes == null)
             {
                 return Problem("Entity set 'estimate_teckContext.RequerimientosClientes' is null.");
             }
 
-            try
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
-                _context.RequerimientosClientes.AddRange(requerimiento.RequerimientosClientes);
-                await _context.SaveChangesAsync();
+                var requerimientosClientes = new List<RequerimientosCliente>();
 
-                return Ok(requerimiento);
-
-            }
-            catch (Exception)
-            {
-                throw;
+                foreach (var requerimiento in requerimientos)
+                {
+                    requerimientosClientes.Add(new RequerimientosCliente
+                    {
+                        ProyectoId = requerimiento.ProyectoId,
+                        TipoRequerimientoId = requerimiento.TipoRequerimientoId,
+                        UsuarioId = requerimiento.UsuarioId,
+                        Requisito = requerimiento.Requisito,
+                        RequerimientosSoftwares = requerimiento.RequisitoSf
+                                                    .Select(r => new RequerimientosSoftware
+                                                    {
+                                                        RequerimientoSf = r.requerimientoSf
+                                                    }).ToList()
+                    });
+                }
+                try
+                {
+                    await _context.RequerimientosClientes.AddRangeAsync(requerimientosClientes);
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
+                    return NoContent();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    return StatusCode(500, $"Error al crear los requerimientos: {ex.Message}");
+                }
             }
         }
 

@@ -6,27 +6,20 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-function convertirTextoAJson(parsableJsonResponse) {
-    return parsableJsonResponse.replace(/\\n/, '');
-}
-
 
 const completionIA = async ({ prompt }) => {
-//     const responseIA = await openai.createCompletion({
-//         model: "text-davinci-003",
-//         prompt: prompt,
-//         temperature: 0,
-//         // frequency_penalty: 0.0,
-//         // presence_penalty: 0.0,
-//         //top_p:1,
-//         max_tokens: 2048
-//     });
-//     const Response = responseIA.data.choices[0].text;
-//    //const parsableJsonResponse = JSON.stringify(Response)
-//    // const jsonObj = convertirTextoAJson(parsableJsonResponse)
-//     console.log("req:",Response)
-//     return Response
-return true
+    const responseIA = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: prompt,
+        temperature: 0,
+        // frequency_penalty: 0.0,
+        // presence_penalty: 0.0,
+        //top_p:1,
+        max_tokens: 2048
+    });
+    const Response = responseIA.data.choices[0].text;
+    return Response
+
 };
 
 const fetchTest = async () => {

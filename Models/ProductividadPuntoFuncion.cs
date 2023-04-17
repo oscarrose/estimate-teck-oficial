@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace estimate_teck.Models
 {
@@ -18,9 +20,12 @@ namespace estimate_teck.Models
         public int? NivelMedio { get; set; }
         public int? NivelAlto { get; set; }
         public DateTime? FechaCreacion { get; set; }
-
-        public virtual EstadoUsuarioEmpleado Estado { get; set; } = null!;
-        public virtual Usuario Usuario { get; set; } = null!;
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual EstadoUsuarioEmpleado? Estado { get; set; } = null!;
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual Usuario? Usuario { get; set; } = null!;
         public virtual ICollection<Estimacion> Estimacions { get; set; }
     }
 }
