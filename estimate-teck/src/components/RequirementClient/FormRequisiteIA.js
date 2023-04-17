@@ -1,127 +1,170 @@
-import React, { useState } from "react";
-import { Form, Input, Button, Typography, Space } from "antd";
-import { MinusCircleOutlined, PlusOutlined,DeleteOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Form, Input, Button, Space, Typography, Card } from 'antd';
+import { MinusCircleOutlined, PlusOutlined, DeleteOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/icons';
 const { Title } = Typography;
-function FormReqisiteIA() {
+const { TextArea } = Input;
+
+const FormRequisiteIA = () => {
+  const [form] = Form.useForm();
 
   const [data, setData] = useState([
     {
-      req: "el sistema retirara",
       id: 1,
-      softR: [
+      tipoRequerimientoId: 1,
+      requisito: 'El sistema permitira depositar dinero desde un cajero automatico',
+      requisitoSf: [
         {
-          rs: "ingresar pass",
-          id: 1
+          id: 0,
+          requerimientoSf: 'El sistema debe permitir al usuario ingresar una cantidad de dinero a depositar'
         },
         {
-          rs: "ingresar email",
-          id: 2
+          id: 1,
+          requerimientoSf: 'El sistema debe permitir al usuario ingresar una tarjeta de débito o crédito válida'
         }
       ]
     }
   ]);
+  const initialValues = {
+    requisitos: [
+      {
 
-
-  // Función para agregar un nuevo elemento completo a la lista
-  const handleAdd = () => {
-    setData([...data, { req: "", softR: [{ rs: "" }] }]);
+        id: 1,
+        tipoRequerimientoId: 1,
+        requisito: 'El sistema permitirá depositar dinero desde un cajero automático',
+        requisitoSf: [
+          {
+            id: 0,
+            requerimientoSf: 'El sistema debe permitir al usuario ingresar una cantidad de dinero a depositar',
+          },
+          {
+            id: 1,
+            requerimientoSf: 'El sistema debe permitir al usuario ingresar una tarjeta de débito o crédito válida',
+          },
+        ],
+      },
+      {
+        id: 1,
+        tipoRequerimientoId: 1,
+        requisito: 'El sistema permitirá depositar dinero desde un cajero automático',
+        requisitoSf: [
+          {
+            id: 0,
+            requerimientoSf: 'El sistema debe permitir al usuario ingresar una cantidad de dinero a depositar',
+          },
+          {
+            id: 1,
+            requerimientoSf: 'El sistema debe permitir al usuario ingresar una tarjeta de débito o crédito válida',
+          },
+        ],
+      },
+    ],
   };
-
-  // Función para eliminar un elemento completo de la lista
-  const handleRemove = (index) => {
-    const list = [...data];
-    list.splice(index, 1);
-    setData(list);
-  };
-
-  // Función para agregar un nuevo item a la lista de softR de un elemento
-  const handleAddSoftR = (index) => {
-    const list = [...data];
-    list[index].softR.push({ rs: "" });
-    setData(list);
-  };
-
-  // Función para eliminar un item de la lista de softR de un elemento
-  const handleRemoveSoftR = (index, subIndex) => {
-    const list = [...data];
-    list[index].softR.splice(subIndex, 1);
-    setData(list);
-  };
-
   const onFinish = (values) => {
-    console.log("Form values:", values);
+    console.log(values);
+    setData([...data, values]);
   };
 
   return (
     <div className="bg-white shadow-sm px-8 pt-6 pb-8 mb-4 w-full max-w-7xl">
       <Title le level={3}>Creador de requerimientos de software</Title>
-    
-      <Form onFinish={onFinish}>
+      <Form form={form} initialValues={initialValues} onFinish={onFinish}>
+        <Form.List name="requisitos">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }) => (
+                <Card className='mt-5 max-w-full rounded overflow-hidden shadow-lg'>
+                  <div key={key}>
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'id']}
+                      key={[key, 'requisito']}
+                      hidden={true}
+                    >
+                      <Input />
+                    </Form.Item>
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'tipoRequerimientoId']}
+                      key={[key, 'tipoRequerimientoId']}
+                      hidden={true}
+                    >
+                      <Input />
+                    </Form.Item>
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'requisito']}
+                      label="Requerimiento"
+                      key={[key, 'requisito']}
+                      rules={[{ required: true, message: 'Por favor ingrese un requisito' }]}
+                    >
+                      <Input placeholder="Requisito" />
+                    </Form.Item>
+                    <Form.List name={[name, 'requisitoSf']}>
+                      {(fields, { add, remove }) => (
+                        <div>
+                          {fields.map(({ key, name, field, ...restField }) => (
+                            <Space
+                              key={key}
+                              align='baseline'
+                              className='grid grid-cols-2'
+                            >
+                              <Form.Item
 
-        {data.map((item, index) => (
-          <div key={index}>
-            <Form.Item
+                                {...restField}
+                                name={[name, 'requerimientoSf']}
+                                key={[key, 'requerimientoSf']}
+                                label="Requerimiento de software"
+                                rules={[{ required: true, message: 'Por favor ingrese un requerimiento' }]}
+                              >
+                                <TextArea placeholder="Requerimiento"
+                                  autoSize={{ minRows: 3, maxRows: 6 }} />
+                              </Form.Item>
+                              <Button
+                                type="link" onClick={() => remove(name)}>
+                                <MinusCircleOutlined className="dynamic-delete-button" />
+                              </Button>
+                            </Space>
 
-              label="Requerimiento"
-              name={["req", index]}
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: "El requerimiento es requerido",
-                },
-              ]}
-              initialValue={item.req}
-            >
-              <Input />
-            </Form.Item>
-            {item.softR.map((subItem, subIndex) => (
-              <Space align="baseline"
-                style={{
-                  display: 'flex',
-                }}>
+                          ))}
+                          <Form.Item>
+                            <Button type="primary" ghost onClick={() => add()} block>
+                              <PlusCircleOutlined /> Agregar requisito software
+                            </Button>
+                          </Form.Item>
+                        </div>
+                      )}
+                    </Form.List>
+                    <Button type="default" danger onClick={() => remove(name)}>
+                      <DeleteOutlined />Eliminar requerimiento
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+              <hr className="divide-y divide-dashed" />
+              <Space
+                className='flex justify-end'
+              >
                 <Form.Item
-                  key={subIndex}
-                  label="Requisito de software"
-                  name={["softR", index, "rs", subIndex]}
-                  hasFeedback
-                  initialValue={subItem.rs}
+
                 >
-                  <Input />
+                  <Button className="bg-black border-none shadow-sm hover:bg-slate-700 text-white font-sans py-1.5 px-2.5  rounded inline-flex items-center" type="dashed" onClick={() => add()} block>
+                    <PlusOutlined />Agregar requerimiento
+                  </Button>
                 </Form.Item>
-                {item.softR.length >1 &&(<MinusCircleOutlined className="dynamic-delete-button"
-                  onClick={() => handleRemoveSoftR(index, item.softR.length - 1)}
-                />)}
-              </Space >
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                  <SaveOutlined /> Guardar requerimientos
+                  </Button>
+                </Form.Item>
+              </Space>
+            </>
+          )}
+        </Form.List>
 
-
-            ))}
-            <Space>
-            <Button type="primary" ghost onClick={() => handleAddSoftR(index)}>
-              <PlusOutlined /> Agregar requisito de software
-            </Button>
-
-            {data.length > 1 && (
-              <Button type="default" danger onClick={() => handleRemove(index)}> <DeleteOutlined />Eliminar requerimiento</Button>
-            )}
-            </Space>
-            <hr className="divide-y divide-dashed"/>
-          </div>
-        ))}
-        <Space style={{
-          display: 'flex',
-          justifyContent:"end"
-        }}>
-          <button class="bg-black border-none shadow-sm hover:bg-slate-700 text-white font-sans py-1.5 px-2.5  rounded inline-flex items-center" onClick={handleAdd}>
-            Agregar requerimiento
-          </button>
-          <Button htmlType="submit" type="primary"  style={{ marginLeft: "10px" }}>
-            Guardar requerimientos
-          </Button>
-        </Space>
       </Form>
+
     </div>
   );
-}
+};
 
-export default FormReqisiteIA;
+export default FormRequisiteIA;

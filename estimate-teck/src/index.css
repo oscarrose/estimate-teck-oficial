@@ -64,10 +64,8 @@
 
 .dynamic-delete-button {
     position: relative;
-    top: 4px;
-    margin: 0 8px;
     color: #dd4c4c;
-    font-size: 24px;
+    font-size: 18px;
     cursor: pointer;
     transition: all 0.3s;
   }
@@ -77,4 +75,14 @@
   .dynamic-delete-button[disabled] {
     cursor: not-allowed;
     opacity: 0.5;
+  }
+
+  .my-textarea {
+    width: 100%; 
+    height: 150px;
+    padding: 10px; 
+    font-size: 16px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    resize: none; 
   }
