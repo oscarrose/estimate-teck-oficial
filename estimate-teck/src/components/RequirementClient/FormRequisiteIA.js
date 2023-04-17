@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Space, Typography, Select, Card, Spin } from 'antd';
+import { Form, Input, Button, Space, Typography, message, Select, Card, Spin, notification } from 'antd';
 import { MinusCircleOutlined, PlusOutlined, DeleteOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import CallApi from '../../ServicesHttp/CallApi';
 import { tipoRequerimeinto } from './ItemsSelect';
 import useEstimate from '../../hooks/useEstimate';
-import { useParams } from 'react-router-dom';
-
+import { useParams, useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 const { Title } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
+const rute = process.env.REACT_APP_RUTE_VM
 const FormRequisiteIA = () => {
 
   const [form] = Form.useForm();
+  const [api, contextHolder] = notification.useNotification();
+
+
   const { idProyecto } = useParams();
+  const navigate = useNavigate();
+
+  const openNotificationWithIcon = (type, position, title, message) => {
+    notification[type]({
+      message: title,
+      description: message,
+      placement: position,
+    });
+  };
+
 
   const initialValues = {
     requisitos: [
@@ -50,18 +65,27 @@ const FormRequisiteIA = () => {
   };
 
   const { dataIaRequirement } = useEstimate();
+  const { auth } = useAuth();
+  const [loading, setLoading] = useState(false);
 
-  console.log("data", dataIaRequirement)
 
-  const onFinish = (values) => {
-    console.log(values);
-
+  const onFinish = async (values) => {
+    console.log("dat", values.requisitos)
+    setLoading(true)
+    await CallApi.post("RequerimientosClientes/RegisterRequirement", values.requisitos).then(() => {
+      setLoading(false)
+      openNotificationWithIcon('success', 'topRight', 'Creador de requerimientos de software', 'Requerimientos registrados correctamente')
+      navigate(rute + `projects`, { replace: true });
+    }).catch((error) => {
+      openNotificationWithIcon('error', 'topRight', 'Creador de requerimientos de software', error)
+      setLoading(false)
+    });
   };
 
   return (
     <div className="bg-white shadow-sm px-8 pt-6 pb-8 mb-4 w-full max-w-7xl">
       <Title le level={3}>Creador de requerimientos de software</Title>
-      <Spin spinning={false}>
+      <Spin spinning={loading}>
         <Form form={form} initialValues={dataIaRequirement} onFinish={onFinish}>
           <Form.List name="requisitos">
             {(fields, { add, remove }) => (
@@ -74,6 +98,24 @@ const FormRequisiteIA = () => {
                         name={[name, 'id']}
                         key={[key, 'requisito']}
                         hidden={true}
+                      >
+                        <Input />
+                      </Form.Item>
+                      <Form.Item
+                        {...restField}
+                        name={[name, 'usuarioId']}
+                        key={[key, 'id']}
+                        hidden={true}
+                        initialValue={auth.idUsuario}
+                      >
+                        <Input />
+                      </Form.Item>
+                      <Form.Item
+                        {...restField}
+                        name={[name, 'proyectoId']}
+                        key={[key, 'id']}
+                        hidden={true}
+                        initialValue={idProyecto}
                       >
                         <Input />
                       </Form.Item>

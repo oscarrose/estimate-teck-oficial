@@ -43,32 +43,32 @@ const ControllerRouter = () => {
         <Route path="/projects" element={<AppRouter component={indexProject} />} />
         <Route path="/client" element={<AppRouter component={IndexAdminClient} />} />
         <Route path="/tarifarioHora" element={<AppRouter component={IndexTarifario} />} />
-        <Route path="/productividadpf" element={<AppRouter component={IndexProductividad}/>}/>
+        <Route path="/productividadpf" element={<AppRouter component={IndexProductividad} />} />
 
-        <Route path="/register/projects" element={<AppRouter component={FormProjects}/>}/>
+        <Route path="/register/projects" element={<AppRouter component={FormProjects} />} />
 
-        <Route path="edit/projects/:idProject" element={<AppRouter component={FormProjects}/>}/>
-        
-        <Route path="/project/requirementClient/:idProyecto" element={<AppRouter component={IndexRequerClient}/>}/>
+        <Route path="edit/projects/:idProject" element={<AppRouter component={FormProjects} />} />
 
-         
-        <Route path="/project/requirement-generations/:idProyecto" element={<AppRouter component={FormReqisiteIA}/>}/>
+        <Route path="/project/requirementClient/:idProyecto" element={<AppRouter component={IndexRequerClient} />} />
 
 
-        <Route path="/project/estimate/:idProyecto" element={<AppRouter component={IndexEstimate}/>}/>
+        <Route path="/project/requirement-generations/:idProyecto" element={<AppRouter component={FormReqisiteIA} />} />
 
-        <Route path="/form-estimate/project/:idProyecto" element={<AppRouter component={FormMainEstimate}/>}/>
+
+        <Route path="/project/estimate/:idProyecto" element={<AppRouter component={IndexEstimate} />} />
+
+        <Route path="/form-estimate/project/:idProyecto" element={<AppRouter component={FormMainEstimate} />} />
 
 
       </Route>
 
       {/* protected routes solo para Gerente general*/}
       <Route element={<AuthRequired allRoles={[ServiciesRol.rol1]} />}>
-       
+
       </Route>
 
       <Route path='*' element={<Suspense fallback={<Spin />}><NotFound /></Suspense>} />
-      
+
     </Routes>
   );
 };

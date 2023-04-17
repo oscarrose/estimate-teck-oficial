@@ -63,7 +63,7 @@ function SliderMenu({ collapsed }) {
       type: 'divider',
     },),
 
-   
+
 
     getItem(<Link to="/profile">Cuenta</Link>, "/profile", <SettingOutlined />, {
       type: 'divider',
@@ -81,6 +81,7 @@ function SliderMenu({ collapsed }) {
         collapsible
         collapsed={collapsed}
         width={200}
+
         style={{
           background: colorBgContainer,
         }}
@@ -89,10 +90,8 @@ function SliderMenu({ collapsed }) {
           <img className="w-24 ml-6" src={logoMenu} alt="Estimate-teck" />
         </div>
         <Menu
+         
           mode="inline"
-
-          //defaultSelectedKeys={["/home"]}
-
           items={items}
         />
       </Sider>

@@ -15,27 +15,23 @@ const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequir
     const navigate = useNavigate();
     const { dataIaRequirement, setDataIaRequirement } = useEstimate();
 
-    //funcion para registrar los requerimientos
-    const registerRequirement = async (values) => {
-        console.log("dd", values)
+    //funcion para ingresar los requerimientos los requerimientos
+    const icomeRequirement = async (values) => {
         setLoanding(true)
         await CallApi.post("http://localhost:8080/software-requirements", values).then((res) => {
-            console.log("node", JSON.parse(res.data.body))
+            
             setDataIaRequirement({
                 ...dataIaRequirement,
-                requisitos:JSON.parse(res.data.body)
+                requisitos: JSON.parse(res.data.body)
             })
             form.resetFields()
             setOpenForm(false)
             setLoanding(false)
             navigate(rute + `project/requirement-generations/${idProyecto}`, { replace: true });
-            //     //setUpdateTable((updateTable) => !updateTable)
-            //     //message.success("Guardado correctamente")
 
         }).catch((error) => {
             message.error(error.message);
             setLoanding(false)
-
         });
 
     }
@@ -54,7 +50,6 @@ const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequir
                 setOpenForm(false)
                 setUpdateTable((updateTable) => !updateTable)
                 message.success("Actualizado correctamente")
-
             }).catch((error) => {
                 setLoanding(false)
                 message.error(error.message ?? error.response.data);
@@ -63,17 +58,13 @@ const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequir
     }
     const validateForm = () => {
         form.validateFields().then((values) => {
-            if (editRequirement) {
-                updateRequirement(values)
-            } else {
-                registerRequirement(values)
-            }
+            icomeRequirement(values)
         })
     }
 
     return (
         <>
-            <Drawer title={!editRequirement ? "Ingreso de requerimientos" : "Actualizar requerimiento"}
+            <Drawer title={"Ingreso de requerimientos"}
                 placement="top" size='large' onClose={() => {
                     setOpenForm(false);
                     setEditRequirement(null)
@@ -95,9 +86,8 @@ const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequir
                             <Button
                                 type="primary"
                                 onClick={() => validateForm()}
-
                             >
-                                {editRequirement ? " Guardar cambio" : " Guardar requerimientos"}
+                                Generar requerimientos
                             </Button>
                         </Form.Item>
 

@@ -10,7 +10,7 @@ const FormRequirementDynamic = ({ editRequirement, ProyectoId }) => {
 
     return (
         <Form.List name="prompt"
-            initialValue={[editRequirement]}
+            //initialValue={[editRequirement]}
         >
             {(fields, { add, remove }) => {
                 return (
@@ -119,12 +119,12 @@ const FormRequirementDynamic = ({ editRequirement, ProyectoId }) => {
                         ))}
                         <Divider />
                         {!editRequirement &&
-                            <Form.Item>
+                            <Form.Item >
                                 <Button
                                     //para crear el botton de add form.item
                                     type="default"
                                     onClick={() => add()}
-
+                                    
                                 >
                                     <PlusOutlined /> Agregar requerimiento
                                 </Button>

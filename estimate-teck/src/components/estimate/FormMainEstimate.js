@@ -23,7 +23,7 @@ export default function FormMainEstimate() {
 
   const steps = [
     {
-      title: 'Identificar los componentes del sistema',
+      title: 'Clasificar los componentes del sistema',
       content: <Step1Form componentSystem={componentSystem} setComponentSystem={setComponentSystem} idProyecto={idProyecto} setStep={setStep} />
     },
     {
