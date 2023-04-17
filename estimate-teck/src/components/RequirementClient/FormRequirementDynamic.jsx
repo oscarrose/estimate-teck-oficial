@@ -41,7 +41,7 @@ const FormRequirementDynamic = ({ editRequirement, ProyectoId }) => {
                                     </Form.Item> */}
 
 
-                                    {/* <Col className='gutter-row' span={8}>
+                                    {<Col className='gutter-row' span={8}>
                                         <Form.Item
                                             name={[index, "tipoRequerimientoId"]}
                                             label="Tipo requerimiento"
@@ -62,7 +62,7 @@ const FormRequirementDynamic = ({ editRequirement, ProyectoId }) => {
                                             </Select>
 
                                         </Form.Item>
-                                    </Col> */}
+                                    </Col>}
                                     {/* 
                                     {editRequirement && (<Col className='gutter-row' span={8}>
                                         <Form.Item

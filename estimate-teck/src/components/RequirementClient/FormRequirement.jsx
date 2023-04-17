@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { Drawer, Form, Button, Spin, message, Space } from 'antd'
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 import CallApi from '../../ServicesHttp/CallApi';
 import FormRequirementDynamic from './FormRequirementDynamic';
 import useEstimate from '../../hooks/useEstimate';
+
+
 let rute = process.env.REACT_APP_RUTE_VM
 const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequirement, setUpdateTable, idProyecto, setDataRequeriment }) => {
 
@@ -11,20 +13,24 @@ const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequir
 
     const [form] = Form.useForm();
     const navigate = useNavigate();
-    const { setDataIaRequirement } = useEstimate();
+    const { dataIaRequirement, setDataIaRequirement } = useEstimate();
 
     //funcion para registrar los requerimientos
     const registerRequirement = async (values) => {
+        console.log("dd", values)
         setLoanding(true)
         await CallApi.post("http://localhost:8080/software-requirements", values).then((res) => {
-            console.log("node", res.data.body)
-            setDataIaRequirement(res.data.body)
+            console.log("node", JSON.parse(res.data.body))
+            setDataIaRequirement({
+                ...dataIaRequirement,
+                requisitos:JSON.parse(res.data.body)
+            })
             form.resetFields()
             setOpenForm(false)
             setLoanding(false)
             navigate(rute + `project/requirement-generations/${idProyecto}`, { replace: true });
-            //setUpdateTable((updateTable) => !updateTable)
-            //message.success("Guardado correctamente")
+            //     //setUpdateTable((updateTable) => !updateTable)
+            //     //message.success("Guardado correctamente")
 
         }).catch((error) => {
             message.error(error.message);
@@ -40,7 +46,7 @@ const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequir
             ...editRequirement,
             ...values.RequerimientosClientes[0]
         }
-        console.log("edit", newValue)
+
         await CallApi.put(`RequerimientosClientes/PutRequerimientos/${newValue.requerimientoId}`, newValue)
             .then(() => {
                 setEditRequirement(null)
@@ -67,7 +73,7 @@ const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequir
 
     return (
         <>
-            <Drawer title={!editRequirement ? "Registrar requerimientos" : "Actualizar requerimiento"}
+            <Drawer title={!editRequirement ? "Ingreso de requerimientos" : "Actualizar requerimiento"}
                 placement="top" size='large' onClose={() => {
                     setOpenForm(false);
                     setEditRequirement(null)
