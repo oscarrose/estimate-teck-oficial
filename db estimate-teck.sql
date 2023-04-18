@@ -25,9 +25,6 @@ VALUES
     ('Inactivo');
 GO
 
-
-
-
 CREATE TABLE Cargo
 (
     Cargo_Id INT NOT NULL IDENTITY CONSTRAINT Pk_cargo_Id PRIMARY KEY(Cargo_Id),
@@ -36,8 +33,6 @@ CREATE TABLE Cargo
 );
 GO
 -- INSERT CARGO--
-
-
 INSERT INTO  Cargo
     (Nombre,Descripcion)
 VALUES
@@ -291,9 +286,20 @@ CREATE TABLE RequerimientosCliente
 (
     Requerimiento_Id int not null identity constraint Pk_RequerimientoCliente_Id primary key (Requerimiento_Id),
     Proyecto_Id int not null constraint Fk_ProyectoRequerimiento_Id foreign key references Proyecto (Proyecto_Id),
-    Estado_Id int DEFAULT 1 not null constraint Fk_EstadoRequerimiento_Id foreign key references EstadoRequerimiento(EstadoRequerimientoId),
+    Usuario_Id int not null constraint Fk_UsurarioCreadorRquerimientos_Id foreign key references Usuario(Usuario_Id),
+    Estado_Id int DEFAULT 2 not null constraint Fk_EstadoRequerimiento_Id foreign key references EstadoRequerimiento(EstadoRequerimientoId),
     TipoRequerimiento_Id INT NOT NULL CONSTRAINT Fk_requerimiento_tipo_Id FOREIGN key REFERENCES TipoRequerimiento(tipoRequerimiento_Id),
-    Descripcion VARCHAR(max) NOT NULL,
+    Requisito VARCHAR(max) NOT NULL,
+    FechaCreacion DATETIME DEFAULT GETDATE()
+);
+GO
+
+CREATE TABLE RequerimientosSoftware
+(
+    Id int not null identity constraint Pk_RequerimientoSoftware_Id primary key (Id),
+    Requerimientos_Cliente_Id int not null constraint Fk_RequerimientoCliente_requisitoSW_Id foreign key references RequerimientosCliente(Requerimiento_Id),
+    Estado_Id int DEFAULT 1 not null constraint Fk_EstadoRequerimientoSw_Id foreign key references EstadoRequerimiento(EstadoRequerimientoId),
+    Requerimiento_Sf VARCHAR(max) NOT NULL,
     FechaCreacion DATETIME DEFAULT GETDATE()
 );
 GO
@@ -383,8 +389,9 @@ GO
 CREATE TABLE Componente_funcionales
 (
     Componente_funcionales_id INT NOT NULL IDENTITY CONSTRAINT Pk_Conponente_funcionales_Id PRIMARY KEY(Componente_funcionales_id),
+    Usuario_Id int not null constraint Fk_ComponenteFuncional_Usurario_Id foreign key references Usuario(Usuario_Id),
     Proyecto_Id INT NOT NULL CONSTRAINT Fk_proyecto_id_componente_funcionales FOREIGN KEY REFERENCES Proyecto(Proyecto_Id),
-    Requerimiento_id INT NOT NULL CONSTRAINT Fk_requerimiento_id_componente_funcionales FOREIGN KEY REFERENCES RequerimientosCliente(Requerimiento_Id),
+    RequerimientoSW_id INT NOT NULL CONSTRAINT Fk_requerimientoSW_id_componente_funcionales FOREIGN KEY REFERENCES RequerimientosSoftware(Id),
     Tipo_componente_id INT NOT NULL CONSTRAINT Fk_tipo_componente_componente_funcional FOREIGN KEY REFERENCES TipoComponente(TipoComponente_Id),
     complejidad VARCHAR(8) NOT NULL
 );
