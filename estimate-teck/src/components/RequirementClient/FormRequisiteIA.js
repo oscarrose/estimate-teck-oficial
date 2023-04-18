@@ -86,7 +86,9 @@ const FormRequisiteIA = () => {
     <div className="bg-white shadow-sm px-8 pt-6 pb-8 mb-4 w-full max-w-7xl">
       <Title le level={3}>Creador de requerimientos de software</Title>
       <Spin spinning={loading}>
-        <Form form={form} initialValues={dataIaRequirement} onFinish={onFinish}>
+        <Form form={form} autoComplete='off'
+        initialValues={dataIaRequirement} 
+        onFinish={onFinish}>
           <Form.List name="requisitos">
             {(fields, { add, remove }) => (
               <>

@@ -29,16 +29,16 @@ function IndexRequerClient() {
    *Function para obtener los datos  para la tabla de requerimiento
    */
   const fetchRequirementByProject = async () => {
-    setLoanding(true);
-    await CallApi.get(`RequerimientosClientes/RequerimientoByProyecto/${idProyecto}`)
-      .then((res) => {
-        setDataRequeriment(res.data);
-        setLoanding(false);
-      })
-      .catch((error) => {
-        setLoanding(false);
-        message.error("Error Interno", error.message);
-      });
+    // setLoanding(true);
+    // await CallApi.get(`RequerimientosClientes/RequerimientoByProyecto/${idProyecto}`)
+    //   .then((res) => {
+    //     setDataRequeriment(res.data);
+    //     setLoanding(false);
+    //   })
+    //   .catch((error) => {
+    //     setLoanding(false);
+    //     message.error("Error Interno", error.message);
+    //   });
   };
 
   useEffect(() => {

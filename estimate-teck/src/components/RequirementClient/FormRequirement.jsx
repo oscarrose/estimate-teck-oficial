@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Drawer, Form, Button, Spin, message, Space } from 'antd'
-import { json, useNavigate } from 'react-router-dom';
+import { Drawer, Form, Button, Spin, message } from 'antd'
+import {BulbOutlined} from "@ant-design/icons"
+import {useNavigate } from 'react-router-dom';
 import CallApi from '../../ServicesHttp/CallApi';
 import FormRequirementDynamic from './FormRequirementDynamic';
 import useEstimate from '../../hooks/useEstimate';
@@ -87,7 +88,7 @@ const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequir
                                 type="primary"
                                 onClick={() => validateForm()}
                             >
-                                Generar requerimientos
+                             <BulbOutlined />   Generar requerimientos
                             </Button>
                         </Form.Item>
 

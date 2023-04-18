@@ -4,7 +4,7 @@ import { tipoComponente, Complejidad } from './itemSelect'
 import CallApi from '../../ServicesHttp/CallApi';
 
 const { Option } = Select;
-function Step1Form({ idProyecto, setStep,componentSystem,setComponentSystem }) {
+function Step1Form({ idProyecto, setStep, componentSystem, setComponentSystem }) {
 
     const [form] = Form.useForm();
 
@@ -18,10 +18,11 @@ function Step1Form({ idProyecto, setStep,componentSystem,setComponentSystem }) {
     /**
      *Function para obtener los datos los requerimientos
     */
-    const fetchRequeriment = async () => {
+    const fetchRequerimentsForEstimate = async () => {
         setLoanding(true);
-        await CallApi.get(`RequerimientosClientes/RequerimientdByEstimate/${idProyecto}`)
+        await CallApi.get(`RequerimientosClientes/SWRequerimentsForEstimate/${idProyecto}`)
             .then((res) => {
+                console.log("rq", res.data)
                 setLoanding(false);
                 setRequerimentClient(res.data)
             })
@@ -33,7 +34,7 @@ function Step1Form({ idProyecto, setStep,componentSystem,setComponentSystem }) {
     };
 
     useEffect(() => {
-        fetchRequeriment();
+        fetchRequerimentsForEstimate();
     }, []);
 
     let initialValue = requerimentClient.map((item) => ({
@@ -46,12 +47,12 @@ function Step1Form({ idProyecto, setStep,componentSystem,setComponentSystem }) {
 
     const onFinish = (values) => {
         setComponentSystem(values['names'])
-       // initialValue = { ...initialValue, ...componentSystem['names'] }
+        // initialValue = { ...initialValue, ...componentSystem['names'] }
         console.log('Received:', values);
-        
+
         setStep((prev) => prev + 1);
     };
-    
+
     return (
         <Spin spinning={loading}>
             {initialValue.length > 0 && (
@@ -61,10 +62,8 @@ function Step1Form({ idProyecto, setStep,componentSystem,setComponentSystem }) {
                     name="dynamic_form_Componente_funcionales"
                     initialValues={{ names: componentSystem ?? initialValue }}
                     onFinish={onFinish}
-
                     autoComplete="off"
                 >
-                    {console.log("Va",componentSystem )}
                     <Form.List
                         name="names"
 
@@ -115,7 +114,7 @@ function Step1Form({ idProyecto, setStep,componentSystem,setComponentSystem }) {
                                         <Form.Item
                                             {...restField}
                                             name={[name, 'TipoComponenteId']}
-                                            label="Clasificación de componente"
+                                            label="Clasificación"
                                             rules={[
                                                 {
                                                     required: true,
