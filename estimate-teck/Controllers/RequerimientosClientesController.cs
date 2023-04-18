@@ -49,20 +49,29 @@ namespace estimate_teck.Controllers
         [HttpGet("SWRequerimentsForEstimate/{id}")]
         public async Task<ActionResult<IEnumerable<RequerimientosSoftware>>> GetSWRequerimientForEstimate(int id)
         {
-            var Requerimientos = await (
-                from requirClient in _context.RequerimientosClientes
-                join requiSw in _context.RequerimientosSoftwares on requirClient.RequerimientoId equals requiSw.RequerimientosClienteId
-                where requirClient.ProyectoId == id && requirClient.EstadoId == 2
-                select new RequerimientosSoftware()
-                {
-                    RequerimientoSf = requiSw.RequerimientoSf,
-
-                }).ToListAsync();
-            return Ok(Requerimientos);
-
+            try
+            {
+                var Requerimientos = await (
+                   from requirClient in _context.RequerimientosClientes
+                   where requirClient.ProyectoId == id && requirClient.EstadoId == 2
+                   orderby requirClient.RequerimientoId
+                   select new RequerimientosClienteDTO()
+                   {
+                       RequerimientoId = requirClient.RequerimientoId,
+                       Requisito = requirClient.Requisito,
+                       RequisitoSf = requirClient.RequerimientosSoftwares.Select(rs => new RequerimientoSf
+                       {
+                           Id = rs.Id,
+                           requerimientoSf = rs.RequerimientoSf
+                       }).ToList()
+                   }).ToListAsync();
+                return Ok(Requerimientos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al obtener los requerimientos: {ex.Message}");
+            }
         }
-
-
         //Metodo para validar si existe o no el requisito
         private bool RequerimientoExists(int IdRequerimiento)
         {

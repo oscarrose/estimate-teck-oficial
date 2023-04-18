@@ -4,7 +4,7 @@ namespace estimate_teck.DTO
     public class RequerimientosClienteDTO
     {
 
-        public int Id { get; set; }
+        public int RequerimientoId { get; set; }
         public int ProyectoId { get; set; }
         public int TipoRequerimientoId { get; set; }
         public int UsuarioId { get; set; }
