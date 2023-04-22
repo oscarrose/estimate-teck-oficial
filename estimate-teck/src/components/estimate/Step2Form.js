@@ -23,6 +23,8 @@ function Step2From({ idProyecto, setStep, systeCharacteristc, setSystemCharacter
 
   return (
     <Spin spinning={loading}>
+
+
       <Form
 
         name="dynamic_form_caracteristica_sistema"

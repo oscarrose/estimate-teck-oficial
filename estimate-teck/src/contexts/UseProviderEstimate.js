@@ -6,12 +6,18 @@ const estimateContext = createContext({});
 const UseProviderEstimate = ({ children }) => {
 
     //para manejar los requisitos de la api IA
-    const [dataIaRequirement, setDataIaRequirement] = useState({ }
+    const [dataIaRequirement, setDataIaRequirement] = useState({}
     );
 
+    const [prevSaveComponents, setPrevSaveComponents] = useState(null)
+
+    const [step, setStep] = useState(1);
     return (
         <estimateContext.Provider
-            value={{ setDataIaRequirement, dataIaRequirement }}
+            value={{
+                setDataIaRequirement, dataIaRequirement, step, setStep,
+                prevSaveComponents, setPrevSaveComponents
+            }}
         >
             {children}
         </estimateContext.Provider>

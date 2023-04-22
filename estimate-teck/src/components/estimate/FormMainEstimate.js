@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { Button, message, Steps, theme } from 'antd';
 import { useParams } from 'react-router-dom';
+import useEstimate from "../../hooks/useEstimate"
 import Step1Form from './Step1Form';
 import Step2From from './Step2Form';
 import Step3From from './Step3Form';
@@ -9,22 +10,23 @@ export default function FormMainEstimate() {
 
   const { idProyecto } = useParams();//Obtener el id del proyecto
 
+  const {step,setStep}=useEstimate();
+
   const { token } = theme.useToken();
 
 
   const [data, setData] = useState({});
 
-  const [step, setStep] = useState(0);
+ 
+  
 
-
-  const [componentSystem, setComponentSystem] = useState();
   const [systeCharacteristc, setSystemCharacteristic]=useState()
 
 
   const steps = [
     {
-      title: 'Clasificar los componentes del sistema',
-      content: <Step1Form componentSystem={componentSystem} setComponentSystem={setComponentSystem} idProyecto={idProyecto} setStep={setStep} />
+      title: 'Clasificador inteligente de componentes del sistema',
+      content: <Step1Form  idProyecto={idProyecto}/>
     },
     {
       title: 'Calcular del Factor de Ajuste',
@@ -36,16 +38,15 @@ export default function FormMainEstimate() {
     }
   ];
 
-  const next = useCallback(
-    () => {
+  // const next = useCallback(
+  //   () => {
 
 
-    }, [step]
-  );
+  //   }, [step]
+  // );
 
   const prev = useCallback(
     () => {
-
       setStep(step - 1);
     }, [step]
   );
@@ -93,7 +94,6 @@ export default function FormMainEstimate() {
             siguiente
           </Button>
         )} */}
-
 
         {step > 0 && (
           <Button
