@@ -307,11 +307,11 @@ function ModalFormEmployee({
               <Input />
             </Form.Item>
 
-            <Form.Item name="provincia" label="Provincia"
+            <Form.Item name="estado" label="Estado"
               rules={[
                 {
                   required: true,
-                  message: "La provincia es necesaria!",
+                  message: "El estado es necesario!",
                 },
               ]}
               hasFeedback>
@@ -336,7 +336,7 @@ function ModalFormEmployee({
               rules={[
                 {
                   required: true,
-                  message: "El campo es requerido",
+                  message: "La dirección es requerida",
                 },
               ]}
             >

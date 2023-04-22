@@ -59,8 +59,13 @@ function TableClient({
 
     },
     {
-      title: "Ciudad",
+      title: "Estado",
       dataIndex: "estado",
+
+    },
+    {
+      title: "Ciudad",
+      dataIndex: "ciudad",
 
     },
 
