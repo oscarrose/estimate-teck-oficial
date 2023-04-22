@@ -31,4 +31,20 @@ const generationSoftwareRequirements = async (req, res) => {
 
 }
 
-export { testIa, generationSoftwareRequirements }
+const classifictionRequirementsSoftware = async (req, res) => {
+    // const { req } = req.body;
+
+    let newPrompt = `Simula que eres un experto en estimacion de software por punto de funcion y Clasifica en componente de 1:Entradas Externas, 2:Salidas Externas, 3:Consultas Externas, 4:Archivos Lógicos Internos, 5:Interfaces Externas. Asignale una de las siguiente complejidad: baja, media, alta.A los siguientes requerimientos:\n ${JSON.stringify(req.body)} \ndevolver la respuesta separada por coma, en el siguiente formato JSON:\n[{"id":id, "tipoComponenteId":"clasificacionId","clasificacion":"clasificacion","complejidad":"complejidad"},]`;
+    try {
+        const dataIA = await completionIA({ prompt: newPrompt });
+        handleSuccess({ req: req, res: res, dataResponse: dataIA })
+
+    } catch (error) {
+        handleError({
+            res: res, errorMessage: "unexpected error",
+            status: 500, detailsError: error
+        })
+    }
+}
+
+export { testIa, generationSoftwareRequirements, classifictionRequirementsSoftware }
