@@ -11,5 +11,6 @@ namespace estimate_teck.Models
         public int Puntaje { get; set; }
 
         public virtual Proyecto Proyecto { get; set; } = null!;
+        public virtual PuntajeCaracteristica PuntajeNavigation { get; set; } = null!;
     }
 }

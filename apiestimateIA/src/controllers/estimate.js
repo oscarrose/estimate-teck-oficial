@@ -47,4 +47,40 @@ const classifictionRequirementsSoftware = async (req, res) => {
     }
 }
 
-export { testIa, generationSoftwareRequirements, classifictionRequirementsSoftware }
+
+const evaluateFeatureSystem = async (req, res) => {
+
+    // console.log(req.body)
+
+    let newPrompt = `Simula que eres un experto en estimacion de software por punto de funcion y evalua un tipo ${JSON.stringify(req.body.tipoSistema)} .Ponle una valoracion a cada caractetistica de acuerdo a esta estructura, del siguiente objecto toma la propiedad significado para la valoracion [{"idPuntaje": 1,"valor": 0,"significado": "Sin influencia"},{"idPuntaje": 2, "valor": 1,"significado": "Incidental"},{"idPuntaje": 3,"valor": 2,"significado": "Moderado"},{"idPuntaje": 4,"valor": 3,
+    "significado": "Medio"},{"idPuntaje": 5,"valor": 4,"significado": "Significativo"},{"idPuntaje": 6,"valor": 5, "significado": "Esencial"}] \n Listados de caracteristicas :\n
+    Comunicación de datos \n
+    Procesamiento de datos distribuido\n
+    Rendimiento\n
+    Uso del hardware existente\n
+    Transacciones\n
+    Entrada de datos interactiva\n
+    Eficiencia\n
+    Actualizaciones on-line\n
+    Complejidad de procesamiento\n
+    Reusabilidad\n
+    Facilidad de conversión e instalación\n
+    Facilidad de operación\n
+    Múltiples instalaciones\n
+    Facilidad de mantenimiento\n
+    Devolver la respuesta separada por coma, en el siguiente formato JSON:[{"caracteristica":caracteristica,"Idpuntaje":Idpuntaje, "significado":significado},]
+`;
+
+    try {
+        const dataIA = await completionIA({ prompt: newPrompt });
+        handleSuccess({ req: req, res: res, dataResponse: dataIA })
+
+    } catch (error) {
+        handleError({
+            res: res, errorMessage: "unexpected error",
+            status: 500, detailsError: error
+        })
+    }
+}
+
+export { testIa, generationSoftwareRequirements, classifictionRequirementsSoftware, evaluateFeatureSystem }

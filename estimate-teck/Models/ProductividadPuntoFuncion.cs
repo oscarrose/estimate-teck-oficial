@@ -19,8 +19,9 @@ namespace estimate_teck.Models
         public int? NivelAlto { get; set; }
         public DateTime? FechaCreacion { get; set; }
 
-        public virtual EstadoUsuarioEmpleado Estado { get; set; } = null!;
-        public virtual Usuario Usuario { get; set; } = null!;
+        public virtual EstadoUsuarioEmpleado? Estado { get; set; } = null!;
+        public virtual Usuario? Usuario { get; set; } = null!;
+
         public virtual ICollection<Estimacion> Estimacions { get; set; }
     }
 }

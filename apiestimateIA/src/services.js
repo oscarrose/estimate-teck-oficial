@@ -6,6 +6,18 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+function removeLetterRespuesta(cadena) {
+    const indice = cadena.indexOf('[');
+    if (indice !== -1) {
+        return cadena.substring(indice);
+    }
+    return cadena;
+}
+// if (cadena.includes("Respuesta:")) {
+//     return cadena.replace("Respuesta:", "");
+// } else {
+//     return cadena;
+// }
 
 const completionIA = async ({ prompt }) => {
     const responseIA = await openai.createCompletion({
@@ -18,7 +30,8 @@ const completionIA = async ({ prompt }) => {
         top_p: 1.0,
         max_tokens: 2048
     });
-    const Response = responseIA.data.choices[0].text;
+    const Response = removeLetterRespuesta(responseIA.data.choices[0].text);
+    console.log(Response)
     return Response
 
 };

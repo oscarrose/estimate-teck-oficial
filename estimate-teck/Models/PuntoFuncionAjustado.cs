@@ -11,6 +11,7 @@ namespace estimate_teck.Models
         public int Baja { get; set; }
         public int Media { get; set; }
         public int Alta { get; set; }
+        public int Total { get; set; }
 
         public virtual Proyecto Proyecto { get; set; } = null!;
         public virtual TipoComponente TipoConponente { get; set; } = null!;

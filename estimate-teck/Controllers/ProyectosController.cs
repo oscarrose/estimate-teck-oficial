@@ -36,6 +36,7 @@ namespace estimate_teck.Controllers
                 {
                     ProyectoId = p.ProyectoId,
                     NombreProyecto = p.NombreProyecto,
+                    TipoProyecto=p.TipoProyecto,
                     Cliente = new Cliente() { NombreCliente = c.NombreCliente },
                     EstadoProyecto = new EstadoProyecto()
                     {
@@ -58,6 +59,7 @@ namespace estimate_teck.Controllers
                                  {
                                      proj.ProyectoId,
                                      proj.NombreProyecto,
+                                     proj.TipoProyecto,
                                      proj.EstadoProyectoId,
                                      proj.Cliente,
                                      proj.Cliente.Tipo.NombreTipoCliente,
