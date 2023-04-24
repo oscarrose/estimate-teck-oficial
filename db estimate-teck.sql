@@ -245,6 +245,7 @@ CREATE TABLE Proyecto
     Cliente_Id INT NOT NULL CONSTRAINT Fk_ClienteP_royecto_Id FOREIGN KEY REFERENCES Cliente(Cliente_Id),
     NombreProyecto VARCHAR(max) NOT NULL,
     Descripcion VARCHAR(max) NULL,
+    TipoProyecto VARCHAR(Max) NOT NULL,
     --FechaInicio datetime,
     --FechaFinalizacion datetime,
     FechaCreacion DATETIME DEFAULT GETDATE()
@@ -337,12 +338,21 @@ CREATE TABLE Estimacion
 
     Estimacion_Id int not null identity constraint Pk_Estimacion_Id primary key (Estimacion_Id),
     Proyecto_Id int not null constraint Fk_ProyectoEstimacion_Id foreign key references Proyecto (Proyecto_Id),
-    Productividad_Id int not null constraint Fk_ProductividadEstimacion_Id foreign key references ProductividadPuntoFuncion (Productividad_Id),
+   -- Productividad_Id int not null constraint Fk_ProductividadEstimacion_Id foreign key references ProductividadPuntoFuncion (Productividad_Id),
     FactorAjuste decimal (10,2),
     TotalPuntoFuncionAjustado decimal (10,2),
     TotalPuntoFuncionSinAjustar decimal (10,2)
 );
 GO
+
+CREATE TABLE Estimacion_Productividad
+(
+    Estimacion_Id int not null constraint Fk_EstimacionId_productividad foreign key references Estimacion(Estimacion_Id),
+    Productividad_Id int not null constraint Fk_ProductividadId_estimacion foreign key references ProductividadPuntoFuncion(Productividad_Id),
+    primary key (Estimacion_Id, Productividad_Id)
+);
+GO
+
 
 CREATE TABLE Detalle_estimacion
 (
@@ -357,12 +367,39 @@ CREATE TABLE Detalle_estimacion
 );
 GO
 
+
+
+/*CREATE TABLE Caracteristica_puntoFuncion
+(
+    idCaracteristica INT NOT NULL IDENTITY CONSTRAINT PK_caracteristica_puntoFuncion_Id PRIMARY KEY(idCaracteristica),
+    caracteristicaDescripcion VARCHAR NOT NULL
+);
+GO*/
+CREATE TABLE Puntaje_Caracteristica
+(
+    idPuntaje INT NOT NULL IDENTITY CONSTRAINT PK_Puntaje_Id PRIMARY KEY(idPuntaje),
+    valor INT NOT NULL,
+    significado VARCHAR(Max) NOT NULL
+);
+GO
+
+INSERT INTO Puntaje_Caracteristica
+    (valor, significado)
+VALUES
+    (0, 'Sin influencia'),
+    (1, 'Incidental'),
+    (2, 'Moderado'),
+    (3, 'Medio'),
+    (4, 'Significativo'),
+    (5, 'Esencial');
+GO
+
 CREATE TABLE Caracteristica_sistema
 (
     Caracteristica_sistema_id INT NOT NULL IDENTITY CONSTRAINT PK_caracteristica_sistema_Id PRIMARY KEY(Caracteristica_sistema_id),
     Proyecto_Id INT NOT NULL CONSTRAINT Fk_proyecto_id_caracteristica_sistema FOREIGN KEY REFERENCES Proyecto(Proyecto_Id),
     Caracteristica VARCHAR(MAX) NOT NULL,
-    Puntaje INT NOT NULL
+    Puntaje INT NOT NULL CONSTRAINT FK_puntaje_caracteristica FOREIGN KEY REFERENCES Puntaje_Caracteristica(idPuntaje)
 );
 GO
 
@@ -415,6 +452,7 @@ CREATE TABLE Punto_funcion_ajustado
     Proyecto_id INT NOT NULL CONSTRAINT Fk_Proyecto_id_punto_funcion_ajustado FOREIGN KEY REFERENCES Proyecto(Proyecto_Id),
     baja INT NOT NULL,
     media INT NOT NULL,
-    alta INT NOT NULL
+    alta INT NOT NULL,
+    total INT NOT NULL
 );
 GO
