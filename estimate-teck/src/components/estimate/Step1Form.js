@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Form, Input, Space, Select, message, Spin, Card, Row } from 'antd';
-import { BulbOutlined,RightOutlined } from "@ant-design/icons"
+import { BulbOutlined, RightOutlined } from "@ant-design/icons"
 import { tipoComponente } from './itemSelect'
+import useAuth from '../../hooks/useAuth';
 import CallApi from '../../ServicesHttp/CallApi';
 import useEstimate from "../../hooks/useEstimate"
+
 
 const { Option } = Select;
 function Step1Form({ idProyecto }) {
 
     const [form] = Form.useForm();
+    const { auth } = useAuth();
 
-    const { setStep, prevSaveComponents, setPrevSaveComponents } = useEstimate();
+    const { setStep, saveClassificationComponents, setSaveClassificationComponents } = useEstimate();
 
     //Para saber cuando se estan obteniendo los datos
     const [loading, setLoanding] = useState(false);
@@ -48,7 +51,7 @@ function Step1Form({ idProyecto }) {
                     const { id, clasificacion, complejidad, tipoComponenteId
                     } = JSON.parse(res.data.body).find(item => item.id === sf.id);
                     return {
-                        id, requerimientoSf: sf.requerimientoSf, clasificacion, complejidad, tipoComponenteId
+                        id, requerimientoSf: sf.requerimientoSf, clasificacion, complejidad, tipoComponenteId, proyectoId: idProyecto, usuarioId: auth.idUsuario
                     };
                 });
                 return { ...requeriment, requisitoSf: updatedRequisitoSf };
@@ -98,18 +101,18 @@ function Step1Form({ idProyecto }) {
 
     const onFinish = () => {
         form.validateFields().then(async (values) => {
-            setPrevSaveComponents(values.names);
+            setSaveClassificationComponents(values.names);
             setStep((prev) => prev + 1);
         })
     };
-  
+
     return (
         <Spin size='large' spinning={loading}>
 
             {requerimentClient !== null && (<Form
                 form={form}
                 name="dynamic_form_Componente_funcionales"
-                initialValues={{ names: prevSaveComponents?? requerimentClient }}
+                initialValues={{ names: saveClassificationComponents ?? requerimentClient }}
 
 
                 // onFinish={onFinish}
@@ -139,6 +142,7 @@ function Step1Form({ idProyecto }) {
                                                             className='ml-5 grid grid-cols-3'
 
                                                         >
+
                                                             <Form.Item
                                                                 {...restField}
                                                                 name={[name, 'requerimientoSf']}
@@ -191,7 +195,24 @@ function Step1Form({ idProyecto }) {
                                                                     ))}
                                                                 </Select> */}
                                                                 <Input readOnly />
-
+                                                            </Form.Item>
+                                                            <Form.Item
+                                                                {...restField}
+                                                                name={[name, 'usuarioId']}
+                                                                key={[key, 'id']}
+                                                                hidden={true}
+                                                                initialValue={auth.idUsuario}
+                                                            >
+                                                                <Input />
+                                                            </Form.Item>
+                                                            <Form.Item
+                                                                {...restField}
+                                                                name={[name, 'proyectoId']}
+                                                                key={[key, 'id']}
+                                                                hidden={true}
+                                                                initialValue={idProyecto}
+                                                            >
+                                                                <Input />
                                                             </Form.Item>
 
                                                         </Space>
@@ -217,7 +238,7 @@ function Step1Form({ idProyecto }) {
                     <BulbOutlined /> Clasificar Componentes
                 </Button >
                 <Button type="primary" htmlType="submit" onClick={() => onFinish()}>
-                    Siguiente <RightOutlined/>
+                    Siguiente <RightOutlined />
                 </Button>
             </Row>
 

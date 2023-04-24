@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Space, Typography, message, Select, Card, Spin, notification } from 'antd';
+import { Form, Input, Button, Space, Typography, Select, Card, Spin, notification } from 'antd';
 import { MinusCircleOutlined, PlusOutlined, DeleteOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import CallApi from '../../ServicesHttp/CallApi';
 import { tipoRequerimeinto } from './ItemsSelect';
@@ -13,7 +13,7 @@ const rute = process.env.REACT_APP_RUTE_VM
 const FormRequisiteIA = () => {
 
   const [form] = Form.useForm();
-  const [api, contextHolder] = notification.useNotification();
+  //const [api, contextHolder] = notification.useNotification();
 
 
   const { idProyecto } = useParams();

@@ -5,55 +5,60 @@ import useEstimate from "../../hooks/useEstimate"
 import CallApi from "../../ServicesHttp/CallApi";
 const { Option } = Select;
 
-function Step2From() {
+function Step2From({ idProyecto }) {
 
 
   //Para saber cuando se estan obteniendo los datos
   const [loading, setLoanding] = useState(false);
 
-  const { prev, setStep, saveProductivityPlatform, infoProyect, setSystemCharacteristic, setSaveProductivityPlatform } = useEstimate();
+  const [loadingProductivity, setLoadingProductivity] = useState(false);
+
+  const { finishEstimate, finishProjectEstimate, prev, saveProductivityPlatform, infoProyect, setSystemCharacteristic, setSaveProductivityPlatform, systemCharacteristc } = useEstimate();
 
   const [productivity, setProductivity] = useState([])
 
 
-  const evaluteFeatureSytemIA = async () => {
-    setLoanding(true)
-    await CallApi.post("http://localhost:8080/evaluate-feature-System", { tipoSistema: infoProyect.tipoProyecto })
-      .then((res) => {
-        //console.log("res!", JSON.parse(res.data.body))
-        setSystemCharacteristic(JSON.parse(res.data.body))
-        setLoanding(false);
-      }).catch((error) => {
-        message.error(error.message);
-        setLoanding(false)
-      });
-
-  }
 
   /**
   *Function para obtener los datos  para la tabla de productividad
   */
   const fetchDataProductividad = useCallback(async function () {
-
+    setLoanding(true)
     await CallApi.get("ProductividadPuntoFuncions/GetAllProductividad")
       .then((res) => {
+        setLoanding(false);
         setProductivity(res.data);
+        //evaluteFeatureSytemIA()
       })
       .catch((error) => {
-
+        setLoanding(false);
         message.error("Error Interno", error.message);
       });
   }, []);
 
+  const evaluteFeatureSytemIA = async () => {
+    
+    setLoadingProductivity(true)
+    await CallApi.post("http://localhost:8080/evaluate-feature-System", { tipoSistema: infoProyect.tipoProyecto })
+      .then((res) => {
 
+        const dataResponse = JSON.parse(res.data.body)
+        const newData = dataResponse.map((item) => ({ ...item, proyectoId: idProyecto }));
+        setSystemCharacteristic(newData);
+        setLoadingProductivity(false)
+      }).catch((error) => {
+        message.error(error.message);
+        setLoadingProductivity(false)
+      });
+
+  }
   useEffect(() => {
+    if (!systemCharacteristc) {
+      evaluteFeatureSytemIA();
+    }
     // La función se ejecutará solo una vez al montar el componente
-    //evaluteFeatureSytemIA();
     fetchDataProductividad();
   }, []); // la matriz de dependencias está vacía
-
-
-
 
 
   // const [selectedPlatforms, setSelectedPlatforms] = useState([]);
@@ -63,60 +68,45 @@ function Step2From() {
       productividadId: selectedValues
     }
     setSaveProductivityPlatform(productividadId);
-    // console.log("1",productividadId)
+    console.log("1", selectedValues)
   };
 
-  const finishProjectEstimate = async () => {
-    setLoanding(true)
-    await CallApi.post("/",)
-      .then((res) => {
-        //console.log("res!", JSON.parse(res.data.body))
-        setSystemCharacteristic(JSON.parse(res.data.body))
-        setLoanding(false);
-      }).catch((error) => {
-        message.error(error.message);
-        setLoanding(false)
-      });
-
-  }
-
-  const handleFormSubmit = () => {
-    //setSaveProductivityPlatform(values)
-    console.log("guardar")
-
-    //setStep((prev) => prev + 1)
-  };
 
   return (
     <Spin size='large' spinning={loading}>
 
       <div className='m-5 mt-12'>
-        <Form onFinish={handleFormSubmit}
-          initialValues={saveProductivityPlatform}
-        >
-          <Form.Item
-            name="productividadId"
-            label="Plataformas de desarrollo"
-            rules={[
-              {
-                required: true,
-                message: "Es requerido seleccionar la plataforma"
-              }
-            ]}
+        <Spin style={{
+          fontSize: '18px'
+        }}
+          size='large' tip='Estimando...' spinning={finishEstimate} >
+          <Form
+            onFinish={finishProjectEstimate}
+            initialValues={saveProductivityPlatform}
           >
-            <Select
-              mode="multiple"
-              // defaultValue={saveProductivityPlatform}
-              placeholder="Seleccione una o varias plataformas de desarrollo"
-              onChange={handlePlatformChange}
-              filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+            <Form.Item
+              name="productividadId"
+              label="Plataformas de desarrollo"
+              rules={[
+                {
+                  required: true,
+                  message: "Es requerido seleccionar la plataforma"
+                }
+              ]}
             >
-              {productivity.map(platform => (
-                <Option key={platform.productividadId} value={platform.productividadId}>{platform.nombrePlataforma}</Option>
-              ))}
-            </Select>
-          </Form.Item>
-          {/* {selectedPlatforms.map(platform => (
+              <Select
+                mode="multiple"
+                // defaultValue={saveProductivityPlatform}
+                placeholder="Seleccione una o varias plataformas de desarrollo"
+                onChange={handlePlatformChange}
+                filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              >
+                {productivity.map(platform => (
+                  <Option key={platform.productividadId} value={platform.productividadId}>{platform.nombrePlataforma}</Option>
+                ))}
+              </Select>
+            </Form.Item>
+            {/* {selectedPlatforms.map(platform => (
           <React.Fragment key={platform}>
             <h3>{platform}</h3>
             <Form.Item label="Nivel Bajo" name={`nivelBajo-${platform}`} initialValue={0}>
@@ -130,25 +120,39 @@ function Step2From() {
             </Form.Item>
           </React.Fragment>
         ))} */}
-          <div className='flex justify-between m-12 '>
-            <Form.Item>
-              <button type="primary"
-                className='cursor-pointer bg-gray-300 border-none hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l'
+            <div className='flex justify-between m-12 '>
 
-                onClick={() => prev()}
-              >
-                <LeftOutlined />Atras
-              </button>
-            </Form.Item>
+              {
+                !loadingProductivity ?
+                  <>
+                    <Form.Item>
+                      <button type="primary"
+                        className='cursor-pointer bg-gray-300 border-none hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l'
 
-            <Form.Item >
-              <Button type="primary" htmlType="submit">
-                Finalizar estimación <CheckOutlined />
-              </Button>
-            </Form.Item>
-          </div>
+                        onClick={() => prev()}
+                      >
+                        <LeftOutlined />Atras
+                      </button>
+                    </Form.Item>
+                    <Form.Item >
+                      <Button
+                        type="primary" htmlType="submit">
+                        Finalizar estimación <CheckOutlined />
+                      </Button>
+                    </Form.Item>
+                  </>
+                  :
+                  <Button type="primary" loading>
+                    Analizando información
+                  </Button>
+              }
 
-        </Form>
+            </div>
+
+
+
+          </Form>
+        </Spin>
 
       </div>
     </Spin>

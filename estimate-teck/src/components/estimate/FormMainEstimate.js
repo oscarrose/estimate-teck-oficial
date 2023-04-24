@@ -19,10 +19,6 @@ export default function FormMainEstimate() {
   const [data, setData] = useState({});
 
 
-
-
-
-
   const steps = [
     {
       title: 'Clasificador inteligente de componentes del sistema',
@@ -30,7 +26,7 @@ export default function FormMainEstimate() {
     },
     {
       title: 'Tecnologias a utilizar',
-      content: <Step2From />
+      content: <Step2From idProyecto={idProyecto} />
     },
     // {
     //   title: 'Hecho',

@@ -1,5 +1,6 @@
 import React, { createContext, useState, useCallback } from "react";
-
+import CallApi from "../ServicesHttp/CallApi";
+import { message, notification } from "antd"
 //create the context
 const estimateContext = createContext({});
 
@@ -9,16 +10,48 @@ const UseProviderEstimate = ({ children }) => {
     const [dataIaRequirement, setDataIaRequirement] = useState({}
     );
 
-    const [prevSaveComponents, setPrevSaveComponents] = useState(null);
+    //para manejar clasifican de los components
+    const [saveClassificationComponents, setSaveClassificationComponents] = useState(null);
 
+    //para manejar las caracteristica de los componentes
     const [systemCharacteristc, setSystemCharacteristic] = useState(null);
 
+    //para manejar la produtividad para la estimacion
     const [saveProductivityPlatform, setSaveProductivityPlatform] = useState(null);
 
+    //Para manejar la informacion del proyecto
     const [infoProyect, setInfoProyect] = useState(null);
 
+    const [finishEstimate, setFinishEstimate] = useState(false)
 
-    const [step, setStep] = useState(1);
+
+    const [step, setStep] = useState(0);
+
+    const openNotificationWithIcon = (type, position, title, message) => {
+        notification[type]({
+            message: title,
+            description: message,
+            placement: position,
+        });
+    };
+
+
+
+    const finishProjectEstimate = async () => {
+        const newClassificationComponents = saveClassificationComponents.flatMap(({ requisitoSf }) => requisitoSf.map(({ id, tipoComponenteId, complejidad, usuarioId, proyectoId }) => ({ id, tipoComponenteId, complejidad, usuarioId, proyectoId })));
+
+        console.log("systemCharacteristc", systemCharacteristc)
+        console.log("saveProductivityPlatform", saveProductivityPlatform)
+        await CallApi.post("/",)
+            .then((res) => {
+                console.log("res!", res.data)
+            }).catch((error) => {
+                message.error(error)
+
+            });
+
+    }
+
 
 
     const prev = useCallback(
@@ -40,8 +73,9 @@ const UseProviderEstimate = ({ children }) => {
     return (
         <estimateContext.Provider
             value={{
-                prev, setDataIaRequirement, dataIaRequirement, step, setStep,
-                prevSaveComponents, setPrevSaveComponents,
+                finishEstimate, setFinishEstimate,
+                finishProjectEstimate, prev, setDataIaRequirement, dataIaRequirement, step, setStep,
+                saveClassificationComponents, setSaveClassificationComponents,
                 systemCharacteristc, setSystemCharacteristic,
                 setInfoProyect, infoProyect,
                 saveProductivityPlatform, setSaveProductivityPlatform
