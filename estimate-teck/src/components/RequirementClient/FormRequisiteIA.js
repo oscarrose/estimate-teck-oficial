@@ -70,7 +70,7 @@ const FormRequisiteIA = () => {
 
 
   const onFinish = async (values) => {
-    console.log("dat", values.requisitos)
+   
     setLoading(true)
     await CallApi.post("RequerimientosClientes/RegisterRequirement", values.requisitos).then(() => {
       setLoading(false)

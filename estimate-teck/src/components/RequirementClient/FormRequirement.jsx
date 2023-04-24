@@ -71,7 +71,7 @@ const FormRequirement = ({ openForm, setOpenForm, editRequirement, setEditRequir
                     setEditRequirement(null)
                 }}
                 open={openForm} >
-                <Spin spinning={isLoading}>
+                <Spin size='large' spinning={isLoading}>
                     <Form
                         form={form}
                         layout="vertical"

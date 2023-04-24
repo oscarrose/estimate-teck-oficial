@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Form, Input, Space, Select, message, Spin, Card, Row, Progress } from 'antd';
-import { BulbOutlined } from "@ant-design/icons"
-import { tipoComponente, Complejidad } from './itemSelect'
+import { Button, Form, Input, Space, Select, message, Spin, Card, Row } from 'antd';
+import { BulbOutlined,RightOutlined } from "@ant-design/icons"
+import { tipoComponente } from './itemSelect'
 import CallApi from '../../ServicesHttp/CallApi';
 import useEstimate from "../../hooks/useEstimate"
 
@@ -26,7 +26,6 @@ function Step1Form({ idProyecto }) {
     const fetchRequerimentsForEstimate = async () => {
         setLoanding(true);
         await CallApi.get(`RequerimientosClientes/SWRequerimentsForEstimate/${idProyecto}`).then((res) => {
-
             setLoanding(false);
             setRequerimentClient(res.data)
         }).catch((error) => {
@@ -37,7 +36,7 @@ function Step1Form({ idProyecto }) {
     };
 
 
-    const classifierIA = async (values) => {
+    const classifierIA = async () => {
         setLoanding(true)
         const newValues = requerimentClient.flatMap(({ requisitoSf }) => requisitoSf.map(({ id, requerimientoSf }) => ({ id, requerimientoSf })));
 
@@ -102,11 +101,8 @@ function Step1Form({ idProyecto }) {
             setPrevSaveComponents(values.names);
             setStep((prev) => prev + 1);
         })
-
-        
-
     };
-    console.log('Received:', prevSaveComponents);
+  
     return (
         <Spin size='large' spinning={loading}>
 
@@ -221,7 +217,7 @@ function Step1Form({ idProyecto }) {
                     <BulbOutlined /> Clasificar Componentes
                 </Button >
                 <Button type="primary" htmlType="submit" onClick={() => onFinish()}>
-                    Siguiente
+                    Siguiente <RightOutlined/>
                 </Button>
             </Row>
 

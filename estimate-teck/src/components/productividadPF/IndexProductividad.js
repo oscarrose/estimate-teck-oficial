@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Button, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import TableProductividad from "./TableProductividad";
@@ -25,11 +25,10 @@ function IndexProductividad() {
   /**
    *Function para obtener los datos  para la tabla de productividad
    */
-   const fetchDataProductividad = useCallback(async function () {
+  const fetchDataProductividad = useCallback(async function () {
     setLoanding(true);
     await CallApi.get("ProductividadPuntoFuncions/GetAllProductividad")
       .then((res) => {
-        console.log("hola", res.data)
         setDataProductividad(res.data);
         setLoanding(false);
       })
@@ -41,7 +40,7 @@ function IndexProductividad() {
 
   useEffect(() => {
     fetchDataProductividad();
-    
+
   }, [updateTableProductividad]);
 
   return (
@@ -61,7 +60,7 @@ function IndexProductividad() {
           Nueva plataforma
         </Button>
       </div>
-    
+
       <TableProductividad
         dataProductividad={dataProductividad}
         loading={loading}
@@ -70,7 +69,7 @@ function IndexProductividad() {
       />
 
       <ModalFormProductividad
-     
+
         key={controlFormProductividad.dataEdit}
         setUpdateTableProductividad={setUpdateTableProductividad}
         setDataProductividad={setDataProductividad}

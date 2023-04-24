@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { Button, message, Steps, theme } from 'antd';
+import { Button, message, Row, Steps, theme } from 'antd';
+import { LeftOutlined } from "@ant-design/icons"
 import { useParams } from 'react-router-dom';
 import useEstimate from "../../hooks/useEstimate"
 import Step1Form from './Step1Form';
@@ -10,32 +11,31 @@ export default function FormMainEstimate() {
 
   const { idProyecto } = useParams();//Obtener el id del proyecto
 
-  const {step,setStep}=useEstimate();
+  const { step, setStep } = useEstimate();
 
   const { token } = theme.useToken();
 
 
   const [data, setData] = useState({});
 
- 
-  
 
-  const [systeCharacteristc, setSystemCharacteristic]=useState()
+
+
 
 
   const steps = [
     {
       title: 'Clasificador inteligente de componentes del sistema',
-      content: <Step1Form  idProyecto={idProyecto}/>
+      content: <Step1Form idProyecto={idProyecto} />
     },
     {
-      title: 'Calcular del Factor de Ajuste',
-      content: <Step2From setSystemCharacteristic={setSystemCharacteristic} systeCharacteristc={systeCharacteristc} idProyecto={idProyecto} setStep={setStep} />
+      title: 'Tecnologias a utilizar',
+      content: <Step2From />
     },
-    {
-      title: 'Paso siguiente',
-      content: <Step3From idProyecto={idProyecto} setStep={setStep} />
-    }
+    // {
+    //   title: 'Hecho',
+    //   content: <Step3From idProyecto={idProyecto} setStep={setStep} />
+    // }
   ];
 
   // const next = useCallback(
@@ -45,12 +45,7 @@ export default function FormMainEstimate() {
   //   }, [step]
   // );
 
-  const prev = useCallback(
-    () => {
-      setStep(step - 1);
-    }, [step]
-  );
-
+ 
 
   const handleSubmit = useCallback((data) => {
     setData(data);
@@ -95,16 +90,7 @@ export default function FormMainEstimate() {
           </Button>
         )} */}
 
-        {step > 0 && (
-          <Button
-            style={{
-              margin: '0 8px',
-            }}
-            onClick={() => prev()}
-          >
-            atras
-          </Button>
-        )}
+        
       </div>
     </div >
   );

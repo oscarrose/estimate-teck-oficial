@@ -26,6 +26,11 @@ const TableProject = ({ dataTableProject, setEditProject }) => {
       key: 'nombreProyecto',
     },
     {
+      title: 'Tipo proyecto',
+      dataIndex: 'tipoProyecto',
+      key: 'tipoProyecto',
+    },
+    {
       title: 'Estado',
       key: 'estadoProyecto',
       dataIndex: 'estadoProyecto',

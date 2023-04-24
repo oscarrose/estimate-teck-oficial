@@ -5,6 +5,7 @@ import TableClient from '../client/TableClient';
 import useClient from "../../hooks/useClient";
 import DescriptionsItem from '../admin-personnel/DescriptionsItem';
 import { useNavigate, useParams } from "react-router-dom";
+import { typeProyect } from "./itemsSelect"
 import CallApi from '../../ServicesHttp/CallApi';
 import useAuth from '../../hooks/useAuth';
 const { Title } = Typography;
@@ -38,7 +39,6 @@ export default function FormProjects() {
     const onClose = () => {
         setOpenTableClient(false);
     };
-
 
     //control de peticciones
     const onSubmit = async (values) => {
@@ -95,6 +95,7 @@ export default function FormProjects() {
                     tipo: { nombreTipoCliente: res.data.nombreTipoCliente }
                 });
                 setLoadingProject(false);
+                console.log("de", res.data)
             })
             .catch((error) => {
                 setLoadingProject(false);
@@ -112,10 +113,11 @@ export default function FormProjects() {
     const edit = () => {
         form.setFieldsValue({
             nombreProyecto: dataEdit.nombreProyecto,
-            descripcion: dataEdit.descripcion
+            descripcion: dataEdit.descripcion,
+            TipoProyecto:dataEdit.tipoProyecto
         });
     };
-  
+
     return (
         <Spin spinning={loadingProject}>
             <div className='container mx-auto p-10'>
@@ -124,7 +126,8 @@ export default function FormProjects() {
                 <Form
                     form={form}
                     name='formProject'
-                    setfieldsvalue={dataEdit !== null && edit() }
+                   
+                    setfieldsvalue={dataEdit !== null && edit()}
                     autoComplete="off"
                     className="grid gap-2 grid-rows-2 grid-cols-1"
                 >
@@ -145,18 +148,30 @@ export default function FormProjects() {
                     {/* <Form.Item label="Fecha de proyecto">
                    <RangePicker />
                </Form.Item> */}
-                    {/* 
-               <Form.Item
-                   name="Estado"
-                   label="Estado"
-                   hasFeedback
-               >
-                   <Select placeholder="Seleccione estado del proyecto">
-                       <Option value={1}>Activo</Option>
-                       <Option value={2}>....</Option>
-                       <Option value={3}>...</Option>
-                   </Select>
-               </Form.Item> */}
+
+                    <Form.Item
+                        name="TipoProyecto"
+                        label="Tipo de proyecto"
+                        hasFeedback
+                        rules={[
+                            {
+                                required: true,
+                                message: "El tipo de proyecto es requerido",
+                            },
+                        ]}
+                    >
+                        <Select showSearch placeholder="Seleccione el tipo de proyecto"
+                            filterOption={(input, option) =>
+                                (option?.value ?? '').toLowerCase().includes(input.toLowerCase())
+                            }
+                        >
+                            {typeProyect.map((data) => (
+                                <Option key={data.id} value={data.TipoProyecto}>
+                                    {data.TipoProyecto}
+                                </Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
                     <Form.Item
                         name="descripcion"
                         label="Descripcion"
