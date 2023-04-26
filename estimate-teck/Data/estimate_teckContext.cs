@@ -43,7 +43,15 @@ namespace estimate_teck.Data
         public virtual DbSet<TipoRequerimiento> TipoRequerimientos { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
 
-       
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=localhost; Database=estimate_teck;Trusted_Connection=True; TrustServerCertificate=True");
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CaracteristicaSistema>(entity =>
@@ -84,6 +92,10 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.Celular)
                     .HasMaxLength(15)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Ciudad)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Direccion)
@@ -151,9 +163,11 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.ProyectoId).HasColumnName("Proyecto_Id");
 
-                entity.Property(e => e.RequerimientoId).HasColumnName("Requerimiento_id");
+                entity.Property(e => e.RequerimientoSwId).HasColumnName("RequerimientoSW_id");
 
                 entity.Property(e => e.TipoComponenteId).HasColumnName("Tipo_componente_id");
+
+                entity.Property(e => e.UsuarioId).HasColumnName("Usuario_Id");
 
                 entity.HasOne(d => d.Proyecto)
                     .WithMany(p => p.ComponenteFuncionales)
@@ -161,17 +175,23 @@ namespace estimate_teck.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_proyecto_id_componente_funcionales");
 
-                entity.HasOne(d => d.Requerimiento)
+                entity.HasOne(d => d.RequerimientoSw)
                     .WithMany(p => p.ComponenteFuncionales)
-                    .HasForeignKey(d => d.RequerimientoId)
+                    .HasForeignKey(d => d.RequerimientoSwId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Fk_requerimiento_id_componente_funcionales");
+                    .HasConstraintName("Fk_requerimientoSW_id_componente_funcionales");
 
                 entity.HasOne(d => d.TipoComponente)
                     .WithMany(p => p.ComponenteFuncionales)
                     .HasForeignKey(d => d.TipoComponenteId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_tipo_componente_componente_funcional");
+
+                entity.HasOne(d => d.Usuario)
+                    .WithMany(p => p.ComponenteFuncionales)
+                    .HasForeignKey(d => d.UsuarioId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Fk_ComponenteFuncional_Usurario_Id");
             });
 
             modelBuilder.Entity<ConteoTipoComponente>(entity =>
@@ -274,6 +294,10 @@ namespace estimate_teck.Data
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Estado)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.EstadoId)
                     .HasColumnName("Estado_Id")
                     .HasDefaultValueSql("((1))");
@@ -299,10 +323,6 @@ namespace estimate_teck.Data
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Provincia)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.TelefonoResidencial)
                     .HasMaxLength(15)
                     .IsUnicode(false)
@@ -314,7 +334,7 @@ namespace estimate_teck.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_Cargo_Empleado");
 
-                entity.HasOne(d => d.Estado)
+                entity.HasOne(d => d.EstadoNavigation)
                     .WithMany(p => p.Empleados)
                     .HasForeignKey(d => d.EstadoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -589,7 +609,7 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.EstadoId)
                     .HasColumnName("Estado_Id")
-                    .HasDefaultValueSql("((1))");
+                    .HasDefaultValueSql("((2))");
 
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")

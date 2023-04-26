@@ -7,7 +7,6 @@ namespace estimate_teck.Models
     {
         public RequerimientosCliente()
         {
-            ComponenteFuncionales = new HashSet<ComponenteFuncionale>();
             RequerimientosSoftwares = new HashSet<RequerimientosSoftware>();
         }
 
@@ -23,7 +22,6 @@ namespace estimate_teck.Models
         public virtual Proyecto Proyecto { get; set; } = null!;
         public virtual TipoRequerimiento TipoRequerimiento { get; set; } = null!;
         public virtual Usuario Usuario { get; set; } = null!;
-        public virtual ICollection<ComponenteFuncionale> ComponenteFuncionales { get; set; }
         public virtual ICollection<RequerimientosSoftware> RequerimientosSoftwares { get; set; }
     }
 }

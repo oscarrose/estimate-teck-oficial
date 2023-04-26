@@ -13,11 +13,11 @@
         public string Email { get; set; } = null!;
         public string? TelefonoResidencial { get; set; }
         public string Celular { get; set; } = null!;
-        public string Direccion { get; set; } = null!;
+        public string Pais { get; set; } = null!;
+        public string Estadop { get; set; } = null!;
         public string Ciudad { get; set; } = null!;
-        public string Calle { get; set; } = null!;
-        public string Sector { get; set; } = null!;
-         public int Usuario { get; set; }
+        public string Direccion { get; set; } = null!;
+        public int Usuario { get; set; }
         public DateTime? FechaCreacion { get; set; }
     }
 }

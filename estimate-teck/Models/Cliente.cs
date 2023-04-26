@@ -20,6 +20,7 @@ namespace estimate_teck.Models
         public string Celular { get; set; } = null!;
         public string Pais { get; set; } = null!;
         public string? Estado { get; set; }
+        public string? Ciudad { get; set; }
         public string Direccion { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
 

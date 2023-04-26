@@ -15,7 +15,7 @@
         public string? TelefonoResidencial { get; set; }
         public string Celular { get; set; } = null!;
         public string Pais { get; set; } = null!;
-        public string Provincia { get; set; } = null!;
+        public string Estadop { get; set; } = null!;
         public string Ciudad { get; set; } = null!;
         public string Direccion { get; set; } = null!;
          public DateTime FechaNacimiento { get; set; }
