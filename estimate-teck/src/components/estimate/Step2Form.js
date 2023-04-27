@@ -37,7 +37,7 @@ function Step2From({ idProyecto }) {
   }, []);
 
   const evaluteFeatureSytemIA = async () => {
-    
+
     setLoadingProductivity(true)
     await CallApi.post("http://localhost:8080/evaluate-feature-System", { tipoSistema: infoProyect.tipoProyecto })
       .then((res) => {
@@ -62,12 +62,12 @@ function Step2From({ idProyecto }) {
 
 
   // const [selectedPlatforms, setSelectedPlatforms] = useState([]);
-
+  // let productividadId = {
+  //   productividadId: selectedValues
+  // }
   const handlePlatformChange = (selectedValues) => {
-    let productividadId = {
-      productividadId: selectedValues
-    }
-    setSaveProductivityPlatform(productividadId);
+
+    setSaveProductivityPlatform(selectedValues);
     console.log("1", selectedValues)
   };
 

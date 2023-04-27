@@ -38,16 +38,23 @@ const UseProviderEstimate = ({ children }) => {
 
 
     const finishProjectEstimate = async () => {
-        const newClassificationComponents = saveClassificationComponents.flatMap(({ requisitoSf }) => requisitoSf.map(({ id, tipoComponenteId, complejidad, usuarioId, proyectoId }) => ({ id, tipoComponenteId, complejidad, usuarioId, proyectoId })));
+        const newClassificationComponents = saveClassificationComponents.flatMap(({ requisitoSf }) => requisitoSf.map(({ id, tipoComponenteId, complejidad, usuarioId, proyectoId }) => ({
+            RequerimientoSwId: id, tipoComponenteId, complejidad, usuarioId, proyectoId
+        })));
+        const newProductividadId = saveProductivityPlatform.map((item) => ({  ProductividadId: item }));
+       
 
-        console.log("systemCharacteristc", systemCharacteristc)
-        console.log("saveProductivityPlatform", saveProductivityPlatform)
-        await CallApi.post("/",)
+        const dataToSend = {
+            ComponenteFuncionales: newClassificationComponents,
+            CaracteristicaSistemas: systemCharacteristc,
+            Productividades: newProductividadId,
+        };
+        console.log("aa", dataToSend)
+        await CallApi.post("Estimacions/estimarProyectos ", dataToSend)
             .then((res) => {
                 console.log("res!", res.data)
             }).catch((error) => {
                 message.error(error)
-
             });
 
     }
