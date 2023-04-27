@@ -1,6 +1,7 @@
 global using estimate_teck.Servicies.UsuariosTk;
 using estimate_teck.Data;
 using estimate_teck.Servicies.Empleados;
+using estimate_teck.Servicies.Estimate;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("connectionEstima
 builder.Services.AddScoped<IEmpleado, EmpleadoServices>();
 
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IEstimate, EstimateServices>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();

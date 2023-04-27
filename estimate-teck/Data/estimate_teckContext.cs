@@ -73,7 +73,7 @@ namespace estimate_teck.Data
 
                 entity.HasOne(d => d.PuntajeNavigation)
                     .WithMany(p => p.CaracteristicaSistemas)
-                    .HasForeignKey(d => d.Puntaje)
+                    .HasForeignKey(d => d.IdPuntaje)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_puntaje_caracteristica");
             });

@@ -19,11 +19,11 @@ namespace estimate_teck.Models
         public decimal? TotalPuntoFuncionAjustado { get; set; }
         public decimal? TotalPuntoFuncionSinAjustar { get; set; }
 
-        public virtual Proyecto Proyecto { get; set; } = null!;
-        public virtual ICollection<DetalleEstimacion> DetalleEstimacions { get; set; }
-        public virtual ICollection<ParametrosEconomico> ParametrosEconomicos { get; set; }
-        public virtual ICollection<ParticipanteEstimacion> ParticipanteEstimacions { get; set; }
+        public virtual Proyecto? Proyecto { get; set; } = null!;
+        public virtual ICollection<DetalleEstimacion>? DetalleEstimacions { get; set; }
+        public virtual ICollection<ParametrosEconomico>? ParametrosEconomicos { get; set; }
+        public virtual ICollection<ParticipanteEstimacion>? ParticipanteEstimacions { get; set; }
 
-        public virtual ICollection<ProductividadPuntoFuncion> Productividads { get; set; }
+        public virtual ICollection<ProductividadPuntoFuncion>? Productividads { get; set; }
     }
 }

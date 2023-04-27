@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using estimate_teck.Data;
 using estimate_teck.Models;
+using estimate_teck.DTO;
+using estimate_teck.Servicies.Estimate;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace estimate_teck.Controllers
 {
@@ -15,10 +13,12 @@ namespace estimate_teck.Controllers
     public class EstimacionsController : ControllerBase
     {
         private readonly estimate_teckContext _context;
+        private readonly IEstimate _servicesEstimate;
 
-        public EstimacionsController(estimate_teckContext context)
+        public EstimacionsController(estimate_teckContext context, IEstimate servicesEstimate)
         {
             _context = context;
+            _servicesEstimate = servicesEstimate;
         }
 
         // GET: api/Estimacions
@@ -73,15 +73,118 @@ namespace estimate_teck.Controllers
             return NoContent();
         }
 
+        // public IActionResult countClassificationComponents(ICollection<ComponenteFuncionale> ComponenteFuncionales)
+        // {
+
+
+
+        //     return Ok(resultado);
+        // }
+
         // POST: api/Estimacions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Estimacion>> PostEstimacion(Estimacion estimacion)
+        [HttpPost("estimarProyectos")]
+        public async Task<IActionResult> estimacionProyecto([FromBody] receiveEstimateDTO data)
         {
-            _context.Estimacions.Add(estimacion);
-            await _context.SaveChangesAsync();
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
+            {
 
-            return CreatedAtAction("GetEstimacion", new { id = estimacion.EstimacionId }, estimacion);
+                try
+                {
+                    //agregar componente funcionales clasificados
+                    _context.ComponenteFuncionales.AddRangeAsync(data.ComponenteFuncionales);
+                    await _context.SaveChangesAsync();
+
+                    //para contar los componentes funcionales
+                    // var resultadoCount = data.ComponenteFuncionales.GroupBy(d => new { d.TipoComponenteId, d.ProyectoId })
+                    //    .Select(g => new ConteoTipoComponente
+                    //    {
+                    //        TipoComponenteId = g.Key.TipoComponenteId,
+                    //        Baja = g.Count(d => d.Complejidad == "baja"),
+                    //        Media = g.Count(d => d.Complejidad == "media"),
+                    //        Alta = g.Count(d => d.Complejidad == "alta"),
+                    //        ProyectoId = g.Key.ProyectoId
+                    //    });
+                    ICollection<ConteoTipoComponente> resultadoCount = data.ComponenteFuncionales.GroupBy(d => new { d.TipoComponenteId, d.ProyectoId })
+                     .Select(g => new ConteoTipoComponente
+                     {
+                         TipoComponenteId = g.Key.TipoComponenteId,
+                         Baja = g.Count(d => d.Complejidad == "baja"),
+                         Media = g.Count(d => d.Complejidad == "media"),
+                         Alta = g.Count(d => d.Complejidad == "alta"),
+                         ProyectoId = g.Key.ProyectoId
+                     }).ToList();
+
+                    await _context.ConteoTipoComponentes.AddRangeAsync(resultadoCount);
+                    await _context.SaveChangesAsync();
+
+                    //para guardar las 14 caracteristica generales del sistema
+                   await _context.CaracteristicaSistemas.AddRangeAsync(data.CaracteristicaSistemas);
+                    await _context.SaveChangesAsync();
+
+                    //calcular el Factor de Ajuste (VAF)
+                    double resultVAF = _servicesEstimate.calcularVAF(data.CaracteristicaSistemas);
+
+
+                    //guardar datos en la tabla Punto funcion ajustado
+                    //aqui error  
+                     var resultPuntoFuncionAjustado = _servicesEstimate. OrganizarPuntoFuncionAjustado(resultadoCount);
+
+                    await _context.PuntoFuncionAjustados.AddRangeAsync(resultPuntoFuncionAjustado);
+                    await _context.SaveChangesAsync();
+
+                    /*
+                    Calcular el Total de Puntos Función sin Ajustar (PFSA): 
+                    */
+                    int totalPFSA = await _context.PuntoFuncionAjustados
+                             .Where(p => p.ProyectoId == resultPuntoFuncionAjustado[0].ProyectoId)
+                             .SumAsync(p => p.Total);
+
+
+
+                    /*calcular Total de Puntos Función Ajustados (PFA)
+                     PFA = PFSA * [0.65 + (0.01) * factor de ajuste)]*/
+                    double CalcularPFA = totalPFSA * (0.65 + (0.01 * resultVAF));
+
+                    //guardar Productividad de estimacion
+                    /*_context.EstimacionProductividad.AddRangeAsync(data.Productividades);*/
+
+
+
+
+                    //guardar datos de la tabla estimacion
+                    var estimacion = new Estimacion()
+                    {
+                        ProyectoId = resultPuntoFuncionAjustado[0].ProyectoId,
+                        FactorAjuste = (decimal)resultVAF,
+                        TotalPuntoFuncionAjustado = totalPFSA,
+                        TotalPuntoFuncionSinAjustar = (decimal)CalcularPFA,
+                        DetalleEstimacions = new List<DetalleEstimacion>{
+                            new DetalleEstimacion{
+                                CostoBrutoEstimado=1,
+                                EsfuerzoTotal=1,
+                                DuracionDias=1,
+                                DuracionHoras=1,
+                                CostoTotal=1,
+                                DuracionMes=1
+                            }
+                        }
+                    };
+                    _context.Estimacions.Add(estimacion);
+                    await _context.SaveChangesAsync();
+
+                    transaction.Commit();
+                    return NoContent();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    return StatusCode(500, $"Error a realizar la estimación: {ex.Message}");
+                }
+
+            }
+
+
         }
 
         // DELETE: api/Estimacions/5
