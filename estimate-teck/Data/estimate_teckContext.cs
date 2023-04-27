@@ -82,6 +82,8 @@ namespace estimate_teck.Data
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.Property(e => e.SalarioHora).HasColumnType("decimal(10, 2)");
             });
 
             modelBuilder.Entity<Cliente>(entity =>

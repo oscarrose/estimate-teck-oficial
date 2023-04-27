@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using JsonIgnoreAttribute = System.Text.Json.Serialization.JsonIgnoreAttribute;
 
 namespace estimate_teck.Models
 {
@@ -10,14 +14,26 @@ namespace estimate_teck.Models
             Empleados = new HashSet<Empleado>();
             ParticipanteEstimacions = new HashSet<ParticipanteEstimacion>();
             TarifarioHoras = new HashSet<TarifarioHora>();
+
+
         }
 
         public int CargoId { get; set; }
         public string Nombre { get; set; } = null!;
+        public decimal SalarioHora { get; set; }
         public string Descripcion { get; set; } = null!;
 
+        
+
+
+
+   
         public virtual ICollection<Empleado> Empleados { get; set; }
+
+       
         public virtual ICollection<ParticipanteEstimacion> ParticipanteEstimacions { get; set; }
+
+        
         public virtual ICollection<TarifarioHora> TarifarioHoras { get; set; }
     }
 }
