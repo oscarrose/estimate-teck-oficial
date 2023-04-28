@@ -29,63 +29,67 @@ CREATE TABLE Cargo
 (
     Cargo_Id INT NOT NULL IDENTITY CONSTRAINT Pk_cargo_Id PRIMARY KEY(Cargo_Id),
     Nombre VARCHAR(100) NOT NULL,
-    Descripcion VARCHAR(max) NOT NULL
+	SalarioHora decimal(10,2) not null,
+    Descripcion VARCHAR(max) NOT NULL,
+	Creado_por VARCHAR(25) NULL,
+	Fecha_Creacion DATETIME DEFAULT GETDATE()
+
 );
 GO
--- INSERT CARGO--
+
 INSERT INTO  Cargo
-    (Nombre,Descripcion)
+    (Nombre,SalarioHora,Descripcion)
 VALUES
-    ('Frontend Development', 'Programador que trabaja la parte de la
+    ('Frontend Development', 2500,'Programador que trabaja la parte de la
 aplicacionn  con la que interactua el usuario');
 GO
 
 INSERT INTO cargo
-    (Nombre,Descripcion)
+    (Nombre,SalarioHora,Descripcion)
 VALUES
-    ('Backend Development', 'Programador que se encarga de trabajar
+    ('Backend Development', 1000,'Programador que se encarga de trabajar
 con la parte de la aplicacion que el usuario no puede ver');
 GO
 
 INSERT INTO cargo
-    (Nombre,Descripcion)
+    (Nombre,SalarioHora,Descripcion)
 VALUES
-    ('Full-Stacks Development', 'Programador que trabaja todos los 
+    ('Full-Stacks Development',1500, 'Programador que trabaja todos los 
 aspectos de una aplicación, incluidos Frontend y backend');
 GO
 
 INSERT INTO cargo
-    (Nombre,Descripcion)
+    (Nombre,SalarioHora,Descripcion)
 VALUES
-    ('Mobile Development', 'Programador que trabaja las aplicaciones 
+    ('Mobile Development', 2000,'Programador que trabaja las aplicaciones 
 Moviles');
 GO
 
 INSERT INTO cargo
-    (Nombre,Descripcion)
+    (Nombre,SalarioHora,Descripcion)
 VALUES
-    ('Diseñador UX', 'Es el profesional que gestiona la experiencia del usuario 
+    ('Diseñador UX',3000, 'Es el profesional que gestiona la experiencia del usuario 
 con un producto digital. Su objetivo es que la interacción del usuario con el producto sea sencilla e intuitiva');
 GO
 
 
-INSERT INTO cargo
-    (Nombre,Descripcion)
-VALUES
-    ('Gerente general', 'N/A');
-GO
+--INSERT INTO cargo
+--    (Nombre,Descripcion)
+--VALUES
+--    ('Gerente general', 'N/A');
+--GO
 
-INSERT INTO cargo
-    (Nombre,Descripcion)
-VALUES
-    ('Encargado de proyectos', 'N/A');
-GO
+--INSERT INTO cargo
+--    (Nombre,Descripcion)
+--VALUES
+--    ('Encargado de proyectos', 'N/A');
+--GO
 
-INSERT INTO cargo
-    (Nombre,Descripcion)
-VALUES
-    ('Gerente de TIC', 'N/A');
-GO
+--INSERT INTO cargo
+--    (Nombre,Descripcion)
+--VALUES
+--    ('Gerente de TIC', 'N/A');
+--GO
 
 
 
@@ -104,7 +108,7 @@ CREATE TABLE Empleado
     Telefono_Residencial VARCHAR(15) NULL,
     Celular VARCHAR(15) NOT NULL,
     Pais VARCHAR(255) NOT NULL,
-    Provincia VARCHAR(255) NOT NULL,
+    Estado VARCHAR(255) NOT NULL,
     Ciudad VARCHAR(255) NOT NULL,
     Direccion VARCHAR(255) NOT NULL,
     Fecha_Creacion DATETIME DEFAULT GETDATE()
@@ -177,11 +181,11 @@ VALUES
     ('Sin requisito fiscal'); 
 GO
 
-CREATE TABLE Cliente
+create TABLE Cliente
 (
     Cliente_Id INT NOT NULL IDENTITY CONSTRAINT Pk_Cliente Primary key (Cliente_Id),
     Tipo_Id INT NOT NULL CONSTRAINT Fk_TipoClienteId FOREIGN KEY REFERENCES TipoCliente (Tipo_Id),
-    --Usuario_Id INT NOT NULL CONSTRAINT Fk_Cliente_Creado_Usuario_Id FOREIGN KEY REFERENCES Usuario(Usuario_Id),
+    Creado_por VARCHAR(25) NULL,
     Nombre_Cliente VARCHAR(255) NOT NULL,
     Tipo_identificacion VARCHAR(255) NOT NULL,
     Identificacion VARCHAR(15) NOT NULL,
@@ -190,7 +194,7 @@ CREATE TABLE Cliente
     Celular VARCHAR(15) NOT NULL,
     Pais VARCHAR(255) NOT NULL,
     Estado VARCHAR(255) NULL,
-    --Ciudad VARCHAR(255) NULL,
+    Ciudad VARCHAR(255) NULL,
     Direccion VARCHAR(255) NOT NULL,
     Fecha_Creacion DATETIME DEFAULT GETDATE()
 
@@ -418,3 +422,5 @@ CREATE TABLE Punto_funcion_ajustado
     alta INT NOT NULL
 );
 GO
+
+--DBCC CHECKIDENT (Cargo, RESEED, 0)
