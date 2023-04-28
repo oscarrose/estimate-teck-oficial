@@ -19,5 +19,6 @@
         public string Direccion { get; set; } = null!;
         public int Usuario { get; set; }
         public DateTime? FechaCreacion { get; set; }
+        public string Empleado { get; set; } = null!;
     }
 }

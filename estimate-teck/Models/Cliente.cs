@@ -12,6 +12,7 @@ namespace estimate_teck.Models
 
         public int ClienteId { get; set; }
         public int TipoId { get; set; }
+        public string? CreadoPor { get; set; }
         public string NombreCliente { get; set; } = null!;
         public string TipoIdentificacion { get; set; } = null!;
         public string Identificacion { get; set; } = null!;

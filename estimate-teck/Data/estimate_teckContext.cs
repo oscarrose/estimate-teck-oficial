@@ -77,7 +77,17 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.CargoId).HasColumnName("Cargo_Id");
 
+                entity.Property(e => e.CreadoPor)
+                    .HasMaxLength(25)
+                    .IsUnicode(false)
+                    .HasColumnName("Creado_por");
+
                 entity.Property(e => e.Descripcion).IsUnicode(false);
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Fecha_Creacion")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
@@ -99,6 +109,11 @@ namespace estimate_teck.Data
                 entity.Property(e => e.Ciudad)
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
+                entity.Property(e => e.CreadoPor)
+                    .HasMaxLength(25)
+                    .IsUnicode(false)
+                    .HasColumnName("Creado_por");
 
                 entity.Property(e => e.Direccion)
                     .HasMaxLength(255)

@@ -36,6 +36,8 @@ namespace estimate_teck.Controllers
                     Nombre = c.Nombre,
                     SalarioHora = c.SalarioHora,
                     Descripcion = c.Descripcion,
+                    CreadoPor = c.CreadoPor,
+                    FechaCreacion = c.FechaCreacion,
                 }).ToListAsync();
             return Ok(AllCargos);
 
@@ -50,7 +52,7 @@ namespace estimate_teck.Controllers
         }
 
 
-        // POST​:/api​/Auth​/RegisterUser
+        // POST​:​/api​/Cargos​/CreateCargos
         [HttpPost("CreateCargos")]
         public async Task<ActionResult<Cargo>> CreateCargo([FromBody] Cargo cargo)
         {
@@ -71,6 +73,8 @@ namespace estimate_teck.Controllers
                     Nombre = cargo.Nombre,
                     SalarioHora = cargo.SalarioHora,
                     Descripcion = cargo.Descripcion,
+                    CreadoPor = cargo.CreadoPor,
+                    FechaCreacion = cargo.FechaCreacion,
 
                 };
 
