@@ -3,7 +3,8 @@ import { Modal, Form, Input, Select, Spin, Button, message } from "antd";
 import CallApi from "../../ServicesHttp/CallApi";
 import { tipoClient } from "./ItemSelectClient";
 import { Countrys, ProvinciaRD } from "../admin-personnel/ItemsSelect";
-
+import useAuth from "../../hooks/useAuth";
+import { data } from "autoprefixer";
 const { Option } = Select;
 
 function ModalFormEmployee({
@@ -16,6 +17,8 @@ function ModalFormEmployee({
   const onReset = () => {
     form.resetFields();
   };
+
+  const { auth } = useAuth();
 
 
   //Asginar los valores a editar
@@ -42,8 +45,15 @@ function ModalFormEmployee({
     setLoandingSave(true);
     if (!controlFormClient.dataEdit) {
 
-      await CallApi.post("Client/CreateClient", values)
+      const objNew = {
+        ...values,
+        //usuarioId: auth.idUsuario,
+        creadoPor: auth.emailUsuario
+      }
+
+      await CallApi.post("Client/CreateClient", objNew)
         .then((res) => {
+          console.log("OJO aqui", objNew)
           message.success("Registrado correctamente");
           onReset();
           setDataClient((prevData) => prevData.concat(res.data));
@@ -59,6 +69,7 @@ function ModalFormEmployee({
         ...values,
         fechaCreacion: controlFormClient.dataEdit.fechaCreacion,
         clienteId: controlFormClient.dataEdit.clienteId,
+        creadoPor: auth.emailUsuario
       };
 
       await CallApi.put(

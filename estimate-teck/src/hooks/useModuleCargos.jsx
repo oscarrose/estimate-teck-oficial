@@ -2,25 +2,25 @@ import { useState, useEffect, useCallback } from "react";
 import { message } from "antd";
 import CallApi from "../ServicesHttp/CallApi";
 
-const useModuleProductividad = () => {
+const useModuleCargos = () => {
   //Data para mostrar los datos en la table de empleado y en el select del
 
-  const [dataProductividad, setDataProductividad] = useState([]);
+  const [dataCargos, setDataCargos] = useState([]);
 
 
   //Para saber si esta modificando la data de la tabla de empleado
-  const [updateTableProductividad, setUpdateTableProductividad] = useState(false);
+  const [updateTableCargos, setUpdateTableCargos] = useState(false);
 
   //Para saber cuando termina la peticcion de responder
   const [loanding, setloanding] = useState(false);
   /**
-   *Function para obtener los datos  para la tabla de productividad
+   *Function para obtener los datos  para la tabla de Cargos
    */
-  const fetchDataProductividad = useCallback(async function () {
+  const fetchDataCargos = useCallback(async function () {
     setloanding(true);
-    await CallApi.get("ProductividadPuntoFuncions/GetAllProductividad")
+    await CallApi.get("Cargos/GetAllCargos")
       .then((res) => {
-        setDataProductividad(res.data);
+        setDataCargos(res.data);
         setloanding(false);
       })
       .catch((error) => {
@@ -30,15 +30,15 @@ const useModuleProductividad = () => {
   }, []);
 
   useEffect(() => {
-    fetchDataProductividad();
-  }, [updateTableProductividad]);
+    fetchDataCargos();
+  }, [updateTableCargos]);
 
   return {
-    dataProductividad,
-    setDataProductividad,
+    dataCargos,
+    setDataCargos,
     loanding,
-    setUpdateTableProductividad
+    setUpdateTableCargos
   };
 };
 
-export default useModuleProductividad;
+export default useModuleCargos;

@@ -12,22 +12,18 @@ function TableTarifario({
   const columns = [
     {
       title: "Cargo",
-      dataIndex: "cargoName",
+      dataIndex: "nombre",
     },
-    {
-      title: "Empleado",
-      dataIndex: "empleadoName",
-      with:8
-    },
+
     {
       title: "Tarifa/Hora",
-      dataIndex: "montoTarifa",
+      dataIndex: "salarioHora",
       with:10
    
     },
     {
-      title: "Fecha creación",
-      dataIndex: "fechaCreacion",
+      title: "Descripción",
+      dataIndex: "descripcion",
       with:20
 
     },

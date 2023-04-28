@@ -80,6 +80,10 @@ function TableClient({
       width: 127,
     },
     {
+      title: "Creado por",
+      dataIndex: "creadoPor",
+    },
+    {
 
       render: (record) => (
         <Space size="middle">
