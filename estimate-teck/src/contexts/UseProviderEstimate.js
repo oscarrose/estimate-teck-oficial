@@ -49,7 +49,7 @@ const UseProviderEstimate = ({ children }) => {
             CaracteristicaSistemas: systemCharacteristc,
             Productividades: newProductividadId,
         };
-        console.log("aa", dataToSend)
+      
         await CallApi.post("Estimacions/estimarProyectos ", dataToSend)
             .then((res) => {
                 console.log("res!", res.data)

@@ -24,7 +24,7 @@ const LayoutApp = ({children}) => {
           style={{
             margin: "24px 16px ",
             padding: 0,
-            minHeight: 565,
+            minHeight: 665,
             background: colorBgContainer,
           }}
           className="container mx-auto"

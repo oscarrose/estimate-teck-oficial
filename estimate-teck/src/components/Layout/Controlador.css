@@ -20,14 +20,14 @@
      border-bottom: 1px solid green;
 }
 .btncerrar:hover{
-    color:  rgb(0, 123, 0);
+    color:  rgb(0, 0, 0);
     border-bottom: 1px solid green;
 }
 .btncerrar{
     text-decoration: none;
-    color: rgb(136, 136, 136);
-    font-size: 15px;
-    padding: 5px;
+    color: rgb(0, 133, 255);
+    font-size: 24px;
+    padding: 25px;
     margin-bottom: 5px; 
 }
 

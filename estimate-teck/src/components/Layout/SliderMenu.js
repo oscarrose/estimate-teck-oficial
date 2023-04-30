@@ -19,9 +19,9 @@ const { Sider } = Layout;
 function SliderMenu({ collapsed }) {
 
   const { auth } = useAuth();
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  // const {
+  //   token: { colorText },
+  // } = theme.useToken();
   function getItem(label, key, icon, type) {
     return {
       key,
@@ -77,20 +77,20 @@ function SliderMenu({ collapsed }) {
     <>
 
       <Sider
+      
         trigger={null}
         collapsible
         collapsed={collapsed}
         width={200}
+       
 
-        style={{
-          background: colorBgContainer,
-        }}
       >
         <div className="logo">
-          <img className="w-24 ml-6" src={logoMenu} alt="Estimate-teck" />
+          <img className="w-32"src={logoMenu} alt="Estimate-teck" />
         </div>
         <Menu
-         
+          //className="bg-black"
+          theme="dark"
           mode="inline"
           items={items}
         />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Popconfirm } from 'antd';
 import useAuth from '../../hooks/useAuth';
+import {LogoutOutlined} from "@ant-design/icons"
 import './Controlador.css'
 
 const text = '¿Estás segura de cerrar session?';
@@ -12,11 +13,11 @@ const UserInfo = () => {
         <>
             <div
                 size="large"
-                style={{ verticalAlign: 'middle', }}
+                style={{ verticalAlign: 'middle'}}
             >
-                <span>{auth.emailUsuario}</span>
+                <span className='text-xl'>{auth.emailUsuario}</span>
                 <Popconfirm title={text} onConfirm={CloseSession} okText="Si" cancelText="No">
-                    <a className='btncerrar'>Cerrar session</a>
+                    <a className='btncerrar'> <LogoutOutlined /></a>
                 </Popconfirm>
 
             </div>

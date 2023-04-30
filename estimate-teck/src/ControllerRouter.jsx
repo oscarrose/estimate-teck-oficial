@@ -4,7 +4,6 @@ import { Spin } from "antd";
 import { ServiciesRol } from "./components/login/ServiciesRol";
 import AuthRequired from "./components/login/AuthRequired"
 import NotFound from "./components/pages/NotFound"
-import Landing from "./components/pages/Landing";
 import Login from "./components/login/Login";
 import HomeApp from "./components/pages/HomeApp";
 import AppRouter from "./AppRouter";
@@ -27,8 +26,7 @@ const ControllerRouter = () => {
     <Routes>
 
       {/*ruta base */}
-      <Route index element={<Landing />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
       <Route path="/home" element={<AppRouter component={HomeApp} />} />
       <Route path="/profile" element={<AppRouter component={ProfileUser} />} />
       <Route path="/notfound" element={<AppRouter component={NotFound} />} />
