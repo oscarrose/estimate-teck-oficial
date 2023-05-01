@@ -43,7 +43,7 @@ namespace estimate_teck.Controllers
                     e.Nombre,
                     e.Apellido,
                     e.EmpleadoId,
-                   cargo= e.Cargo.Nombre,
+                   cargo= e.Cargo.NombreCargo,
                    e.Identificacion,
                    e.Email,
 
@@ -82,7 +82,7 @@ namespace estimate_teck.Controllers
                 resultEmployee.CreadoPor=employee.CreadoPor;
                 resultEmployee.Direccion = employee.Direccion;
                 resultEmployee.CargoId = employee.CargoId;
-                resultEmployee.Cargo = resulCargo.Nombre;
+                resultEmployee.Cargo = resulCargo.NombreCargo;
                 resultEmployee.Email = employee.Email;
                 resultEmployee.Identificacion = employee.Identificacion;
                 resultEmployee.TelefonoResidencial = employee.TelefonoResidencial;

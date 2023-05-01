@@ -40,7 +40,7 @@ namespace estimate_teck.Controllers
                    TarifarioId = T.TarifarioId,
                    UsuarioId= T.UsuarioId,
                    CargoId = T.CargoId,
-                   CargoName = cgo.Nombre,
+                   CargoName = cgo.NombreCargo,
                    EmpleadoId = T.EmpleadoId,
                    MontoTarifa = T.MontoTarifa,
 
@@ -100,7 +100,7 @@ namespace estimate_teck.Controllers
                     FechaCreacion=createTarifarioHora.FechaCreacion,
                     UsuarioId= createTarifarioHora.UsuarioId,
                     CargoId = createTarifarioHora.CargoId,
-                    CargoName=resultCargo.Nombre,
+                    CargoName=resultCargo.NombreCargo,
                     EmpleadoId = createTarifarioHora.EmpleadoId,
                     EmpleadoName = string.Concat(resultEmple.Nombre, " ", resultEmple.Apellido),
                     MontoTarifa = createTarifarioHora.MontoTarifa

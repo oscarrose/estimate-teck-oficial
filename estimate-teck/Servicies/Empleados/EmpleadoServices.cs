@@ -45,7 +45,7 @@ namespace estimate_teck.Servicies.Empleados
                     CreadoPor=employee.CreadoPor,
                     Direccion=employee.Direccion,
                     CargoId = employee.CargoId,
-                    Cargo = cargo.Nombre,
+                    Cargo = cargo.NombreCargo,
                     Email = employee.Email,
                     Identificacion= employee.Identificacion,
                     TelefonoResidencial = employee.TelefonoResidencial,

@@ -33,7 +33,7 @@ namespace estimate_teck.Controllers
                 select new CargosDTO()
                 {
                     CargoId = c.CargoId,
-                    Nombre = c.Nombre,
+                    Nombre = c.NombreCargo,
                     SalarioHora = c.SalarioHora,
                     Descripcion = c.Descripcion,
                     CreadoPor = c.CreadoPor,
@@ -70,7 +70,7 @@ namespace estimate_teck.Controllers
                 var createCargo = new Cargo
                 {
                     CargoId = cargo.CargoId,
-                    Nombre = cargo.Nombre,
+                    NombreCargo = cargo.NombreCargo,
                     SalarioHora = cargo.SalarioHora,
                     Descripcion = cargo.Descripcion,
                     CreadoPor = cargo.CreadoPor,
