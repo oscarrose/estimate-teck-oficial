@@ -20,6 +20,7 @@ namespace estimate_teck.Controllers
         }
 
 
+
         // GET:/api​/Cargos​/GetAllCargos
         [HttpGet("GetAllCargos")]
         public async Task<ActionResult<IEnumerable<CargosDTO>>> GetCargos()
@@ -33,7 +34,7 @@ namespace estimate_teck.Controllers
                 select new CargosDTO()
                 {
                     CargoId = c.CargoId,
-                    Nombre = c.NombreCargo,
+                    NombreCargo = c.NombreCargo,
                     SalarioHora = c.SalarioHora,
                     Descripcion = c.Descripcion,
                     CreadoPor = c.CreadoPor,
