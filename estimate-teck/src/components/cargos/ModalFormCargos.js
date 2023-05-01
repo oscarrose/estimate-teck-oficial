@@ -4,7 +4,7 @@ import CallApi from "../../ServicesHttp/CallApi";
 //import { estadoCargos } from "./ItemSelectCargos";
 import useAuth from "../../hooks/useAuth";
 //import {cargo} from "../CargosHora/ItemSelectCargos";
-import useModuleAdminPersonnel from "../../hooks/useModuleAdminPersonnel";
+import useModuleCargos from "../../hooks/useModuleCargos";
 const { Option } = Select;
 
 function ModalFormCargos({
@@ -18,7 +18,7 @@ function ModalFormCargos({
     form.resetFields();
   };
   const { auth } = useAuth();
-
+  const {dataCargos} = useModuleCargos();
 
   const [loandingSave, setLoandingSave] = useState(false);
 
@@ -27,7 +27,7 @@ function ModalFormCargos({
 
     setLoandingSave(true);
     if (!controlFormCargos.dataEdit) {
-      
+
       const objNew = {
         ...values,
         usuarioId: auth.idUsuario,
@@ -122,8 +122,8 @@ function ModalFormCargos({
             initialValues={controlFormCargos.dataEdit}
           //setfieldsvalue={controlFormCargos.dataEdit !== null ? edit() : onReset()}
           >
-            <Form.Item
-              name="nombre"
+            {<Form.Item
+              name="nombreCargo"
               label="Nombre del Cargo"
               hasFeedback
               rules={[
@@ -133,8 +133,16 @@ function ModalFormCargos({
                 },
               ]}
             >
-              <Input placeholder="Nombre del Cargo" />
-            </Form.Item>
+              <Select placeholder=" Seleccione el cargo" allowClear>
+                {dataCargos.map((data) => (
+                  <Option key={data.nombreCargo} value={data.nombreCargo}>
+                    {data.nombreCargo}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>}
+
+
 
             <Form.Item
               name="salarioHora"

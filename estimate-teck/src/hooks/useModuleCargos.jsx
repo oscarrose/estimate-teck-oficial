@@ -8,7 +8,7 @@ const useModuleCargos = () => {
   const [dataCargos, setDataCargos] = useState([]);
 
 
-  //Para saber si esta modificando la data de la tabla de empleado
+  //Para saber si esta modificando la data de la tabla de cargo
   const [updateTableCargos, setUpdateTableCargos] = useState(false);
 
   //Para saber cuando termina la peticcion de responder
@@ -21,6 +21,7 @@ const useModuleCargos = () => {
     await CallApi.get("Cargos/GetAllCargos")
       .then((res) => {
         setDataCargos(res.data);
+        console.log("Indentificar", res.data);
         setloanding(false);
       })
       .catch((error) => {

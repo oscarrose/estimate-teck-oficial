@@ -12,7 +12,7 @@ function TableCargos({
     const columns = [
         {
             title: "Cargo",
-            dataIndex: "nombre",
+            dataIndex: "nombreCargo",
         },
 
         {
