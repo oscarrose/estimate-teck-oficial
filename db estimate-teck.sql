@@ -40,7 +40,21 @@ GO
 INSERT INTO  Cargo
     (Nombre,SalarioHora,Descripcion)
 VALUES
-    ('Frontend Development', 2500,'Programador que trabaja la parte de la
+    ('Frontend Development Junior', 2500,'Programador que trabaja la parte de la
+aplicacionn  con la que interactua el usuario');
+GO
+
+INSERT INTO  Cargo
+    (Nombre,SalarioHora,Descripcion)
+VALUES
+    ('Frontend Development Mid Senior', 2500,'Programador que trabaja la parte de la
+aplicacionn  con la que interactua el usuario');
+GO
+
+INSERT INTO  Cargo
+    (Nombre,SalarioHora,Descripcion)
+VALUES
+    ('Frontend Development Senior', 2500,'Programador que trabaja la parte de la
 aplicacionn  con la que interactua el usuario');
 GO
 
@@ -54,7 +68,21 @@ GO
 INSERT INTO cargo
     (Nombre,SalarioHora,Descripcion)
 VALUES
-    ('Full-Stacks Development',1500, 'Programador que trabaja todos los 
+    ('Full-Stacks Development Junior',1500, 'Programador que trabaja todos los 
+aspectos de una aplicación, incluidos Frontend y backend');
+GO
+
+INSERT INTO cargo
+    (Nombre,SalarioHora,Descripcion)
+VALUES
+    ('Full-Stacks Development Mid Senior',1500, 'Programador que trabaja todos los 
+aspectos de una aplicación, incluidos Frontend y backend');
+GO
+
+INSERT INTO cargo
+    (Nombre,SalarioHora,Descripcion)
+VALUES
+    ('Full-Stacks Development Senior',1500, 'Programador que trabaja todos los 
 aspectos de una aplicación, incluidos Frontend y backend');
 GO
 
@@ -68,28 +96,43 @@ GO
 INSERT INTO cargo
     (Nombre,SalarioHora,Descripcion)
 VALUES
-    ('Diseñador UX',3000, 'Es el profesional que gestiona la experiencia del usuario 
+    ('Diseñador UX Junior',3000, 'Es el profesional que gestiona la experiencia del usuario 
+con un producto digital. Su objetivo es que la interacción del usuario con el producto sea sencilla e intuitiva');
+GO
+
+INSERT INTO cargo
+    (Nombre,SalarioHora,Descripcion)
+VALUES
+    ('Diseñador UX Mid Senior',3000, 'Es el profesional que gestiona la experiencia del usuario 
+con un producto digital. Su objetivo es que la interacción del usuario con el producto sea sencilla e intuitiva');
+GO
+
+INSERT INTO cargo
+    (Nombre,SalarioHora,Descripcion)
+VALUES
+    ('Diseñador UX Senior',3000, 'Es el profesional que gestiona la experiencia del usuario 
 con un producto digital. Su objetivo es que la interacción del usuario con el producto sea sencilla e intuitiva');
 GO
 
 
---INSERT INTO cargo
---    (Nombre,Descripcion)
---VALUES
---    ('Gerente general', 'N/A');
---GO
 
---INSERT INTO cargo
---    (Nombre,Descripcion)
---VALUES
---    ('Encargado de proyectos', 'N/A');
---GO
+INSERT INTO cargo
+    (Nombre,Descripcion)
+VALUES
+    ('Director General', 0, 'N/A');
+GO
 
---INSERT INTO cargo
---    (Nombre,Descripcion)
---VALUES
---    ('Gerente de TIC', 'N/A');
---GO
+INSERT INTO cargo
+    (Nombre,Descripcion)
+VALUES
+    ('Product Owner', 0,'N/A');
+GO
+
+INSERT INTO cargo
+    (Nombre,Descripcion)
+VALUES
+    ('Administrador de tecnología', 0, 'N/A');
+GO
 
 
 
