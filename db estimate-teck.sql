@@ -246,6 +246,7 @@ CREATE TABLE Proyecto
     NombreProyecto VARCHAR(max) NOT NULL,
     Descripcion VARCHAR(max) NULL,
     TipoProyecto VARCHAR(Max) NOT NULL,
+    TipoAplicacion VARCHAR(Max) NOT NULL,
     --FechaInicio datetime,
     --FechaFinalizacion datetime,
     FechaCreacion DATETIME DEFAULT GETDATE()
@@ -338,18 +339,22 @@ CREATE TABLE Estimacion
 
     Estimacion_Id int not null identity constraint Pk_Estimacion_Id primary key (Estimacion_Id),
     Proyecto_Id int not null constraint Fk_ProyectoEstimacion_Id foreign key references Proyecto (Proyecto_Id),
-   -- Productividad_Id int not null constraint Fk_ProductividadEstimacion_Id foreign key references ProductividadPuntoFuncion (Productividad_Id),
+    -- Productividad_Id int not null constraint Fk_ProductividadEstimacion_Id foreign key references ProductividadPuntoFuncion (Productividad_Id),
     FactorAjuste decimal (10,2),
     TotalPuntoFuncionAjustado decimal (10,2),
-    TotalPuntoFuncionSinAjustar decimal (10,2)
+    TotalPuntoFuncionSinAjustar decimal (10,2),
+    FechaCreacion DATETIME DEFAULT GETDATE()
+
 );
 GO
 
 CREATE TABLE Estimacion_Productividad
 (
-    Estimacion_Id int not null constraint Fk_EstimacionId_productividad foreign key references Estimacion(Estimacion_Id),
-    Productividad_Id int not null constraint Fk_ProductividadId_estimacion foreign key references ProductividadPuntoFuncion(Productividad_Id),
-    primary key (Estimacion_Id, Productividad_Id)
+    Estimacion_Productividad_Id INT NOT NULL IDENTITY CONSTRAINT  PK_Estimacion_Productividad primary key (Estimacion_Productividad_Id),
+    Estimacion_Id iNT NOT NULL CONSTRAINT Fk_EstimacionId_productividad foreign key references Estimacion(Estimacion_Id),
+    Productividad_Id INT NOT NULL CONSTRAINT Fk_ProductividadId_estimacion foreign key references ProductividadPuntoFuncion(Productividad_Id),
+    EsfuerzoProductividad DECIMAL(10,2) NOT NULL,
+    ProgramadoresProductividad INT NOT NULL
 );
 GO
 
@@ -360,8 +365,8 @@ CREATE TABLE Detalle_estimacion
     Estimacion_Id INT NOT NULL CONSTRAINT Fk_Estimacion_DetalleEstimacion FOREIGN KEY REFERENCES Estimacion(Estimacion_Id),
     Esfuerzo_total DECIMAL(10,2) NOT NULL,
     Duracion_horas DECIMAL(10,2) NOT NULL,
-    Duracion_dias INT NOT NULL,
-    Duracion_mes INT NOT NULL,
+    Duracion_dias DECIMAL(10,2) NOT NULL,
+    Duracion_mes DECIMAL(10,2) NOT NULL,
     Costo_bruto_estimado DECIMAL(10,2) NOT NULL,
     Costo_total DECIMAL(10,2) NOT NULL
 );
@@ -399,9 +404,11 @@ CREATE TABLE Caracteristica_sistema
     Caracteristica_sistema_id INT NOT NULL IDENTITY CONSTRAINT PK_caracteristica_sistema_Id PRIMARY KEY(Caracteristica_sistema_id),
     Proyecto_Id INT NOT NULL CONSTRAINT Fk_proyecto_id_caracteristica_sistema FOREIGN KEY REFERENCES Proyecto(Proyecto_Id),
     Caracteristica VARCHAR(MAX) NOT NULL,
-    Puntaje INT NOT NULL CONSTRAINT FK_puntaje_caracteristica FOREIGN KEY REFERENCES Puntaje_Caracteristica(idPuntaje)
+    Idpuntaje INT NOT NULL CONSTRAINT FK_puntaje_caracteristica FOREIGN KEY REFERENCES Puntaje_Caracteristica(idPuntaje)
 );
 GO
+--EXEC sp_RENAME 'Caracteristica_sistema.puntaje', 'Idpuntaje', 'COLUMN'
+
 
 CREATE TABLE Parametros_economico
 (
@@ -448,11 +455,12 @@ GO
 CREATE TABLE Punto_funcion_ajustado
 (
     Punto_funcion_ajustado_id INT NOT NULL IDENTITY CONSTRAINT Pk_punto_funcion_ajustado PRIMARY KEY(Punto_funcion_ajustado_id),
-    Tipo_conponente_id INT NOT NULL CONSTRAINT Fk_tipo_componente_punto_funcion_ajustado FOREIGN KEY REFERENCES TipoComponente(TipoComponente_Id),
+    Tipo_componente_id INT NOT NULL CONSTRAINT Fk_tipo_componente_punto_funcion_ajustado FOREIGN KEY REFERENCES TipoComponente(TipoComponente_Id),
     Proyecto_id INT NOT NULL CONSTRAINT Fk_Proyecto_id_punto_funcion_ajustado FOREIGN KEY REFERENCES Proyecto(Proyecto_Id),
     baja INT NOT NULL,
     media INT NOT NULL,
     alta INT NOT NULL,
     total INT NOT NULL
+    --total AS ISNULL(baja,0)+ISNULL(media,0)+ISNULL(alta,0) PERSISTED
 );
 GO
