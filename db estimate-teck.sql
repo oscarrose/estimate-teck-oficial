@@ -160,19 +160,19 @@ con un producto digital. Su objetivo es que la interacción del usuario con el p
 GO
 
 INSERT INTO cargo
-    (Nombre,Descripcion)
+    (Nombre,SalarioHora,Descripcion)
 VALUES
     ('Director General', 0, 'N/A');
 GO
 
 INSERT INTO cargo
-    (Nombre,Descripcion)
+    (Nombre,SalarioHora,Descripcion)
 VALUES
     ('Product Owner', 0,'N/A');
 GO
 
 INSERT INTO cargo
-    (Nombre,Descripcion)
+    (Nombre,SalarioHora,Descripcion)
 VALUES
     ('Administrador de tecnología', 0, 'N/A');
 GO
