@@ -20,6 +20,7 @@ namespace estimate_teck.Controllers
         }
 
 
+
         // GET:/api​/Cargos​/GetAllCargos
         [HttpGet("GetAllCargos")]
         public async Task<ActionResult<IEnumerable<CargosDTO>>> GetCargos()
