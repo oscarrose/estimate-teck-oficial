@@ -22,11 +22,13 @@ namespace estimate_teck.Models
         public int ClienteId { get; set; }
         public string NombreProyecto { get; set; } = null!;
         public string? Descripcion { get; set; }
+        public string TipoProyecto { get; set; } = null!;
+        public string TipoAplicacion { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
 
-        public virtual Cliente? Cliente { get; set; } = null!;
-        public virtual EstadoProyecto? EstadoProyecto { get; set; } = null!;
-        public virtual Usuario? Usuario { get; set; } = null!;
+        public virtual Cliente Cliente { get; set; } = null!;
+        public virtual EstadoProyecto EstadoProyecto { get; set; } = null!;
+        public virtual Usuario Usuario { get; set; } = null!;
         public virtual ICollection<CaracteristicaSistema> CaracteristicaSistemas { get; set; }
         public virtual ICollection<ComponenteFuncionale> ComponenteFuncionales { get; set; }
         public virtual ICollection<ConteoTipoComponente> ConteoTipoComponentes { get; set; }

@@ -24,15 +24,18 @@ namespace estimate_teck.Data
         public virtual DbSet<ConteoTipoComponente> ConteoTipoComponentes { get; set; } = null!;
         public virtual DbSet<DetalleEstimacion> DetalleEstimacions { get; set; } = null!;
         public virtual DbSet<Empleado> Empleados { get; set; } = null!;
+        public virtual DbSet<EstadoEstimacion> EstadoEstimacions { get; set; } = null!;
         public virtual DbSet<EstadoProyecto> EstadoProyectos { get; set; } = null!;
         public virtual DbSet<EstadoRequerimiento> EstadoRequerimientos { get; set; } = null!;
         public virtual DbSet<EstadoUsuarioEmpleado> EstadoUsuarioEmpleados { get; set; } = null!;
         public virtual DbSet<Estimacion> Estimacions { get; set; } = null!;
+        public virtual DbSet<EstimacionProductividad> EstimacionProductividads { get; set; } = null!;
         public virtual DbSet<HistorialProyecto> HistorialProyectos { get; set; } = null!;
         public virtual DbSet<ParametrosEconomico> ParametrosEconomicos { get; set; } = null!;
         public virtual DbSet<ParticipanteEstimacion> ParticipanteEstimacions { get; set; } = null!;
         public virtual DbSet<ProductividadPuntoFuncion> ProductividadPuntoFuncions { get; set; } = null!;
         public virtual DbSet<Proyecto> Proyectos { get; set; } = null!;
+        public virtual DbSet<PuntajeCaracteristica> PuntajeCaracteristicas { get; set; } = null!;
         public virtual DbSet<PuntoFuncionAjustado> PuntoFuncionAjustados { get; set; } = null!;
         public virtual DbSet<RequerimientosCliente> RequerimientosClientes { get; set; } = null!;
         public virtual DbSet<RequerimientosSoftware> RequerimientosSoftwares { get; set; } = null!;
@@ -42,15 +45,6 @@ namespace estimate_teck.Data
         public virtual DbSet<TipoComponente> TipoComponentes { get; set; } = null!;
         public virtual DbSet<TipoRequerimiento> TipoRequerimientos { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=localhost; Database=estimate_teck;Trusted_Connection=True; TrustServerCertificate=True");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -63,6 +57,12 @@ namespace estimate_teck.Data
                 entity.Property(e => e.Caracteristica).IsUnicode(false);
 
                 entity.Property(e => e.ProyectoId).HasColumnName("Proyecto_Id");
+
+                entity.HasOne(d => d.IdpuntajeNavigation)
+                    .WithMany(p => p.CaracteristicaSistemas)
+                    .HasForeignKey(d => d.Idpuntaje)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_puntaje_caracteristica");
 
                 entity.HasOne(d => d.Proyecto)
                     .WithMany(p => p.CaracteristicaSistemas)
@@ -257,13 +257,17 @@ namespace estimate_teck.Data
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("Costo_total");
 
-                entity.Property(e => e.DuracionDias).HasColumnName("Duracion_dias");
+                entity.Property(e => e.DuracionDias)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("Duracion_dias");
 
                 entity.Property(e => e.DuracionHoras)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("Duracion_horas");
 
-                entity.Property(e => e.DuracionMes).HasColumnName("Duracion_mes");
+                entity.Property(e => e.DuracionMes)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("Duracion_mes");
 
                 entity.Property(e => e.EsfuerzoTotal)
                     .HasColumnType("decimal(10, 2)")
@@ -358,6 +362,20 @@ namespace estimate_teck.Data
                     .HasConstraintName("FK_Estado_UsuarioEmpleado");
             });
 
+            modelBuilder.Entity<EstadoEstimacion>(entity =>
+            {
+                entity.HasKey(e => e.EstadoId)
+                    .HasName("Pk_Estado_Estimacion");
+
+                entity.ToTable("Estado_Estimacion");
+
+                entity.Property(e => e.EstadoId).HasColumnName("Estado_Id");
+
+                entity.Property(e => e.Estado)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<EstadoProyecto>(entity =>
             {
                 entity.ToTable("EstadoProyecto");
@@ -399,9 +417,13 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.EstimacionId).HasColumnName("Estimacion_Id");
 
+                entity.Property(e => e.EstadoId).HasColumnName("Estado_Id");
+
                 entity.Property(e => e.FactorAjuste).HasColumnType("decimal(10, 2)");
 
-                entity.Property(e => e.ProductividadId).HasColumnName("Productividad_Id");
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.ProyectoId).HasColumnName("Proyecto_Id");
 
@@ -409,17 +431,42 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.TotalPuntoFuncionSinAjustar).HasColumnType("decimal(10, 2)");
 
-                entity.HasOne(d => d.Productividad)
+                entity.HasOne(d => d.Estado)
                     .WithMany(p => p.Estimacions)
-                    .HasForeignKey(d => d.ProductividadId)
+                    .HasForeignKey(d => d.EstadoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Fk_ProductividadEstimacion_Id");
+                    .HasConstraintName("Fk_Estado_Id_Estimacion");
 
                 entity.HasOne(d => d.Proyecto)
                     .WithMany(p => p.Estimacions)
                     .HasForeignKey(d => d.ProyectoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_ProyectoEstimacion_Id");
+            });
+
+            modelBuilder.Entity<EstimacionProductividad>(entity =>
+            {
+                entity.ToTable("Estimacion_Productividad");
+
+                entity.Property(e => e.EstimacionProductividadId).HasColumnName("Estimacion_Productividad_Id");
+
+                entity.Property(e => e.EsfuerzoProductividad).HasColumnType("decimal(10, 2)");
+
+                entity.Property(e => e.EstimacionId).HasColumnName("Estimacion_Id");
+
+                entity.Property(e => e.ProductividadId).HasColumnName("Productividad_Id");
+
+                entity.HasOne(d => d.Estimacion)
+                    .WithMany(p => p.EstimacionProductividads)
+                    .HasForeignKey(d => d.EstimacionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Fk_EstimacionId_productividad");
+
+                entity.HasOne(d => d.Productividad)
+                    .WithMany(p => p.EstimacionProductividads)
+                    .HasForeignKey(d => d.ProductividadId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Fk_ProductividadId_estimacion");
             });
 
             modelBuilder.Entity<HistorialProyecto>(entity =>
@@ -565,6 +612,10 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.NombreProyecto).IsUnicode(false);
 
+                entity.Property(e => e.TipoAplicacion).IsUnicode(false);
+
+                entity.Property(e => e.TipoProyecto).IsUnicode(false);
+
                 entity.Property(e => e.UsuarioId).HasColumnName("Usuario_Id");
 
                 entity.HasOne(d => d.Cliente)
@@ -586,6 +637,22 @@ namespace estimate_teck.Data
                     .HasConstraintName("Fk_Usuario_Proyecto_Id");
             });
 
+            modelBuilder.Entity<PuntajeCaracteristica>(entity =>
+            {
+                entity.HasKey(e => e.IdPuntaje)
+                    .HasName("PK_Puntaje_Id");
+
+                entity.ToTable("Puntaje_Caracteristica");
+
+                entity.Property(e => e.IdPuntaje).HasColumnName("idPuntaje");
+
+                entity.Property(e => e.Significado)
+                    .IsUnicode(false)
+                    .HasColumnName("significado");
+
+                entity.Property(e => e.Valor).HasColumnName("valor");
+            });
+
             modelBuilder.Entity<PuntoFuncionAjustado>(entity =>
             {
                 entity.ToTable("Punto_funcion_ajustado");
@@ -600,7 +667,9 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.ProyectoId).HasColumnName("Proyecto_id");
 
-                entity.Property(e => e.TipoConponenteId).HasColumnName("Tipo_conponente_id");
+                entity.Property(e => e.TipoComponenteId).HasColumnName("Tipo_componente_id");
+
+                entity.Property(e => e.Total).HasColumnName("total");
 
                 entity.HasOne(d => d.Proyecto)
                     .WithMany(p => p.PuntoFuncionAjustados)
@@ -608,9 +677,9 @@ namespace estimate_teck.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_Proyecto_id_punto_funcion_ajustado");
 
-                entity.HasOne(d => d.TipoConponente)
+                entity.HasOne(d => d.TipoComponente)
                     .WithMany(p => p.PuntoFuncionAjustados)
-                    .HasForeignKey(d => d.TipoConponenteId)
+                    .HasForeignKey(d => d.TipoComponenteId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_tipo_componente_punto_funcion_ajustado");
             });

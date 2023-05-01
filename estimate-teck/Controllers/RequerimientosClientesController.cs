@@ -55,7 +55,7 @@ namespace estimate_teck.Controllers
                    from requirClient in _context.RequerimientosClientes
                    where requirClient.ProyectoId == id && requirClient.EstadoId == 2
                    orderby requirClient.RequerimientoId
-                   select new RequerimientosClienteDTO()
+                   select new RequerClienteClassificationDTO()
                    {
                        RequerimientoId = requirClient.RequerimientoId,
                        Requisito = requirClient.Requisito,

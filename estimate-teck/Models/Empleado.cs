@@ -28,7 +28,6 @@ namespace estimate_teck.Models
         public string Ciudad { get; set; } = null!;
         public string Direccion { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
-
         [JsonIgnore]
         public virtual Cargo? Cargo { get; set; } = null!;
         [JsonIgnore]
@@ -36,6 +35,7 @@ namespace estimate_teck.Models
         [JsonIgnore]
         public virtual ICollection<TarifarioHora>? TarifarioHoras { get; set; }
         [JsonIgnore]
+
         public virtual ICollection<Usuario> Usuarios { get; set; }
     }
 }

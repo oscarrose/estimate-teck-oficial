@@ -10,6 +10,7 @@ namespace estimate_teck.Models
             HistorialProyectos = new HashSet<HistorialProyecto>();
             ProductividadPuntoFuncions = new HashSet<ProductividadPuntoFuncion>();
             Proyectos = new HashSet<Proyecto>();
+            RequerimientosClientes = new HashSet<RequerimientosCliente>();
             TarifarioHoras = new HashSet<TarifarioHora>();
         }
 
@@ -27,6 +28,7 @@ namespace estimate_teck.Models
         public virtual ICollection<HistorialProyecto> HistorialProyectos { get; set; }
         public virtual ICollection<ProductividadPuntoFuncion> ProductividadPuntoFuncions { get; set; }
         public virtual ICollection<Proyecto> Proyectos { get; set; }
+        public virtual ICollection<RequerimientosCliente> RequerimientosClientes { get; set; }
         public virtual ICollection<TarifarioHora> TarifarioHoras { get; set; }
     }
 }
