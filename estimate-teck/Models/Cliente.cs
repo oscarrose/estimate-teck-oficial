@@ -12,6 +12,7 @@ namespace estimate_teck.Models
 
         public int ClienteId { get; set; }
         public int TipoId { get; set; }
+        public string? CreadoPor { get; set; }
         public string NombreCliente { get; set; } = null!;
         public string TipoIdentificacion { get; set; } = null!;
         public string Identificacion { get; set; } = null!;
@@ -20,10 +21,11 @@ namespace estimate_teck.Models
         public string Celular { get; set; } = null!;
         public string Pais { get; set; } = null!;
         public string? Estado { get; set; }
+        public string? Ciudad { get; set; }
         public string Direccion { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
 
-        public virtual TipoCliente? Tipo { get; set; } = null!;
+        public virtual TipoCliente Tipo { get; set; } = null!;
         public virtual ICollection<Proyecto> Proyectos { get; set; }
     }
 }

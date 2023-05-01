@@ -39,7 +39,7 @@ namespace estimate_teck.Servicies.Empleados
                     Estado =statusEmployee.Estado,
                     EstadoId= statusEmployee.EstadoId,
                     Pais=employee.Pais,
-                    Provincia=employee.Provincia,
+                   // Provincia=employee.Provincia,
                     Ciudad=employee.Ciudad,
                     FechaNacimiento=employee.FechaNacimiento,
                     CreadoPor=employee.CreadoPor,

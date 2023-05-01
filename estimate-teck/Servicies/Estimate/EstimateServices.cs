@@ -1,5 +1,8 @@
 using estimate_teck.Models;
 using estimate_teck.Data;
+using estimate_teck.DTO;
+using estimate_teck.Servicies;
+
 namespace estimate_teck.Servicies.Estimate
 {
     public class EstimateServices : IEstimate
@@ -9,10 +12,37 @@ namespace estimate_teck.Servicies.Estimate
         {
             _context = context;
         }
+
+        public List<EstimacionProductividad> calcularTheProductividad(ICollection<Productividad> productividades, double CalcularPFA)
+        {
+            var resultProductividad = new List<EstimacionProductividad>();
+            foreach (var item in productividades)
+            {
+                int? mediaProductividad = _context.ProductividadPuntoFuncions
+                .Where(p => p.ProductividadId == item.ProductividadId)
+                .Select(x => x.NivelMedio)
+                .SingleOrDefault();
+
+                decimal esfuerzoProductividad = (decimal)(CalcularPFA * mediaProductividad);
+
+                int programadoresProductividad = (int)(esfuerzoProductividad / Constantes.horaMesTrabajo);
+                programadoresProductividad = programadoresProductividad <= 0 ? 1 : programadoresProductividad;
+                var productividad = new EstimacionProductividad()
+                {
+                    ProductividadId = item.ProductividadId,
+                    EsfuerzoProductividad = esfuerzoProductividad,
+                    ProgramadoresProductividad=programadoresProductividad
+                };
+                resultProductividad.Add(productividad);
+            }
+
+            return resultProductividad;
+        }
+
         public double calcularVAF(ICollection<CaracteristicaSistema> caracteristicaSistemas)
         {
             int totalValor = (from cs in caracteristicaSistemas
-                              join pc in _context.PuntajeCaracteristicas on cs.IdPuntaje equals pc.IdPuntaje
+                              join pc in _context.PuntajeCaracteristicas on cs.Idpuntaje equals pc.IdPuntaje
                               select pc.Valor).Sum();
 
             double resultVSF = 0.65 + (0.01 * totalValor);
@@ -65,7 +95,7 @@ namespace estimate_teck.Servicies.Estimate
 
                 var puntoFuncionAjustado = new PuntoFuncionAjustado()
                 {
-                    TipoConponenteId = TipoComponenteId,
+                    TipoComponenteId = TipoComponenteId,
                     Baja = baja,
                     Media = media,
                     Alta = alta,

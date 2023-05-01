@@ -8,9 +8,9 @@ namespace estimate_teck.Models
         public int CaracteristicaSistemaId { get; set; }
         public int ProyectoId { get; set; }
         public string Caracteristica { get; set; } = null!;
-        public int IdPuntaje { get; set; }
+        public int Idpuntaje { get; set; }
 
-        public virtual Proyecto? Proyecto { get; set; } = null!;
-        public virtual PuntajeCaracteristica? PuntajeNavigation { get; set; } = null!;
+        public virtual PuntajeCaracteristica IdpuntajeNavigation { get; set; } = null!;
+        public virtual Proyecto Proyecto { get; set; } = null!;
     }
 }

@@ -5,6 +5,7 @@ using estimate_teck.Models;
 using estimate_teck.DTO;
 using estimate_teck.Servicies.Estimate;
 using Microsoft.EntityFrameworkCore.Storage;
+using estimate_teck.Servicies;
 
 namespace estimate_teck.Controllers
 {
@@ -119,7 +120,7 @@ namespace estimate_teck.Controllers
                     await _context.SaveChangesAsync();
 
                     //para guardar las 14 caracteristica generales del sistema
-                   await _context.CaracteristicaSistemas.AddRangeAsync(data.CaracteristicaSistemas);
+                    await _context.CaracteristicaSistemas.AddRangeAsync(data.CaracteristicaSistemas);
                     await _context.SaveChangesAsync();
 
                     //calcular el Factor de Ajuste (VAF)
@@ -127,8 +128,7 @@ namespace estimate_teck.Controllers
 
 
                     //guardar datos en la tabla Punto funcion ajustado
-                    //aqui error  
-                     var resultPuntoFuncionAjustado = _servicesEstimate. OrganizarPuntoFuncionAjustado(resultadoCount);
+                    var resultPuntoFuncionAjustado = _servicesEstimate.OrganizarPuntoFuncionAjustado(resultadoCount);
 
                     await _context.PuntoFuncionAjustados.AddRangeAsync(resultPuntoFuncionAjustado);
                     await _context.SaveChangesAsync();
@@ -146,9 +146,26 @@ namespace estimate_teck.Controllers
                      PFA = PFSA * [0.65 + (0.01) * factor de ajuste)]*/
                     double CalcularPFA = totalPFSA * (0.65 + (0.01 * resultVAF));
 
-                    //guardar Productividad de estimacion
-                    /*_context.EstimacionProductividad.AddRangeAsync(data.Productividades);*/
 
+                    //Calcular las horas hombre por cada plataforma de desarrollo. 
+                    //Formula--- Esfuerzo (en horas hombre) = PF ajustado * Productividad por punto de función
+                    var resultProductividad = _servicesEstimate.calcularTheProductividad(data.Productividades, CalcularPFA);
+
+                    //El esfuerzo total en horas hombre se calcula sumando las horas hombre necesarias para desarrollar el software en cada plataforma de desarrollo
+                    decimal EsfuerzoTotal = resultProductividad.Select(r => r.EsfuerzoProductividad).Sum();
+
+                    //--Esta no:El total del esfuerzo dividido entre las horas mes trabajo
+                    //Esta si:la suma de los programadores totales por productividad
+                    int numeroProgramadores = resultProductividad.Select(x=>x.ProgramadoresProductividad).Sum();
+
+                    //Finalmente, para calcular la duración del proyecto en horas laborables, en días y meses, se divide el esfuerzo en horas hombre por el número de programadores y se convierte a días y meses utilizando un promedio de 8 horas laborales al día y 22 días laborales al mes. En este caso, se tiene:
+                    //474 horas/hombre / 2.96 programadores = 160.13 horas laborales 
+                    //160.13 horas laborales / 8 horas/día = 20.02 días 
+                    //20.02 días / 22 días/mes = 0.91 meses
+                    decimal duracionHoras = Math.Round(EsfuerzoTotal / numeroProgramadores);
+                    decimal duracionDias = Math.Round(duracionHoras / Constantes.trabajaraHoraDía);
+
+                    decimal duracionMes = (duracionDias / Constantes.diasPorMes);
 
 
 
@@ -159,22 +176,27 @@ namespace estimate_teck.Controllers
                         FactorAjuste = (decimal)resultVAF,
                         TotalPuntoFuncionAjustado = totalPFSA,
                         TotalPuntoFuncionSinAjustar = (decimal)CalcularPFA,
+                        EstimacionProductividads = resultProductividad,
                         DetalleEstimacions = new List<DetalleEstimacion>{
                             new DetalleEstimacion{
-                                CostoBrutoEstimado=1,
-                                EsfuerzoTotal=1,
-                                DuracionDias=1,
-                                DuracionHoras=1,
-                                CostoTotal=1,
-                                DuracionMes=1
+                               
+                                CostoBrutoEstimado=0,//null
+                                EsfuerzoTotal=EsfuerzoTotal,
+                                DuracionDias=duracionDias,
+                                DuracionHoras=duracionHoras,
+                                CostoTotal=0,//null
+                                DuracionMes=duracionMes
                             }
                         }
                     };
                     _context.Estimacions.Add(estimacion);
                     await _context.SaveChangesAsync();
 
+                    // _context.EstimacionProductividads.AddRange(resultProductividad);
+                    //   await _context.SaveChangesAsync();
+
                     transaction.Commit();
-                    return NoContent();
+                    return Ok(estimacion);
                 }
                 catch (Exception ex)
                 {

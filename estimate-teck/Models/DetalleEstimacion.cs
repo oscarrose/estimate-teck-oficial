@@ -9,8 +9,8 @@ namespace estimate_teck.Models
         public int EstimacionId { get; set; }
         public decimal EsfuerzoTotal { get; set; }
         public decimal DuracionHoras { get; set; }
-        public int DuracionDias { get; set; }
-        public int DuracionMes { get; set; }
+        public decimal DuracionDias { get; set; }
+        public decimal DuracionMes { get; set; }
         public decimal CostoBrutoEstimado { get; set; }
         public decimal CostoTotal { get; set; }
 

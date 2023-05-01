@@ -76,7 +76,7 @@ namespace estimate_teck.Controllers
                 resultEmployee.Estado = "Activo";
                 resultEmployee.EstadoId = employee.EstadoId;
                 resultEmployee.Pais = employee.Pais;
-                resultEmployee.Provincia = employee.Provincia;
+                //resultEmployee.Provincia = employee.Provincia;
                 resultEmployee.Ciudad=employee.Ciudad;
                 resultEmployee.FechaNacimiento=employee.FechaNacimiento;
                 resultEmployee.CreadoPor=employee.CreadoPor;
