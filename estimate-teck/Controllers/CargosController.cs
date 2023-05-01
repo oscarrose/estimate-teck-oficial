@@ -33,7 +33,7 @@ namespace estimate_teck.Controllers
                 select new CargosDTO()
                 {
                     CargoId = c.CargoId,
-                    Nombre = c.NombreCargo,
+                    NombreCargo = c.NombreCargo,
                     SalarioHora = c.SalarioHora,
                     Descripcion = c.Descripcion,
                     CreadoPor = c.CreadoPor,

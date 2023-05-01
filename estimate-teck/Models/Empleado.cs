@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace estimate_teck.Models
@@ -28,9 +29,13 @@ namespace estimate_teck.Models
         public string Direccion { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
 
-        public virtual Cargo Cargo { get; set; } = null!;
-        public virtual EstadoUsuarioEmpleado EstadoNavigation { get; set; } = null!;
-        public virtual ICollection<TarifarioHora> TarifarioHoras { get; set; }
-        public virtual ICollection<Usuario> Usuarios { get; set; }
+        [JsonIgnore]
+        public virtual Cargo? Cargo { get; set; } = null!;
+        [JsonIgnore]
+        public virtual EstadoUsuarioEmpleado? EstadoNavigation { get; set; } = null!;
+        [JsonIgnore]
+        public virtual ICollection<TarifarioHora>? TarifarioHoras { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Usuario>? Usuarios { get; set; }
     }
 }
