@@ -54,42 +54,42 @@ CREATE TABLE Cargo
 GO
 
 INSERT INTO  Cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Frontend Development Junior', 10,'Programador que trabaja la parte de la
 aplicacionn  con la que interactua el usuario');
 GO
 
 INSERT INTO  Cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Frontend Development Mid Senior', 25,'Programador que trabaja la parte de la
 aplicacionn  con la que interactua el usuario');
 GO
 
 INSERT INTO  Cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Frontend Development Senior', 45,'Programador que trabaja la parte de la
 aplicacionn  con la que interactua el usuario');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Backend Development Junior', 10,'Programador que se encarga de trabajar
 con la parte de la aplicacion que el usuario no puede ver');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Backend Development Mid Senior', 25,'Programador que se encarga de trabajar
 con la parte de la aplicacion que el usuario no puede ver');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Backend Development Senior', 40,'Programador que se encarga de trabajar
 con la parte de la aplicacion que el usuario no puede ver');
@@ -97,82 +97,82 @@ GO
 
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Full-Stacks Development Junior',18, 'Programador que trabaja todos los 
 aspectos de una aplicación, incluidos Frontend y backend');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Full-Stacks Development Mid Senior',35, 'Programador que trabaja todos los 
 aspectos de una aplicación, incluidos Frontend y backend');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Full-Stacks Development Senior',90, 'Programador que trabaja todos los 
 aspectos de una aplicación, incluidos Frontend y backend');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Mobile Development Junior', 12,'Programador que trabaja las aplicaciones 
 Moviles');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Mobile Development Mid Senior', 40,'Programador que trabaja las aplicaciones 
 Moviles');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Mobile Development Senior', 70,'Programador que trabaja las aplicaciones 
 Moviles');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Diseñador UX Junior',25, 'Es el profesional que gestiona la experiencia del usuario 
 con un producto digital. Su objetivo es que la interacción del usuario con el producto sea sencilla e intuitiva');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Diseñador UX Mid Senior',35, 'Es el profesional que gestiona la experiencia del usuario 
 con un producto digital. Su objetivo es que la interacción del usuario con el producto sea sencilla e intuitiva');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Diseñador UX Senior',50, 'Es el profesional que gestiona la experiencia del usuario 
 con un producto digital. Su objetivo es que la interacción del usuario con el producto sea sencilla e intuitiva');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Director General', 0, 'N/A');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Product Owner', 0,'N/A');
 GO
 
 INSERT INTO cargo
-    (Nombre,SalarioHora,Descripcion)
+    (NombreCargo,SalarioHora,Descripcion)
 VALUES
     ('Administrador de tecnología', 0, 'N/A');
 GO
