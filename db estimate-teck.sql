@@ -25,6 +25,22 @@ VALUES
     ('Inactivo');
 GO
 
+CREATE TABlE Estado_Estimacion
+(
+    Estado_Id INT NOT NULL IDENTITY CONSTRAINT Pk_Estado_Estimacion PRIMARY KEY(Estado_Id),
+    Estado VARCHAR(15) NOT NULL
+);
+GO
+
+-- Insert datos en estado_estimacion
+INSERT INTO Estado_Estimacion
+    (Estado)
+VALUES
+    ('Completada'),
+    ('Sin efecto'),
+    ('Aprobada')
+GO
+
 CREATE TABLE Cargo
 (
     Cargo_Id INT NOT NULL IDENTITY CONSTRAINT Pk_cargo_Id PRIMARY KEY(Cargo_Id),
@@ -339,6 +355,7 @@ CREATE TABLE Estimacion
 
     Estimacion_Id int not null identity constraint Pk_Estimacion_Id primary key (Estimacion_Id),
     Proyecto_Id int not null constraint Fk_ProyectoEstimacion_Id foreign key references Proyecto (Proyecto_Id),
+    Estado_Id int not null constraint Fk_Estado_Id_Estimacion foreign key references Estado_Estimacion(Estado_Id),
     -- Productividad_Id int not null constraint Fk_ProductividadEstimacion_Id foreign key references ProductividadPuntoFuncion (Productividad_Id),
     FactorAjuste decimal (10,2),
     TotalPuntoFuncionAjustado decimal (10,2),
