@@ -42,6 +42,7 @@ namespace estimate_teck.Controllers
                     Celular = c.Celular,
                     Pais=c.Pais,
                     Estado=c.Estado,
+                    Ciudad=c.Ciudad,
                     Direccion=c.Direccion,
                     FechaCreacion = c.FechaCreacion
 
