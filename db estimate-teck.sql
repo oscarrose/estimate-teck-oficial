@@ -44,7 +44,7 @@ GO
 CREATE TABLE Cargo
 (
     Cargo_Id INT NOT NULL IDENTITY CONSTRAINT Pk_cargo_Id PRIMARY KEY(Cargo_Id),
-    Nombre VARCHAR(100) NOT NULL,
+    NombreCargo VARCHAR(100) NOT NULL,
 	SalarioHora decimal(10,2) not null,
     Descripcion VARCHAR(max) NOT NULL,
 	Creado_por VARCHAR(25) NULL,
