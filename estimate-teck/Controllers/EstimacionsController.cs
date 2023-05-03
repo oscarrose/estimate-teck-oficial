@@ -32,6 +32,7 @@ namespace estimate_teck.Controllers
         }
 
         // GET: api/Estimacions/5
+        //el id es del proyecto
         [HttpGet("DetalleEstimacion/{id}")]
         public async Task<IActionResult> DetalleEstimacion(int id)
         {
@@ -55,35 +56,91 @@ namespace estimate_teck.Controllers
                     where est.ProyectoId == id
                     select new estimacionView()
                     {
-                        EstimacionId=est.EstimacionId,
-                        ProyectoId=est.ProyectoId,
-                        Estado=estado.Estado,
-                        CreadoPor=string.Concat(emp.Nombre," ",emp.Apellido),
-                        FactorAjuste=est.FactorAjuste,
-                        TotalPuntoFuncionAjustado=est.TotalPuntoFuncionAjustado,
-                        TotalPuntoFuncionSinAjustar=est.TotalPuntoFuncionSinAjustar,
-                        FechaCreacion=est.FechaCreacion
+                        EstimacionId = est.EstimacionId,
+                        ProyectoId = est.ProyectoId,
+                        Estado = estado.Estado,
+                        CreadoPor = string.Concat(emp.Nombre, " ", emp.Apellido),
+                        FactorAjuste = est.FactorAjuste,
+                        TotalPuntoFuncionAjustado = est.TotalPuntoFuncionAjustado,
+                        TotalPuntoFuncionSinAjustar = est.TotalPuntoFuncionSinAjustar,
+                        FechaCreacion = est.FechaCreacion
 
                     }).FirstOrDefaultAsync();
 
-                var detalleEstimacion = await(
+                var detalleEstimacion = await (
                     from detalle in _context.DetalleEstimacions
-                    where detalle.EstimacionId==estimacions.EstimacionId
-                    select new estimacionDetalleView(){
-                        EsfuerzoTotal= detalle.EsfuerzoTotal,
-                        TotalProgramadores=detalle.TotalProgramadores,
-                        DuracionMes=detalle.DuracionMes,
-                        DuracionDias=detalle.DuracionDias,
-                        DuracionHoras=detalle.DuracionHoras,
-                        CostoBrutoEstimado=detalle.CostoBrutoEstimado,
-                        CostoTotal=detalle.CostoTotal
-        
-                    }).FirstOrDefaultAsync(); 
+                    where detalle.EstimacionId == estimacions.EstimacionId
+                    select new estimacionDetalleView()
+                    {
+                        EsfuerzoTotal = detalle.EsfuerzoTotal,
+                        TotalProgramadores = detalle.TotalProgramadores,
+                        DuracionMes = detalle.DuracionMes,
+                        DuracionDias = detalle.DuracionDias,
+                        DuracionHoras = detalle.DuracionHoras,
+                        CostoBrutoEstimado = detalle.CostoBrutoEstimado,
+                        CostoTotal = detalle.CostoTotal
+
+                    }).FirstOrDefaultAsync();
+
+                var resultComponenteFuncional = await (
+                from comp in _context.ComponenteFuncionales
+                join req in _context.RequerimientosSoftwares on comp.RequerimientoSwId equals req.Id
+                join tipo in _context.TipoComponentes on comp.TipoComponenteId
+                equals tipo.TipoComponenteId
+                where comp.ProyectoId == id
+                select new ComponenteFuncionaleView()
+                {
+                    RequerimientoSw = req.RequerimientoSf,
+                    TipoComponente = tipo.NombreComponente,
+                    Complejidad = comp.Complejidad
+                }).ToListAsync();
+
+                var resultConteoTipoComponente = await (
+                    from conteo in _context.ConteoTipoComponentes
+                    join tipo in _context.TipoComponentes on conteo.TipoComponenteId equals tipo.TipoComponenteId
+                    where conteo.ProyectoId == id
+                    select new ConteoTipoComponenteView()
+                    {
+                        TipoComponente = tipo.NombreComponente,
+                        Baja = conteo.Baja,
+                        Media = conteo.Media,
+                        Alta = conteo.Alta
+                    }).ToListAsync();
+
+                var resultCaracteristicaSistema = await (
+                                  from caract in _context.CaracteristicaSistemas
+                                  join puntaje in _context.PuntajeCaracteristicas on caract.Idpuntaje equals puntaje.IdPuntaje
+                                  where caract.ProyectoId == id
+                                  select new CaracteristicaSistemaView()
+                                  {
+                                      Caracteristica = caract.Caracteristica,
+                                      puntaje = string.Concat("Significado:", puntaje.Significado," ", "valor:", puntaje.Valor)
+
+                                  }).ToListAsync();
+
+                    var resultPuntoFuncionAjustado=await(
+                        from puntos in _context.PuntoFuncionAjustados
+                        join tipo in _context.TipoComponentes on puntos.TipoComponenteId equals tipo.TipoComponenteId
+                        where puntos.ProyectoId==id
+                        select new PuntoFuncionAjustadoView(){
+                            TipoComponente=tipo.NombreComponente,
+                            Baja=puntos.Baja,
+                            Media=puntos.Media,
+                            Alta=puntos.Alta,
+                            Total=puntos.Total
+                        }).ToListAsync();
+
+
 
                 var detalleEstimacionDTO = new DetalleEstimacionDTO
                 {
                     ViewEstimacion = estimacions,
-                    ViewEstimacionDetalle = detalleEstimacion
+                    ViewEstimacionDetalle = detalleEstimacion,
+                    viewComponenteFuncional = resultComponenteFuncional,
+                    viewConteoTipoComponente = resultConteoTipoComponente,
+                    viewCaracteristicaSistema = resultCaracteristicaSistema,
+                    viewPuntoFuncionAjustado=resultPuntoFuncionAjustado
+
                 };
 
 
@@ -223,7 +280,7 @@ namespace estimate_teck.Controllers
                         ProyectoId = resultPuntoFuncionAjustado[0].ProyectoId,
                         FactorAjuste = (decimal)resultVAF,
                         EstadoId = 1,
-                        UsuarioId=data.UsuarioId,
+                        UsuarioId = data.UsuarioId,
                         TotalPuntoFuncionAjustado = totalPFSA,
                         TotalPuntoFuncionSinAjustar = (decimal)CalcularPFA,
                         EstimacionProductividads = resultProductividad,
