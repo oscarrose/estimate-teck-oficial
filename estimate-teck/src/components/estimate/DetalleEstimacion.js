@@ -3,15 +3,15 @@ import { Statistic, Card, Button, Row, Col, Descriptions, Divider, message } fro
 import { CalendarOutlined, DollarOutlined, TeamOutlined, FieldTimeOutlined } from "@ant-design/icons";
 import TableComponentFuncional from './TableComponentFuncional';
 import useEstimate from '../../hooks/useEstimate';
-
+import TableConteoComponente from './TableConteoComponente';
+import TableDetalleDePuntoFuncionAjustado from './TableDetalleDePuntoFuncionAjustado';
+import TableCaracteriticaSistema from './TableCaracteriticaSistema';
 function DetalleEstimacion({ detalleEstimacion }) {
 
     const { isModalOpen, setIsModalOpen } = useEstimate();
 
 
-    console.log("data2", detalleEstimacion.viewEstimacionDetalle
 
-    )
 
     return (
         <>
@@ -144,7 +144,15 @@ function DetalleEstimacion({ detalleEstimacion }) {
                 </Descriptions.Item>
             </Descriptions>
             <Divider />
-            <TableComponentFuncional />
+            <TableComponentFuncional detalleEstimacion={detalleEstimacion} />
+            <Divider />
+            <TableCaracteriticaSistema detalleEstimacion={detalleEstimacion}  />
+
+            <Divider />
+            <TableConteoComponente detalleEstimacion={detalleEstimacion}  />
+
+            <Divider />
+            <TableDetalleDePuntoFuncionAjustado detalleEstimacion={detalleEstimacion}  />
         </>
     )
 }

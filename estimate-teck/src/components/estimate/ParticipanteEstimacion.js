@@ -8,7 +8,7 @@ function ParticipanteEstimacion({ detalleEstimacion }) {
 
     const { isModalOpen, setIsModalOpen } = useEstimate();
 
-    console.log("rec", detalleEstimacion.viewEstimacionDetalle.totalProgramadores)
+   
     const handleOk = () => {
         setIsModalOpen(false);
     };
