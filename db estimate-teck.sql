@@ -428,6 +428,7 @@ CREATE TABLE Estimacion
     Estimacion_Id int not null identity constraint Pk_Estimacion_Id primary key (Estimacion_Id),
     Proyecto_Id int not null constraint Fk_ProyectoEstimacion_Id foreign key references Proyecto (Proyecto_Id),
     Estado_Id int not null constraint Fk_Estado_Id_Estimacion foreign key references Estado_Estimacion(Estado_Id),
+    Usuario_Id int not null constraint Fk_EstimacionUsurario_Id foreign key references Usuario (Usuario_Id),
     -- Productividad_Id int not null constraint Fk_ProductividadEstimacion_Id foreign key references ProductividadPuntoFuncion (Productividad_Id),
     FactorAjuste decimal (10,2),
     TotalPuntoFuncionAjustado decimal (10,2),
