@@ -11,7 +11,7 @@ import IndexAdminPersonnel from "./components/admin-personnel/IndexAdminPersonne
 import IndexEstimate from "./components/estimate/IndexEstimate";
 import FormMainEstimate from "./components/estimate/FormMainEstimate";
 
-import IndexTarifario from "./components/tarifarioHora/IndexTarifario";
+//import IndexTarifario from "./components/tarifarioHora/IndexTarifario";
 
 import indexProject from "./components/projects/indexProjects";
 import IndexAdminClient from "./components/client/IndexAdminClient";
@@ -20,6 +20,7 @@ import ProfileUser from "./components/admin-personnel/PageProfile/ProfileUser";
 import FormProjects from "./components/projects/FormProjects";
 import IndexRequerClient from "./components/RequirementClient/IndexRequirementClient";
 import FormReqisiteIA from "./components/RequirementClient/FormRequisiteIA";
+import IndexCargos from "./components/cargos/IndexCargos";
 
 const ControllerRouter = () => {
   return (
@@ -39,8 +40,11 @@ const ControllerRouter = () => {
       {/* protected routes para Gerente general y enc.proyecto*/}
       <Route element={<AuthRequired allRoles={[ServiciesRol.rol3, ServiciesRol.rol2]} />}>
         <Route path="/projects" element={<AppRouter component={indexProject} />} />
+        
+        <Route path="/cargos" element={<AppRouter component={IndexCargos} />} />
+
         <Route path="/client" element={<AppRouter component={IndexAdminClient} />} />
-        <Route path="/tarifarioHora" element={<AppRouter component={IndexTarifario} />} />
+        {/* <Route path="/tarifarioHora" element={<AppRouter component={IndexTarifario} />} /> */}
         <Route path="/productividadpf" element={<AppRouter component={IndexProductividad} />} />
 
         <Route path="/register/projects" element={<AppRouter component={FormProjects} />} />

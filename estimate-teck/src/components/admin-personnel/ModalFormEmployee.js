@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Upload, Select, Spin, Button, message, DatePicker } from "antd";
+import useModuleCargos from "../../hooks/useModuleCargos";
+import { Modal, Form, Input, Upload, Select, Spin, Button, message, DatePicker, notification } from "antd";
 import ImgCrop from "antd-img-crop";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons"
 import CallApi from "../../ServicesHttp/CallApi";
@@ -7,7 +8,11 @@ import moment from 'moment';
 import { cargo, estadoUsuarioEmpleado, Countrys, ProvinciaRD } from "./ItemsSelect";
 import useAuth from '../../hooks/useAuth';
 const { Option } = Select;
+
 const dateFormat = 'YYYY-MM-DD';
+//import useModuleCargos from "../../hooks/useModuleCargos";
+
+
 
 function ModalFormEmployee({
   setUpdateTableEmployee,
@@ -16,10 +21,77 @@ function ModalFormEmployee({
   setDataEmployee,
   editEmployee,
   setEditEmployee,
+
 }) {
   const [form] = Form.useForm();
   const onReset = () => {
     form.resetFields();
+  };
+
+  const [Minor, setMinor] = useState(false);
+
+  const {dataCargos} = useModuleCargos();
+
+  const notifyOnlyMinorAge = () => {
+
+
+    setMinor(true)
+
+    notification['warning']({
+
+      message: 'Notificación',
+
+      description:
+
+        'El empleado no puede ser menor de edad'
+
+    });
+
+  };
+
+
+  const validateYear = (date) => {
+
+    const dateCurrent = new Date();
+
+    let yearCurrent = parseInt(dateCurrent.getFullYear());
+
+    let monthCurrent = parseInt(dateCurrent.getMonth()) + 1;
+
+    let dayCurrent = parseInt(dateCurrent.getDate());
+
+    let yearBirth = parseInt(date.year());
+
+    let monthBirth = parseInt(date.month() + 1);
+
+    let dayBirth = parseInt(date.date());
+
+
+    let age = yearCurrent - yearBirth;
+
+    if (monthCurrent < monthBirth) {
+
+      age--;
+
+    }
+
+    if (monthCurrent === monthBirth && dayCurrent < dayBirth) {
+
+      age--;
+
+    }
+
+    if (age < 18) {
+
+      notifyOnlyMinorAge()
+
+    } else {
+
+      setMinor(false)
+
+    }
+
+
   };
 
   const { auth } = useAuth();
@@ -84,6 +156,8 @@ function ModalFormEmployee({
       }
       console.log("dcee", valuesNew)
       await CallApi.post("Empleados/CreateEmployee", valuesNew)
+
+
         .then((res) => {
           setLoandingSave(false);
           message.success("Registrado correctamente");
@@ -213,6 +287,33 @@ function ModalFormEmployee({
 
 
             <Form.Item
+
+              name="fechaNacimiento"
+
+              label="Fecha nacimiento"
+
+              rules={[
+
+                {
+
+                  required: true,
+
+                  message: "Fecha nacimiento es requerida!"
+
+                }
+
+              ]}
+
+            >
+
+              <DatePicker onChange={validateYear}
+
+                format={dateFormat} />
+
+            </Form.Item>
+
+
+            {/*             <Form.Item
               name="fechaNacimiento"
               label="Fecha nacimiento"
               hasFeedback
@@ -225,7 +326,7 @@ function ModalFormEmployee({
               ]}
             >
               <DatePicker format={dateFormat} />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
               name="email"
@@ -242,141 +343,150 @@ function ModalFormEmployee({
               <Input type="email" placeholder="###@####.###" />
             </Form.Item>
 
-            <Form.Item
+            {<Form.Item
               name="cargoId"
-              label="Cargo"
+              label="Nombre del Cargo"
               hasFeedback
               rules={[
                 {
                   required: true,
-                  message: "El cargo es requerido",
+                  message: "El nombre del cargo es requerido",
                 },
               ]}
             >
-              <Select placeholder=" Seleccione la ocupacion en la empresa" allowClear>
-                {cargo.map((data) => (
-                  <Option key={data.idCargo} value={data.idCargo}>
-                    {data.nombre}
+              <Select placeholder=" Seleccione el cargo" allowClear>
+                {dataCargos.map((data) => (
+                  <Option key={data.cargoId} value={data.cargoId}>
+                    {data.nombreCargo}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>}
+            
+{/*             <Select placeholder=" Seleccione la ocupacion en la empresa" allowClear>
+              {cargo.map((data) => (
+                <Option key={data.idCargo} value={data.idCargo}>
+                  {data.nombre}
+                </Option>
+              ))}
+            </Select> */}
+       
+
+          <Form.Item
+            name="telefonoResidencial"
+            label="Teléfono residencial"
+            rules={[{
+              max: 10,
+              min: 10,
+              message: "El numero de telefono es invalido"
+            }]}
+            hasFeedback
+          >
+            <Input type="number" placeholder="(###)#######" />
+          </Form.Item>
+          <Form.Item
+            name="celular"
+            label="Celular"
+            hasFeedback
+            rules={[
+              {
+                require: true,
+                message: "El celular es requerido",
+
+              },
+              {
+                max: 10,
+                min: 10,
+                message: "El numero de celular es invalido"
+              }
+            ]}
+          >
+            <Input type="number" placeholder="(###)#######" />
+          </Form.Item>
+          <Form.Item
+            name="pais"
+            label="Pais"
+            rules={[
+              {
+                required: true,
+                message: "El pais es necesario!",
+              },
+            ]}
+            hasFeedback
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item name="estado" label="Estado"
+            rules={[
+              {
+                required: true,
+                message: "El estado es necesario!",
+              },
+            ]}
+            hasFeedback>
+            <Input />
+          </Form.Item>
+
+          <Form.Item name="ciudad" label="Ciudad"
+            rules={[
+              {
+                required: true,
+                message: "La ciudad es necesaria!",
+              },
+            ]}
+            hasFeedback>
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="direccion"
+            label="Dirección"
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "La dirección es requerida",
+              },
+            ]}
+          >
+            <Input placeholder="Sector, nombre de la calle, No. casa" />
+          </Form.Item>
+          {editEmployee && (
+            <Form.Item
+              name="estadoId"
+              label="Estado"
+              hasFeedback
+              rules={[
+                {
+                  required: true,
+                  message: "El estado es requerido",
+                },
+              ]}
+            >
+              <Select placeholder=" Seleccione el tipo de estado" allowClear>
+                {estadoUsuarioEmpleado.map((data) => (
+                  <Option key={data.idEstado} value={data.idEstado}>
+                    {data.estado}
                   </Option>
                 ))}
               </Select>
             </Form.Item>
-
-            <Form.Item
-              name="telefonoResidencial"
-              label="Teléfono residencial"
-              rules={[{
-                max: 10,
-                min: 10,
-                message: "El numero de telefono es invalido"
-              }]}
-              hasFeedback
-            >
-              <Input type="number" placeholder="(###)#######" />
-            </Form.Item>
-            <Form.Item
-              name="celular"
-              label="Celular"
-              hasFeedback
-              rules={[
-                {
-                  require: true,
-                  message: "El celular es requerido",
-
-                },
-                {
-                  max: 10,
-                  min: 10,
-                  message: "El numero de celular es invalido"
-                }
-              ]}
-            >
-              <Input type="number" placeholder="(###)#######" />
-            </Form.Item>
-            <Form.Item
-              name="pais"
-              label="Pais"
-              rules={[
-                {
-                  required: true,
-                  message: "El pais es necesario!",
-                },
-              ]}
-              hasFeedback
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item name="provincia" label="Provincia"
-              rules={[
-                {
-                  required: true,
-                  message: "La provincia es necesaria!",
-                },
-              ]}
-              hasFeedback>
-              <Input />
-            </Form.Item>
-
-            <Form.Item name="ciudad" label="Ciudad"
-              rules={[
-                {
-                  required: true,
-                  message: "La ciudad es necesaria!",
-                },
-              ]}
-              hasFeedback>
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              name="direccion"
-              label="Dirección"
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: "El campo es requerido",
-                },
-              ]}
-            >
-              <Input placeholder="Sector, nombre de la calle, No. casa" />
-            </Form.Item>
-            {editEmployee && (
-              <Form.Item
-                name="estadoId"
-                label="Estado"
-                hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: "El estado es requerido",
-                  },
-                ]}
-              >
-                <Select placeholder=" Seleccione el tipo de estado" allowClear>
-                  {estadoUsuarioEmpleado.map((data) => (
-                    <Option key={data.idEstado} value={data.idEstado}>
-                      {data.estado}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            )}
-            {!editEmployee && (
-              <Button type="primary" htmlType="reset" danger>
-                Cancelar
-              </Button>
-            )}
-            <Button type="primary" htmlType="submit">
-              Guardar
+          )}
+          {!editEmployee && (
+            <Button type="primary" htmlType="reset" danger>
+              Cancelar
             </Button>
+          )}
+          <Button type="primary" disabled={Minor} htmlType="submit">
+            Guardar
+          </Button>
 
-          </Form>
+        </Form>
 
-        </Spin>
+      </Spin>
 
-      </Modal>
+    </Modal>
 
       {/* 
             <Geography
@@ -384,7 +494,7 @@ function ModalFormEmployee({
               onChange={setCity}
               geoId={state}
             /> */}
-    </div>
+    </div >
   );
 }
 

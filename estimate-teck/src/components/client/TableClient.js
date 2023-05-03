@@ -59,8 +59,13 @@ function TableClient({
 
     },
     {
-      title: "Ciudad",
+      title: "Estado",
       dataIndex: "estado",
+
+    },
+    {
+      title: "Ciudad",
+      dataIndex: "ciudad",
 
     },
 
@@ -73,6 +78,10 @@ function TableClient({
       title: "Fecha creación",
       dataIndex: "fechaCreacion",
       width: 127,
+    },
+    {
+      title: "Creado por",
+      dataIndex: "creadoPor",
     },
     {
 

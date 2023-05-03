@@ -6,9 +6,11 @@ function TableUser({
   dataUser,
   loanding,
   setVisibleFormStatus,
+  setVisibleFormRol,
   setChangeUser,
   setUserResetPassword,
-  setControlFormUser
+  setControlFormUser,
+  SetChangeRol
 }) {
 
 
@@ -67,6 +69,20 @@ function TableUser({
               <ReloadOutlined />
             </Button>
           </Tooltip>
+
+{           <Tooltip title="Cambiar rol">
+            <Button
+              type="link"
+              onClick={() => {
+
+                setVisibleFormRol(true);
+                setChangeUser(record.usuarioId);
+              }}
+            >
+              <PauseOutlined />
+            </Button>
+
+          </Tooltip> }
 
 
 
