@@ -2,41 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { Statistic, Card, Button, Row, Col, Descriptions, Divider, message } from 'antd';
 import { CalendarOutlined, DollarOutlined, TeamOutlined, FieldTimeOutlined } from "@ant-design/icons";
 import TableComponentFuncional from './TableComponentFuncional';
-
+import useEstimate from '../../hooks/useEstimate';
 
 function DetalleEstimacion({ detalleEstimacion }) {
 
-    // const { detalleEstimacion } = useEstimate();
+    const { isModalOpen, setIsModalOpen } = useEstimate();
 
 
-    console.log("data2", detalleEstimacion.viewEstimacion
+    console.log("data2", detalleEstimacion.viewEstimacionDetalle
 
     )
-
-    const data = [
-        {
-            "Estimacion_Id": 1,
-            "Esfuerzo_total": 148.06,
-            "Duracion_horas": 74.00,
-            "Duracion_dias": 9.00,
-            "Duracion_mes": 0.41,
-            "Costo_bruto_estimado": 0.00,
-            "Costo_total": 0.00
-        }
-    ];
-
-    const dataDetalle = [
-        {
-            estimacionId: detalleEstimacion.viewEstimacion,
-            "Esfuerzo_total": 148.06,
-            "Duracion_horas": 74.00,
-            "Duracion_dias": 9.00,
-            "Duracion_mes": 0.41,
-            "Costo_bruto_estimado": 0.00,
-            "Costo_total": 0.00
-        }
-    ];
-
 
     return (
         <>
@@ -44,7 +19,7 @@ function DetalleEstimacion({ detalleEstimacion }) {
                 <Card bordered={false} className="flex-1">
                     <Statistic
                         title="Esfuerzo total"
-                        value={55}
+                        value={detalleEstimacion.viewEstimacionDetalle.esfuerzoTotal ?? 'N/A'}
                         suffix="H/H"
                         valueStyle={{
                             color: '#ff6600',
@@ -55,7 +30,7 @@ function DetalleEstimacion({ detalleEstimacion }) {
                 <Card bordered={false} className="flex-1">
                     <Statistic
                         title="Duración en horas"
-                        value={data[0].Duracion_horas}
+                        value={detalleEstimacion.viewEstimacionDetalle.duracionHoras ?? 'N/A'}
                         prefix={<FieldTimeOutlined />
                         }
                         valueStyle={{
@@ -66,7 +41,7 @@ function DetalleEstimacion({ detalleEstimacion }) {
                 <Card bordered={false} className="flex-1">
                     <Statistic
                         title="Duración en dias"
-                        value={data[0].Duracion_dias}
+                        value={detalleEstimacion.viewEstimacionDetalle.duracionDias ?? 'N/A'}
                         prefix={<CalendarOutlined />
                         }
                         valueStyle={{
@@ -78,7 +53,7 @@ function DetalleEstimacion({ detalleEstimacion }) {
                 <Card bordered={false} className="flex-1">
                     <Statistic
                         title="Duración en mes"
-                        value={data[0].Duracion_mes}
+                        value={detalleEstimacion.viewEstimacionDetalle.duracionMes ?? 'N/A'}
                         prefix={<CalendarOutlined />
                         }
                         valueStyle={{
@@ -94,19 +69,19 @@ function DetalleEstimacion({ detalleEstimacion }) {
                 <Card bordered={false} className="flex-1">
                     <Statistic
                         title="Numero de programadores"
-                        value={3}
+                        value={detalleEstimacion.viewEstimacionDetalle.totalProgramadores ?? 'N/A'}
                         prefix={<TeamOutlined />
                         }
                         valueStyle={{
                             color: '#3f8600',
                         }}
-                        suffix="US$" />
+                        suffix="" />
 
                 </Card>
                 <Card bordered={false} className="flex-1">
                     <Statistic
                         title="Costo bruto estimado"
-                        value={data[0].Costo_bruto_estimado}
+                        value={detalleEstimacion.viewEstimacionDetalle.costoBrutoEstimado ?? 'N/A'}
                         prefix={<DollarOutlined />
                         }
                         valueStyle={{
@@ -115,7 +90,8 @@ function DetalleEstimacion({ detalleEstimacion }) {
                         suffix="US$" />
                     <Button
                         className="bg-black border-none shadow-sm hover:bg-slate-700 text-white font-sans py-1.5 px-2.5  rounded inline-flex items-center"
-                        type="primary"
+
+                        onClick={() => setIsModalOpen(true)}
                     >
                         Estimar costo bruto
                     </Button>
@@ -124,7 +100,7 @@ function DetalleEstimacion({ detalleEstimacion }) {
                 <Card bordered={false} className="flex-1">
                     <Statistic
                         title="Costo total estimado"
-                        value={data[0].Costo_total}
+                        value={detalleEstimacion.viewEstimacionDetalle.costoTotal ?? 'N/A'}
                         prefix={<DollarOutlined />
                         }
                         valueStyle={{
@@ -146,16 +122,25 @@ function DetalleEstimacion({ detalleEstimacion }) {
                 <Descriptions.Item label="Estado">
                     {detalleEstimacion.viewEstimacion.estado
                         ?? 'N/A'}</Descriptions.Item>
-                <Descriptions.Item label="Creado por"> {detalleEstimacion.viewEstimacion.estado
-                        ?? 'N/A'}</Descriptions.Item>
-                <Descriptions.Item label="Fecha estimación">12-22-33</Descriptions.Item>
-                <Descriptions.Item label="Factor de ajuste">1.02</Descriptions.Item>
+                <Descriptions.Item label="Creado por"> {detalleEstimacion.viewEstimacion.creadoPor
+                    ?? 'N/A'}</Descriptions.Item>
+                <Descriptions.Item label="Fecha estimación">
+                    {detalleEstimacion.viewEstimacion.fechaCreacion
+                        ?? 'N/A'}
+                </Descriptions.Item>
+                <Descriptions.Item label="Factor de ajuste">
+
+                    {detalleEstimacion.viewEstimacion.factorAjuste
+                        ?? 'N/A'}
+                </Descriptions.Item>
                 <Descriptions.Item label="Total de puntos de función sin ajustar(PFSA)">
-                    45
+                    {detalleEstimacion.viewEstimacion.totalPuntoFuncionSinAjustar
+                        ?? 'N/A'}
                 </Descriptions.Item>
 
                 <Descriptions.Item label="Total de Puntos de función ajustados(PFA)">
-                    45
+                    {detalleEstimacion.viewEstimacion.totalPuntoFuncionAjustado
+                        ?? 'N/A'}
                 </Descriptions.Item>
             </Descriptions>
             <Divider />

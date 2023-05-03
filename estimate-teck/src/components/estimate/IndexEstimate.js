@@ -6,6 +6,7 @@ import CallApi from "../../ServicesHttp/CallApi";
 import useEstimate from "../../hooks/useEstimate";
 import DetalleEstimacion from "./DetalleEstimacion";
 import PageEsperarEstimacion from "../pages/PageEsperarEstimacion";
+import ParticipanteEstimacion from "./ParticipanteEstimacion";
 let rute = process.env.REACT_APP_RUTE_VM
 
 const { Title } = Typography;
@@ -76,14 +77,15 @@ function IndexEstimate() {
           </Link> : null}
 
         </Spin>
+      
 
         {detalleEstimacion ?
           <DetalleEstimacion detalleEstimacion={detalleEstimacion} />
-          : <PageEsperarEstimacion/>}
+          : <PageEsperarEstimacion />}
 
       </div>
 
-
+      < ParticipanteEstimacion detalleEstimacion={detalleEstimacion}/>
     </div>
   );
 }

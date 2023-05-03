@@ -41,6 +41,8 @@ const UseProviderEstimate = ({ children }) => {
 
     const [loadingDetalleEstimacion, setLoadingDetalleEstimacion]=useState(false);
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const openNotificationWithIcon = (type, position, title, message) => {
         notification[type]({
             message: title,
@@ -105,7 +107,7 @@ const UseProviderEstimate = ({ children }) => {
     return (
         <estimateContext.Provider
             value={{
-                loadingDetalleEstimacion, setLoadingDetalleEstimacion,haveEstimacion, setHaveEstimacion,detalleEstimacion, setDetalleEstimacion,finishEstimate, setFinishEstimate,
+                isModalOpen, setIsModalOpen,loadingDetalleEstimacion, setLoadingDetalleEstimacion,haveEstimacion, setHaveEstimacion,detalleEstimacion, setDetalleEstimacion,finishEstimate, setFinishEstimate,
                 finishProjectEstimate, prev, setDataIaRequirement, dataIaRequirement, step, setStep,
                 saveClassificationComponents, setSaveClassificationComponents,
                 systemCharacteristc, setSystemCharacteristic,
