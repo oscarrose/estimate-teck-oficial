@@ -2,6 +2,7 @@ using estimate_teck.Models;
 using estimate_teck.Data;
 using estimate_teck.DTO;
 using estimate_teck.Servicies;
+using Microsoft.EntityFrameworkCore;
 
 namespace estimate_teck.Servicies.Estimate
 {
@@ -11,6 +12,13 @@ namespace estimate_teck.Servicies.Estimate
         public EstimateServices(estimate_teckContext context)
         {
             _context = context;
+        }
+
+        public bool ExisteProyectoEstimacion(int id)
+        {
+            bool verificacion = (_context.Estimacions?.Any(e => e.ProyectoId == id)).GetValueOrDefault();
+            return verificacion;
+
         }
 
         public List<EstimacionProductividad> calcularTheProductividad(ICollection<Productividad> productividades, double CalcularPFA)
@@ -31,7 +39,7 @@ namespace estimate_teck.Servicies.Estimate
                 {
                     ProductividadId = item.ProductividadId,
                     EsfuerzoProductividad = esfuerzoProductividad,
-                    ProgramadoresProductividad=programadoresProductividad
+                    ProgramadoresProductividad = programadoresProductividad
                 };
                 resultProductividad.Add(productividad);
             }
@@ -113,6 +121,7 @@ namespace estimate_teck.Servicies.Estimate
 
             return resultPuntoFuncionAjustado;
         }
+
     }
 
 

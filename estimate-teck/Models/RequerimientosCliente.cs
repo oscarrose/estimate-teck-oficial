@@ -18,10 +18,10 @@ namespace estimate_teck.Models
         public string Requisito { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
 
-        public virtual EstadoRequerimiento Estado { get; set; } = null!;
-        public virtual Proyecto Proyecto { get; set; } = null!;
-        public virtual TipoRequerimiento TipoRequerimiento { get; set; } = null!;
-        public virtual Usuario Usuario { get; set; } = null!;
-        public virtual ICollection<RequerimientosSoftware> RequerimientosSoftwares { get; set; }
+        public virtual EstadoRequerimiento? Estado { get; set; } = null!;
+        public virtual Proyecto? Proyecto { get; set; } = null!;
+        public virtual TipoRequerimiento? TipoRequerimiento { get; set; } = null!;
+        public virtual Usuario? Usuario { get; set; } = null!;
+        public virtual ICollection<RequerimientosSoftware>? RequerimientosSoftwares { get; set; }
     }
 }

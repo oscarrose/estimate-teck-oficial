@@ -16,8 +16,8 @@ namespace estimate_teck.Models
         public string RequerimientoSf { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
 
-        public virtual EstadoRequerimiento Estado { get; set; } = null!;
-        public virtual RequerimientosCliente RequerimientosCliente { get; set; } = null!;
-        public virtual ICollection<ComponenteFuncionale> ComponenteFuncionales { get; set; }
+        public virtual EstadoRequerimiento? Estado { get; set; } = null!;
+        public virtual RequerimientosCliente? RequerimientosCliente { get; set; } = null!;
+        public virtual ICollection<ComponenteFuncionale>? ComponenteFuncionales { get; set; }
     }
 }

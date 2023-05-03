@@ -14,7 +14,7 @@ namespace estimate_teck.Models
         public int EstadoRequerimientoId { get; set; }
         public string? NombreEstadoRequerimiento { get; set; }
 
-        public virtual ICollection<RequerimientosCliente> RequerimientosClientes { get; set; }
-        public virtual ICollection<RequerimientosSoftware> RequerimientosSoftwares { get; set; }
+        public virtual ICollection<RequerimientosCliente>? RequerimientosClientes { get; set; }
+        public virtual ICollection<RequerimientosSoftware>? RequerimientosSoftwares { get; set; }
     }
 }

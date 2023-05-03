@@ -12,9 +12,9 @@ namespace estimate_teck.Models
         public int TipoComponenteId { get; set; }
         public string Complejidad { get; set; } = null!;
 
-        public virtual Proyecto Proyecto { get; set; } = null!;
-        public virtual RequerimientosSoftware RequerimientoSw { get; set; } = null!;
-        public virtual TipoComponente TipoComponente { get; set; } = null!;
-        public virtual Usuario Usuario { get; set; } = null!;
+        public virtual Proyecto? Proyecto { get; set; } = null!;
+        public virtual RequerimientosSoftware? RequerimientoSw { get; set; } = null!;
+        public virtual TipoComponente? TipoComponente { get; set; } = null!;
+        public virtual Usuario? Usuario { get; set; } = null!;
     }
 }

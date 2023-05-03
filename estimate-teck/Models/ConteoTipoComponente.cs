@@ -12,7 +12,7 @@ namespace estimate_teck.Models
         public int Media { get; set; }
         public int Alta { get; set; }
 
-        public virtual Proyecto Proyecto { get; set; } = null!;
-        public virtual TipoComponente TipoComponente { get; set; } = null!;
+        public virtual Proyecto? Proyecto { get; set; } = null!;
+        public virtual TipoComponente? TipoComponente { get; set; } = null!;
     }
 }

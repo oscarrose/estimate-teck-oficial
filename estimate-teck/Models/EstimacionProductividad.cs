@@ -11,7 +11,7 @@ namespace estimate_teck.Models
         public decimal EsfuerzoProductividad { get; set; }
         public int ProgramadoresProductividad { get; set; }
 
-        public virtual Estimacion Estimacion { get; set; } = null!;
-        public virtual ProductividadPuntoFuncion Productividad { get; set; } = null!;
+        public virtual Estimacion? Estimacion { get; set; } = null!;
+        public virtual ProductividadPuntoFuncion? Productividad { get; set; } = null!;
     }
 }

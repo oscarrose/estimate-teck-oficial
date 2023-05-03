@@ -14,6 +14,6 @@ namespace estimate_teck.Models
         public decimal CostoBrutoEstimado { get; set; }
         public decimal CostoTotal { get; set; }
 
-        public virtual Estimacion Estimacion { get; set; } = null!;
+        public virtual Estimacion? Estimacion { get; set; } = null!;
     }
 }

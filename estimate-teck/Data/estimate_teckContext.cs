@@ -440,6 +440,8 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.TotalPuntoFuncionSinAjustar).HasColumnType("decimal(10, 2)");
 
+                entity.Property(e => e.UsuarioId).HasColumnName("Usuario_Id");
+
                 entity.HasOne(d => d.Estado)
                     .WithMany(p => p.Estimacions)
                     .HasForeignKey(d => d.EstadoId)
@@ -451,6 +453,12 @@ namespace estimate_teck.Data
                     .HasForeignKey(d => d.ProyectoId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_ProyectoEstimacion_Id");
+
+                entity.HasOne(d => d.Usuario)
+                    .WithMany(p => p.Estimacions)
+                    .HasForeignKey(d => d.UsuarioId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Fk_EstimacionUsurario_Id");
             });
 
             modelBuilder.Entity<EstimacionProductividad>(entity =>

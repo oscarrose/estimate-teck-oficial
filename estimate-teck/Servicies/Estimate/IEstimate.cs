@@ -10,6 +10,10 @@ namespace estimate_teck.Servicies.Estimate
 
 
         double calcularVAF(ICollection<CaracteristicaSistema> caracteristicaSistemas);
+
+        bool ExisteProyectoEstimacion(int id);
+
+      
     }
 
 }

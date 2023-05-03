@@ -8,6 +8,7 @@ namespace estimate_teck.Models
         public Usuario()
         {
             ComponenteFuncionales = new HashSet<ComponenteFuncionale>();
+            Estimacions = new HashSet<Estimacion>();
             HistorialProyectos = new HashSet<HistorialProyecto>();
             ProductividadPuntoFuncions = new HashSet<ProductividadPuntoFuncion>();
             Proyectos = new HashSet<Proyecto>();
@@ -27,6 +28,7 @@ namespace estimate_teck.Models
         public virtual EstadoUsuarioEmpleado EstadoUsuario { get; set; } = null!;
         public virtual Rol IdRolNavigation { get; set; } = null!;
         public virtual ICollection<ComponenteFuncionale> ComponenteFuncionales { get; set; }
+        public virtual ICollection<Estimacion> Estimacions { get; set; }
         public virtual ICollection<HistorialProyecto> HistorialProyectos { get; set; }
         public virtual ICollection<ProductividadPuntoFuncion> ProductividadPuntoFuncions { get; set; }
         public virtual ICollection<Proyecto> Proyectos { get; set; }

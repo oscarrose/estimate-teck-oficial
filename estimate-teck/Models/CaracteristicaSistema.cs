@@ -10,7 +10,7 @@ namespace estimate_teck.Models
         public string Caracteristica { get; set; } = null!;
         public int Idpuntaje { get; set; }
 
-        public virtual PuntajeCaracteristica IdpuntajeNavigation { get; set; } = null!;
-        public virtual Proyecto Proyecto { get; set; } = null!;
+        public virtual PuntajeCaracteristica? IdpuntajeNavigation { get; set; } = null!;
+        public virtual Proyecto? Proyecto { get; set; } = null!;
     }
 }

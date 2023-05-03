@@ -19,8 +19,8 @@ namespace estimate_teck.Models
         public string? CreadoPor { get; set; }
         public DateTime? FechaCreacion { get; set; }
 
-        public virtual ICollection<Empleado> Empleados { get; set; }
-        public virtual ICollection<ParticipanteEstimacion> ParticipanteEstimacions { get; set; }
-        public virtual ICollection<TarifarioHora> TarifarioHoras { get; set; }
+        public virtual ICollection<Empleado>? Empleados { get; set; }
+        public virtual ICollection<ParticipanteEstimacion>? ParticipanteEstimacions { get; set; }
+        public virtual ICollection<TarifarioHora>? TarifarioHoras { get; set; }
     }
 }

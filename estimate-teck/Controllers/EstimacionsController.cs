@@ -6,6 +6,7 @@ using estimate_teck.DTO;
 using estimate_teck.Servicies.Estimate;
 using Microsoft.EntityFrameworkCore.Storage;
 using estimate_teck.Servicies;
+using System.Text.Json;
 
 namespace estimate_teck.Controllers
 {
@@ -31,19 +32,69 @@ namespace estimate_teck.Controllers
         }
 
         // GET: api/Estimacions/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Estimacion>> GetEstimacion(int id)
+        [HttpGet("DetalleEstimacion/{id}")]
+        public async Task<IActionResult> DetalleEstimacion(int id)
         {
-            var estimacion = await _context.Estimacions.FindAsync(id);
-
-            if (estimacion == null)
+            var HaveEstimate = _servicesEstimate.ExisteProyectoEstimacion(id);
+            try
             {
-                return NotFound();
+
+                if (!HaveEstimate)
+                {
+                    return Ok(false);
+                }
+
+
+                var estimacions = await (
+                    from est in _context.Estimacions
+                    join estado in _context.EstadoEstimacions on est.EstadoId equals estado.EstadoId
+                    //join emp 
+                    where est.ProyectoId == id
+                    select new estimacionView()
+                    {
+                        EstimacionId=est.EstimacionId,
+                        ProyectoId=est.ProyectoId,
+                        Estado=estado.Estado,
+                        
+                        FactorAjuste=est.FactorAjuste,
+                        TotalPuntoFuncionAjustado=est.TotalPuntoFuncionAjustado,
+                        TotalPuntoFuncionSinAjustar=est.TotalPuntoFuncionSinAjustar,
+                        FechaCreacion=est.FechaCreacion
+
+                    }).FirstOrDefaultAsync();
+
+                var detalleEstimacion = await(
+                    from detalle in _context.DetalleEstimacions
+                    where detalle.EstimacionId==estimacions.EstimacionId
+                    select new estimacionDetalleView(){
+                        EsfuerzoTotal= detalle.EsfuerzoTotal,
+                        DuracionMes=detalle.DuracionMes,
+                        DuracionDias=detalle.DuracionDias,
+                        DuracionHoras=detalle.DuracionHoras,
+                        CostoBrutoEstimado=detalle.CostoBrutoEstimado,
+                        CostoTotal=detalle.CostoTotal
+        
+                    }).FirstOrDefaultAsync(); 
+
+                var detalleEstimacionDTO = new DetalleEstimacionDTO
+                {
+                    ViewEstimacion = estimacions,
+                    ViewEstimacionDetalle = detalleEstimacion
+                };
+
+
+                return Ok(detalleEstimacionDTO);
+
+
+            }
+            catch (System.Exception)
+            {
+
+                throw;
             }
 
-            return estimacion;
-        }
 
+        }
         // PUT: api/Estimacions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -62,26 +113,20 @@ namespace estimate_teck.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EstimacionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                // if (!EstimacionExists(id))
+                // {
+                //     return NotFound();
+                // }
+                // else
+                // {
+                //     throw;
+                // }
             }
 
             return NoContent();
         }
 
-        // public IActionResult countClassificationComponents(ICollection<ComponenteFuncionale> ComponenteFuncionales)
-        // {
 
-
-
-        //     return Ok(resultado);
-        // }
 
         // POST: api/Estimacions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -157,7 +202,7 @@ namespace estimate_teck.Controllers
 
                     //--Esta no:El total del esfuerzo dividido entre las horas mes trabajo
                     //Esta si:la suma de los programadores totales por productividad
-                    int numeroProgramadores = resultProductividad.Select(x=>x.ProgramadoresProductividad).Sum();
+                    int numeroProgramadores = resultProductividad.Select(x => x.ProgramadoresProductividad).Sum();
 
                     //Finalmente, para calcular la duración del proyecto en horas laborables, en días y meses, se divide el esfuerzo en horas hombre por el número de programadores y se convierte a días y meses utilizando un promedio de 8 horas laborales al día y 22 días laborales al mes. En este caso, se tiene:
                     //474 horas/hombre / 2.96 programadores = 160.13 horas laborales 
@@ -168,19 +213,19 @@ namespace estimate_teck.Controllers
 
                     decimal duracionMes = (duracionDias / Constantes.diasPorMes);
 
-
-
                     //guardar datos de la tabla estimacion
                     var estimacion = new Estimacion()
                     {
                         ProyectoId = resultPuntoFuncionAjustado[0].ProyectoId,
                         FactorAjuste = (decimal)resultVAF,
+                        EstadoId = 1,
+                        UsuarioId=data.UsuarioId,
                         TotalPuntoFuncionAjustado = totalPFSA,
                         TotalPuntoFuncionSinAjustar = (decimal)CalcularPFA,
                         EstimacionProductividads = resultProductividad,
                         DetalleEstimacions = new List<DetalleEstimacion>{
                             new DetalleEstimacion{
-                               
+
                                 CostoBrutoEstimado=0,//null
                                 EsfuerzoTotal=EsfuerzoTotal,
                                 DuracionDias=duracionDias,
@@ -197,7 +242,7 @@ namespace estimate_teck.Controllers
                     //   await _context.SaveChangesAsync();
 
                     transaction.Commit();
-                    return Ok(estimacion);
+                    return NoContent();
                 }
                 catch (Exception ex)
                 {
@@ -226,9 +271,6 @@ namespace estimate_teck.Controllers
             return NoContent();
         }
 
-        private bool EstimacionExists(int id)
-        {
-            return _context.Estimacions.Any(e => e.EstimacionId == id);
-        }
+
     }
 }

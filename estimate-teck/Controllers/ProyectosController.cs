@@ -37,6 +37,7 @@ namespace estimate_teck.Controllers
                     ProyectoId = p.ProyectoId,
                     NombreProyecto = p.NombreProyecto,
                     TipoProyecto=p.TipoProyecto,
+                    TipoAplicacion=p.TipoAplicacion,
                     Cliente = new Cliente() { NombreCliente = c.NombreCliente },
                     EstadoProyecto = new EstadoProyecto()
                     {
