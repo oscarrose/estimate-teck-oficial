@@ -457,6 +457,7 @@ CREATE TABLE Detalle_estimacion
     Duracion_horas DECIMAL(10,2) NOT NULL,
     Duracion_dias DECIMAL(10,2) NOT NULL,
     Duracion_mes DECIMAL(10,2) NOT NULL,
+    Total_programadores INT NOT NULL,
     Costo_bruto_estimado DECIMAL(10,2) NOT NULL,
     Costo_total DECIMAL(10,2) NOT NULL
 );
