@@ -26,6 +26,7 @@ namespace estimate_teck.DTO
     {
         public int DetalleEstimacionId { get; set; }
         public int EstimacionId { get; set; }
+         public int TotalProgramadores { get; set; }
         public decimal EsfuerzoTotal { get; set; }
         public decimal DuracionHoras { get; set; }
         public decimal DuracionDias { get; set; }

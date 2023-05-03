@@ -48,14 +48,17 @@ namespace estimate_teck.Controllers
                 var estimacions = await (
                     from est in _context.Estimacions
                     join estado in _context.EstadoEstimacions on est.EstadoId equals estado.EstadoId
-                    //join emp 
+                    join user in _context.Usuarios on est.UsuarioId equals
+                    user.UsuarioId
+                    join emp in _context.Empleados on user.EmpleadoId equals
+                    emp.EmpleadoId
                     where est.ProyectoId == id
                     select new estimacionView()
                     {
                         EstimacionId=est.EstimacionId,
                         ProyectoId=est.ProyectoId,
                         Estado=estado.Estado,
-                        
+                        CreadoPor=string.Concat(emp.Nombre," ",emp.Apellido),
                         FactorAjuste=est.FactorAjuste,
                         TotalPuntoFuncionAjustado=est.TotalPuntoFuncionAjustado,
                         TotalPuntoFuncionSinAjustar=est.TotalPuntoFuncionSinAjustar,
@@ -68,6 +71,7 @@ namespace estimate_teck.Controllers
                     where detalle.EstimacionId==estimacions.EstimacionId
                     select new estimacionDetalleView(){
                         EsfuerzoTotal= detalle.EsfuerzoTotal,
+                        TotalProgramadores=detalle.TotalProgramadores,
                         DuracionMes=detalle.DuracionMes,
                         DuracionDias=detalle.DuracionDias,
                         DuracionHoras=detalle.DuracionHoras,
@@ -225,7 +229,7 @@ namespace estimate_teck.Controllers
                         EstimacionProductividads = resultProductividad,
                         DetalleEstimacions = new List<DetalleEstimacion>{
                             new DetalleEstimacion{
-
+                                TotalProgramadores=numeroProgramadores,
                                 CostoBrutoEstimado=0,//null
                                 EsfuerzoTotal=EsfuerzoTotal,
                                 DuracionDias=duracionDias,

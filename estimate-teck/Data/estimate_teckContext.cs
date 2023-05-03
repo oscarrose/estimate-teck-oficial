@@ -284,6 +284,8 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.EstimacionId).HasColumnName("Estimacion_Id");
 
+                entity.Property(e => e.TotalProgramadores).HasColumnName("Total_programadores");
+
                 entity.HasOne(d => d.Estimacion)
                     .WithMany(p => p.DetalleEstimacions)
                     .HasForeignKey(d => d.EstimacionId)
