@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, message, Spin, Typography } from "antd";
+import { Button, message, Spin, Typography, Collapse} from "antd";
 import { PlusOutlined,DeleteOutlined } from "@ant-design/icons";
 import { useParams } from 'react-router-dom';
 import CallApi from "../../ServicesHttp/CallApi";
+import CollapseRequeriments from "./CollapseRequeriments";
 import ListRequeriment from "./ListRequeriment";
 import FormRequirement from "./FormRequirement";
 
