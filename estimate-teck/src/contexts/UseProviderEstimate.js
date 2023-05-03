@@ -1,10 +1,18 @@
 import React, { createContext, useState, useCallback } from "react";
 import CallApi from "../ServicesHttp/CallApi";
 import { message, notification } from "antd"
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 //create the context
 const estimateContext = createContext({});
 
+let rute = process.env.REACT_APP_RUTE_VM
+
 const UseProviderEstimate = ({ children }) => {
+
+    const navigate = useNavigate();
+
+    const {auth}=useAuth();
 
     //para manejar los requisitos de la api IA
     const [dataIaRequirement, setDataIaRequirement] = useState({}
@@ -27,6 +35,12 @@ const UseProviderEstimate = ({ children }) => {
 
     const [step, setStep] = useState(0);
 
+    const [detalleEstimacion, setDetalleEstimacion]=useState(null)
+
+    const [haveEstimacion, setHaveEstimacion]=useState(false);
+
+    const [loadingDetalleEstimacion, setLoadingDetalleEstimacion]=useState(false);
+
     const openNotificationWithIcon = (type, position, title, message) => {
         notification[type]({
             message: title,
@@ -35,30 +49,41 @@ const UseProviderEstimate = ({ children }) => {
         });
     };
 
-
-
     const finishProjectEstimate = async () => {
+        setFinishEstimate(true)
         const newClassificationComponents = saveClassificationComponents.flatMap(({ requisitoSf }) => requisitoSf.map(({ id, tipoComponenteId, complejidad, usuarioId, proyectoId }) => ({
             RequerimientoSwId: id, tipoComponenteId, complejidad, usuarioId, proyectoId
         })));
-        const newProductividadId = saveProductivityPlatform.map((item) => ({  ProductividadId: item }));
-       
+        const newProductividadId = saveProductivityPlatform.map((item) => ({ ProductividadId: item }));
+
 
         const dataToSend = {
             ComponenteFuncionales: newClassificationComponents,
             CaracteristicaSistemas: systemCharacteristc,
             Productividades: newProductividadId,
+            usuarioId:auth.idUsuario    
         };
-      
+
         await CallApi.post("Estimacions/estimarProyectos ", dataToSend)
             .then((res) => {
-                console.log("res!", res.data)
+                console.log("res", res.data)
+                setFinishEstimate(false)
+                openNotificationWithIcon('success', 'topRight', 'Estimaddor de proyectos', 'Estimación realizada correctamente')
+                navigate(rute + `project/estimate/${infoProyect.proyectoId}`, { replace: true });
             }).catch((error) => {
-                message.error(error)
+                openNotificationWithIcon('error', 'topRight', 'Estimaddor de proyectos', error)
+                setFinishEstimate(false)
             });
 
     }
 
+
+
+
+//   useEffect(() => {
+//     fetchDataDetalleEstimacion();
+
+//   }, []);
 
 
     const prev = useCallback(
@@ -80,7 +105,7 @@ const UseProviderEstimate = ({ children }) => {
     return (
         <estimateContext.Provider
             value={{
-                finishEstimate, setFinishEstimate,
+                loadingDetalleEstimacion, setLoadingDetalleEstimacion,haveEstimacion, setHaveEstimacion,detalleEstimacion, setDetalleEstimacion,finishEstimate, setFinishEstimate,
                 finishProjectEstimate, prev, setDataIaRequirement, dataIaRequirement, step, setStep,
                 saveClassificationComponents, setSaveClassificationComponents,
                 systemCharacteristc, setSystemCharacteristic,

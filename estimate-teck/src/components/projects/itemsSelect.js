@@ -53,4 +53,18 @@ const typeProyect = [
 
 ]
 
-export { typeProyect }
+const typeApplication = [
+
+    "Aplicaciones de escritorio",
+    "Aplicaciones web",
+    "Aplicaciones móviles nativas",
+    "Aplicaciones móviles híbridas",
+    "Aplicaciones de realidad virtual",
+    "Aplicaciones de realidad aumentada",
+    "Aplicaciones de inteligencia artificial"
+
+
+
+]
+
+export { typeProyect, typeApplication }

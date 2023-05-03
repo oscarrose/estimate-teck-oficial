@@ -35,7 +35,7 @@ const UserProvider = ({ children }) => {
     const CloseSession = () => {
         window.sessionStorage.removeItem("uss");
         setAuth(null)
-        navigate(rute + "login", { replace: true })
+        navigate(rute, { replace: true })
     }
 
     return (

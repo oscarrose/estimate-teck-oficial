@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
 import { SolutionOutlined, EditOutlined,DollarOutlined } from "@ant-design/icons";
 import { Space, Table, Tag } from 'antd';
+import useEstimate from "../../hooks/useEstimate";
 let rute = process.env.REACT_APP_RUTE_VM
 
 
 
 const TableProject = ({ dataTableProject, setEditProject }) => {
+
+  const {fetchDataDetalleEstimacion}=useEstimate();
+
   const columns = [
 
     {
@@ -29,6 +33,11 @@ const TableProject = ({ dataTableProject, setEditProject }) => {
       title: 'Tipo proyecto',
       dataIndex: 'tipoProyecto',
       key: 'tipoProyecto',
+    },
+    {
+      title: 'Tipo aplicación',
+      dataIndex: 'tipoAplicacion',
+      key: 'tipoAplicacion',
     },
     {
       title: 'Estado',
@@ -64,7 +73,7 @@ const TableProject = ({ dataTableProject, setEditProject }) => {
           </Link>
 
           <Link to={`${rute}project/requirementClient/${record.proyectoId}`}
-            style={{ marginBottom: "1rem" }} >
+            style={{ marginBottom: "1rem" }}  >
             <SolutionOutlined />Administrar Requerimientos
           </Link>
 
@@ -79,7 +88,7 @@ const TableProject = ({ dataTableProject, setEditProject }) => {
     },
   ];
 
-
+  // onClick={()=>fetchDataDetalleEstimacion(record.proyectoId)}
 
   return (
     <Table columns={columns} dataSource={dataTableProject} />

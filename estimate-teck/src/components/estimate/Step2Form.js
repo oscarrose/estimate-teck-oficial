@@ -28,7 +28,7 @@ function Step2From({ idProyecto }) {
       .then((res) => {
         setLoanding(false);
         setProductivity(res.data);
-        //evaluteFeatureSytemIA()
+        
       })
       .catch((error) => {
         setLoanding(false);
@@ -68,7 +68,7 @@ function Step2From({ idProyecto }) {
   const handlePlatformChange = (selectedValues) => {
 
     setSaveProductivityPlatform(selectedValues);
-    console.log("1", selectedValues)
+   
   };
 
 

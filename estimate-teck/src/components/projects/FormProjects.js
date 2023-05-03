@@ -5,7 +5,7 @@ import TableClient from '../client/TableClient';
 import useClient from "../../hooks/useClient";
 import DescriptionsItem from '../admin-personnel/DescriptionsItem';
 import { useNavigate, useParams } from "react-router-dom";
-import { typeProyect } from "./itemsSelect"
+import { typeProyect,typeApplication } from "./itemsSelect"
 import CallApi from '../../ServicesHttp/CallApi';
 import useAuth from '../../hooks/useAuth';
 const { Title } = Typography;
@@ -145,9 +145,7 @@ export default function FormProjects() {
                         <Input placeholder="Nombre del cliente" />
                     </Form.Item>
 
-                    {/* <Form.Item label="Fecha de proyecto">
-                   <RangePicker />
-               </Form.Item> */}
+                   
 
                     <Form.Item
                         name="TipoProyecto"
@@ -168,6 +166,29 @@ export default function FormProjects() {
                             {typeProyect.map((data) => (
                                 <Option key={data.id} value={data.TipoProyecto}>
                                     {data.TipoProyecto}
+                                </Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        name="TipoAplicacion"
+                        label="Tipo de aplicación"
+                        hasFeedback
+                        rules={[
+                            {
+                                required: true,
+                                message: "El tipo de aplicacion es requerido",
+                            },
+                        ]}
+                    >
+                        <Select showSearch placeholder="Seleccione el tipo de aplicación"
+                            filterOption={(input, option) =>
+                                (option?.value ?? '').toLowerCase().includes(input.toLowerCase())
+                            }
+                        >
+                            {typeApplication.map((data) => (
+                                <Option key={data} value={data}>
+                                    {data}
                                 </Option>
                             ))}
                         </Select>
