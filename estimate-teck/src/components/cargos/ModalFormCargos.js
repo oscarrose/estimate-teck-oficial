@@ -18,7 +18,7 @@ function ModalFormCargos({
     form.resetFields();
   };
   const { auth } = useAuth();
-  const {dataCargos} = useModuleCargos();
+  const { dataCargos } = useModuleCargos();
 
   const [loandingSave, setLoandingSave] = useState(false);
 
@@ -33,7 +33,7 @@ function ModalFormCargos({
         usuarioId: auth.idUsuario,
         creadoPor: auth.emailUsuario
       }
-      console.log("ho", objNew)
+
 
       await CallApi.post("Cargos/CreateCargos", objNew)
         .then((res) => {
@@ -84,7 +84,7 @@ function ModalFormCargos({
         .catch((error) => {
           setLoandingSave(false);
           message.error("Error interno", error.response.data);
-          console.log("Revisar", error)
+
         });
     }
   };
@@ -133,15 +133,17 @@ function ModalFormCargos({
                 },
               ]}
             >
-              <Select placeholder=" Seleccione el cargo" allowClear>
+
+              <Input placeholder="Ingresar el cargo" />
+              {/* <Select placeholder=" Seleccione el cargo" allowClear>
                 {dataCargos.map((data) => (
                   <Option key={data.nombreCargo} value={data.nombreCargo}>
                     {data.nombreCargo}
                   </Option>
                 ))}
-              </Select>
-            </Form.Item>}
+              </Select> */}
 
+            </Form.Item>}
 
 
             <Form.Item

@@ -10,9 +10,6 @@ import AppRouter from "./AppRouter";
 import IndexAdminPersonnel from "./components/admin-personnel/IndexAdminPersonnel";
 import IndexEstimate from "./components/estimate/IndexEstimate";
 import FormMainEstimate from "./components/estimate/FormMainEstimate";
-
-//import IndexTarifario from "./components/tarifarioHora/IndexTarifario";
-
 import indexProject from "./components/projects/indexProjects";
 import IndexAdminClient from "./components/client/IndexAdminClient";
 import IndexProductividad from "./components/productividadPF/IndexProductividad";
@@ -21,6 +18,7 @@ import FormProjects from "./components/projects/FormProjects";
 import IndexRequerClient from "./components/RequirementClient/IndexRequirementClient";
 import FormReqisiteIA from "./components/RequirementClient/FormRequisiteIA";
 import IndexCargos from "./components/cargos/IndexCargos";
+import ReporteMain from "./components/Reporte/ReporteMain";
 
 const ControllerRouter = () => {
   return (
@@ -44,6 +42,7 @@ const ControllerRouter = () => {
         <Route path="/cargos" element={<AppRouter component={IndexCargos} />} />
 
         <Route path="/client" element={<AppRouter component={IndexAdminClient} />} />
+        
         {/* <Route path="/tarifarioHora" element={<AppRouter component={IndexTarifario} />} /> */}
         <Route path="/productividadpf" element={<AppRouter component={IndexProductividad} />} />
 
@@ -65,8 +64,8 @@ const ControllerRouter = () => {
       </Route>
 
       {/* protected routes solo para Gerente general*/}
-      <Route element={<AuthRequired allRoles={[ServiciesRol.rol1]} />}>
-
+      <Route element={<AuthRequired allRoles={[ServiciesRol.rol3]} />}>
+      <Route path="/reporte/estimacion" element={<AppRouter component={ReporteMain} />} />
       </Route>
 
       <Route path='*' element={<Suspense fallback={<Spin />}><NotFound /></Suspense>} />

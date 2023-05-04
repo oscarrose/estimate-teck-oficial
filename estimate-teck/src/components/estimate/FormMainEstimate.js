@@ -1,11 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { Button, message, Row, Steps, theme } from 'antd';
-import { LeftOutlined } from "@ant-design/icons"
 import { useParams } from 'react-router-dom';
 import useEstimate from "../../hooks/useEstimate"
 import Step1Form from './Step1Form';
 import Step2From from './Step2Form';
-import Step3From from './Step3Form';
+
 
 export default function FormMainEstimate() {
 
@@ -45,7 +44,7 @@ export default function FormMainEstimate() {
 
   const handleSubmit = useCallback((data) => {
     setData(data);
-    console.log("Data", data);
+   
   }, []);
 
   const items = steps.map((item) => ({

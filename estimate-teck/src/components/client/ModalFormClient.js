@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { Modal, Form, Input, Select, Spin, Button, message } from "antd";
 import CallApi from "../../ServicesHttp/CallApi";
 import { tipoClient } from "./ItemSelectClient";
-import { Countrys, ProvinciaRD } from "../admin-personnel/ItemsSelect";
 import useAuth from "../../hooks/useAuth";
-import { data } from "autoprefixer";
 const { Option } = Select;
 
 function ModalFormEmployee({
@@ -19,24 +17,6 @@ function ModalFormEmployee({
   };
 
   const { auth } = useAuth();
-
-
-  //Asginar los valores a editar
-  /* const edit = () => {
-     form.setFieldsValue({
-      nombre: controlFormClient.dataEdit.nombre,
-      apellido: controlFormClient.dataEdit.apellido,
-      identificacion: controlFormClient.dataEdit.identificacion,
-      celular: controlFormClient.dataEdit.celular,
-      email: controlFormClient.dataEdit.email,
-      telefonoResidencial: controlFormClient.dataEdit.telefonoResidencial,
-     
-      ciudad: controlFormClient.dataEdit.ciudad,
-      calle: controlFormClient.dataEdit.calle,
-      sector: controlFormClient.dataEdit.sector,
-     
-    });
-  };*/
 
   const [loandingSave, setLoandingSave] = useState(false);
 
@@ -53,7 +33,7 @@ function ModalFormEmployee({
 
       await CallApi.post("Client/CreateClient", objNew)
         .then((res) => {
-          console.log("OJO aqui", objNew)
+         
           message.success("Registrado correctamente");
           onReset();
           setDataClient((prevData) => prevData.concat(res.data));
@@ -100,7 +80,7 @@ function ModalFormEmployee({
         centered
         open={controlFormClient.visible}
         onCancel={() => {
-          // onReset();
+         
           setControlFormClient({
             ...controlFormClient,
             visible: false,

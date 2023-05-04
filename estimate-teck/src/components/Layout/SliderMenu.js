@@ -59,7 +59,7 @@ function SliderMenu({ collapsed }) {
       type: 'divider',
     },),
     (auth.rol === "Gerente general") &&
-    getItem(<Link to={'/null1'}>Reportes</Link>, "/null1", <FileTextOutlined />, {
+    getItem(<Link to={'/reporte/estimacion'}>Reportes</Link>, "/reporte/estimacion", <FileTextOutlined />, {
       type: 'divider',
     },),
 
@@ -77,16 +77,16 @@ function SliderMenu({ collapsed }) {
     <>
 
       <Sider
-      
+
         trigger={null}
         collapsible
         collapsed={collapsed}
         width={200}
-       
+
 
       >
         <div className="logo">
-          <img className="w-32"src={logoMenu} alt="Estimate-teck" />
+          <img className="w-32" src={logoMenu} alt="Estimate-teck" />
         </div>
         <Menu
           //className="bg-black"

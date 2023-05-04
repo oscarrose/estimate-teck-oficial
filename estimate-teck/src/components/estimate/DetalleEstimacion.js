@@ -6,9 +6,11 @@ import useEstimate from '../../hooks/useEstimate';
 import TableConteoComponente from './TableConteoComponente';
 import TableDetalleDePuntoFuncionAjustado from './TableDetalleDePuntoFuncionAjustado';
 import TableCaracteriticaSistema from './TableCaracteriticaSistema';
+import TableParticipanteEstimacion from './TableParticipanteEstimacion';
+import TablaParametroEconomico from './TableParametroEconomico';
 function DetalleEstimacion({ detalleEstimacion }) {
 
-    const { isModalOpen, setIsModalOpen } = useEstimate();
+    const { setIsModalParametro, setIsModalOpen } = useEstimate();
 
 
 
@@ -88,13 +90,13 @@ function DetalleEstimacion({ detalleEstimacion }) {
                             color: '#3f8600',
                         }}
                         suffix="US$" />
-                    <Button
+                    {!detalleEstimacion.viewParticipanteEstimacion.length ? (<Button
                         className="bg-black border-none shadow-sm hover:bg-slate-700 text-white font-sans py-1.5 px-2.5  rounded inline-flex items-center"
 
                         onClick={() => setIsModalOpen(true)}
                     >
                         Estimar costo bruto
-                    </Button>
+                    </Button>) : null}
                 </Card>
 
                 <Card bordered={false} className="flex-1">
@@ -107,12 +109,12 @@ function DetalleEstimacion({ detalleEstimacion }) {
                             color: '#3f8600',
                         }}
                         suffix="US$" />
-                    <Button
+                    {!detalleEstimacion.viewParametroEconomico.length ? (<Button
                         className="bg-black border-none shadow-sm hover:bg-slate-700 text-white font-sans py-1.5 px-2.5  rounded inline-flex items-center"
-                        type="primary"
+                        onClick={() => setIsModalParametro(true)}
                     >
                         Parámetros económicos
-                    </Button>
+                    </Button>) : null}
                 </Card>
             </div>
 
@@ -143,16 +145,24 @@ function DetalleEstimacion({ detalleEstimacion }) {
                         ?? 'N/A'}
                 </Descriptions.Item>
             </Descriptions>
+
+            <Divider />
+            <TablaParametroEconomico detalleEstimacion={detalleEstimacion} />
+
+            <Divider />
+            <TableParticipanteEstimacion detalleEstimacion={detalleEstimacion} />
+
             <Divider />
             <TableComponentFuncional detalleEstimacion={detalleEstimacion} />
-            <Divider />
-            <TableCaracteriticaSistema detalleEstimacion={detalleEstimacion}  />
 
             <Divider />
-            <TableConteoComponente detalleEstimacion={detalleEstimacion}  />
+            <TableCaracteriticaSistema detalleEstimacion={detalleEstimacion} />
 
             <Divider />
-            <TableDetalleDePuntoFuncionAjustado detalleEstimacion={detalleEstimacion}  />
+            <TableConteoComponente detalleEstimacion={detalleEstimacion} />
+
+            <Divider />
+            <TableDetalleDePuntoFuncionAjustado detalleEstimacion={detalleEstimacion} />
         </>
     )
 }

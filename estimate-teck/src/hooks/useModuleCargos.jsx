@@ -21,7 +21,6 @@ const useModuleCargos = () => {
     await CallApi.get("Cargos/GetAllCargos")
       .then((res) => {
         setDataCargos(res.data);
-        console.log("Indentificar", res.data);
         setloanding(false);
       })
       .catch((error) => {

@@ -121,4 +121,65 @@ const CharacteristicSystem = [
         characteristic: "Facilidad de mantenimiento"
     }
 ]
-export { tipoComponente, Complejidad, ScoreForAdjustmentFactor, CharacteristicSystem }
+
+const PisITBIS = [
+    {
+        id: 1,
+        pais: "Argentina",
+        valor: 0.21
+    },
+    {
+        id: 2,
+        pais: "Brasil",
+        valor: 0.27
+    },
+   
+    {
+        id: 4,
+        pais: "Colombia",
+        valor: 0.19
+    },
+    {
+        id: 5,
+        pais: "Costa Rica",
+        valor: 0.13
+    },
+    {
+        id: 6,
+        pais: "República Dominicana",
+        valor: 0.18
+    },
+    {
+        id: 7,
+        pais: "Ecuador",
+        valor: 0.12
+    },
+    {
+        id: 10,
+        pais: "Honduras",
+        valor: 0.15
+    },
+    {
+        id: 11,
+        pais: "México",
+        valor: 0.16
+    },
+   
+    {
+        id: 13,
+        pais: "Panamá",
+        valor: 0.7
+    },
+    {
+        id: 14,
+        pais: "Paraguay",
+        valor: 0.10
+    },
+    {
+        id: 16,
+        pais: "Uruguay",
+        valor: 0.22
+    },
+]
+
+export { tipoComponente, Complejidad, ScoreForAdjustmentFactor, CharacteristicSystem, PisITBIS }
