@@ -10,7 +10,7 @@ namespace estimate_teck.Models
         public int EstimacionId { get; set; }
         public int CantidadPersona { get; set; }
 
-        public virtual Cargo Cargo { get; set; } = null!;
-        public virtual Estimacion Estimacion { get; set; } = null!;
+        public virtual Cargo? Cargo { get; set; } = null!;
+        public virtual Estimacion? Estimacion { get; set; } = null!;
     }
 }

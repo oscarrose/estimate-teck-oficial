@@ -15,10 +15,34 @@ namespace estimate_teck.DTO
 
         public List<PuntoFuncionAjustadoView> viewPuntoFuncionAjustado { get; set; } = null;
 
+        public List<ParticipanteEstimacionView> viewParticipanteEstimacion { get; set; } = null;
+
+        public List<ReturnParametrosView> viewParametroEconomico { get; set; } = null;
+
     }
 
 
-    public partial class PuntoFuncionAjustadoView
+    public partial class ReturnParametrosView
+    {
+
+
+        public string Itbis { get; set; }
+        public string CostoSoporte { get; set; }
+        public string CostoImplementacion { get; set; }
+
+        public DateTime? FechaCreacion { get; set; }
+
+    }
+
+
+
+    public class ParticipanteEstimacionView
+    {
+        public string Cargo { get; set; }
+        public int CantidadPersona { get; set; }
+    }
+
+    public class PuntoFuncionAjustadoView
     {
 
         public string TipoComponente { get; set; }
@@ -47,7 +71,6 @@ namespace estimate_teck.DTO
 
     public class ComponenteFuncionaleView
     {
-
         public string RequerimientoSw { get; set; }
         public string TipoComponente { get; set; }
         public string Complejidad { get; set; } = null!;

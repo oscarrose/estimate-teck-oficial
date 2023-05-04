@@ -6,7 +6,9 @@ using estimate_teck.DTO;
 using estimate_teck.Servicies.Estimate;
 using Microsoft.EntityFrameworkCore.Storage;
 using estimate_teck.Servicies;
-using System.Text.Json;
+using Microsoft.AspNetCore.JsonPatch;
+using Newtonsoft.Json;
+using estimate_teck.Servicies;
 
 namespace estimate_teck.Controllers
 {
@@ -114,22 +116,44 @@ namespace estimate_teck.Controllers
                                   select new CaracteristicaSistemaView()
                                   {
                                       Caracteristica = caract.Caracteristica,
-                                      puntaje = string.Concat("Significado:", puntaje.Significado," ", "valor:", puntaje.Valor)
+                                      puntaje = string.Concat("Significado:", puntaje.Significado, " ", "valor:", puntaje.Valor)
 
                                   }).ToListAsync();
 
-                    var resultPuntoFuncionAjustado=await(
-                        from puntos in _context.PuntoFuncionAjustados
-                        join tipo in _context.TipoComponentes on puntos.TipoComponenteId equals tipo.TipoComponenteId
-                        where puntos.ProyectoId==id
-                        select new PuntoFuncionAjustadoView(){
-                            TipoComponente=tipo.NombreComponente,
-                            Baja=puntos.Baja,
-                            Media=puntos.Media,
-                            Alta=puntos.Alta,
-                            Total=puntos.Total
-                        }).ToListAsync();
+                var resultPuntoFuncionAjustado = await (
+                    from puntos in _context.PuntoFuncionAjustados
+                    join tipo in _context.TipoComponentes on puntos.TipoComponenteId equals tipo.TipoComponenteId
+                    where puntos.ProyectoId == id
+                    select new PuntoFuncionAjustadoView()
+                    {
+                        TipoComponente = tipo.NombreComponente,
+                        Baja = puntos.Baja,
+                        Media = puntos.Media,
+                        Alta = puntos.Alta,
+                        Total = puntos.Total
+                    }).ToListAsync();
+                var resultParticipanteEstimacion = await (
+                    from parti in _context.ParticipanteEstimacions
+                    join cargo in _context.Cargos on parti.CargoId equals
+                    cargo.CargoId
+                    where parti.EstimacionId == estimacions.EstimacionId
+                    select new ParticipanteEstimacionView()
+                    {
+                        Cargo = cargo.NombreCargo,
+                        CantidadPersona = parti.CantidadPersona
 
+                    }).ToListAsync();
+
+                var resultParametroEconomico = await (
+                from parametro in _context.ParametrosEconomicos
+                where parametro.EstimacionId == estimacions.EstimacionId
+                select new ReturnParametrosView()
+                {
+                    Itbis = string.Concat(parametro.Itbis," ","US$" ),
+                    CostoImplementacion = string.Concat(parametro.CostoImplementacion, " ","US$" ),
+                    CostoSoporte = string.Concat(parametro.CostoSoporte, " ", "US$" ),
+                    FechaCreacion = parametro.FechaCreacion
+                }).ToListAsync();
 
 
                 var detalleEstimacionDTO = new DetalleEstimacionDTO
@@ -139,7 +163,9 @@ namespace estimate_teck.Controllers
                     viewComponenteFuncional = resultComponenteFuncional,
                     viewConteoTipoComponente = resultConteoTipoComponente,
                     viewCaracteristicaSistema = resultCaracteristicaSistema,
-                    viewPuntoFuncionAjustado=resultPuntoFuncionAjustado
+                    viewPuntoFuncionAjustado = resultPuntoFuncionAjustado,
+                    viewParticipanteEstimacion = resultParticipanteEstimacion,
+                    viewParametroEconomico=resultParametroEconomico
 
                 };
 
@@ -153,8 +179,6 @@ namespace estimate_teck.Controllers
 
                 throw;
             }
-
-
         }
         // PUT: api/Estimacions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -187,7 +211,101 @@ namespace estimate_teck.Controllers
             return NoContent();
         }
 
+        [HttpPost("CalcularCostoTotal")]
+        public async Task<IActionResult> CalcularCostoTotalEstimado([FromBody] ReceiveParametroEconomico parametros)
+        {
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    decimal costoSoporte = parametros.costoBrutoEstimado * parametros.CostoSoporte;
 
+                    decimal CostoImplementacion = parametros.costoBrutoEstimado * parametros.CostoImplementacion;
+
+                    decimal sinImpuesto = parametros.costoBrutoEstimado + costoSoporte + CostoImplementacion;
+
+                    decimal impuesto = sinImpuesto * parametros.Itbis;
+
+                    decimal CostoTotal = sinImpuesto + impuesto;
+
+                    var datosParametros = new ParametrosEconomico()
+                    {
+                        EstimacionId = parametros.EstimacionId,
+                        CostoImplementacion = CostoImplementacion,
+                        CostoSoporte = costoSoporte,
+                        Itbis = impuesto
+                    };
+                    _context.ParametrosEconomicos.Add(datosParametros);
+                    // await _context.SaveChangesAsync();
+
+
+                    var currentEstimate = await _context.DetalleEstimacions.FindAsync(parametros.EstimacionId);
+                    var patchDoc = new JsonPatchDocument<DetalleEstimacion>();
+
+                    patchDoc.Replace(currentEstimate => currentEstimate.CostoTotal, CostoTotal);
+
+                    var serializedItemToUpdate = JsonConvert.SerializeObject(patchDoc);
+                    var deserialized = JsonConvert.DeserializeObject<JsonPatchDocument>(serializedItemToUpdate);
+                    deserialized?.ApplyTo(currentEstimate);
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
+                    return NoContent();
+                }
+                catch (Exception ex)
+                {
+
+                    transaction.Rollback();
+                    return StatusCode(500, $"Error a determinar el costo total estimado: {ex.Message}");
+                }
+
+            }
+
+        }
+
+
+        [HttpPost("CalcularCostoBruto")]
+        public async Task<IActionResult> CalcularCostoBruto([FromBody] ReceiveParticipante participante)
+        {
+            using (IDbContextTransaction transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    _context.ParticipanteEstimacions.AddRangeAsync(participante.Listparticipantes);
+                    await _context.SaveChangesAsync();
+
+                    int totalPersonas = participante.Listparticipantes.Sum(p => p.CantidadPersona);
+
+                    decimal salarioPromedio = participante.Listparticipantes
+                        .Join(_context.Cargos, p => p.CargoId, c => c.CargoId, (p, c) => new { p, c })
+                        .Sum(x => x.c.SalarioHora * x.p.CantidadPersona) / totalPersonas;
+
+                    decimal costoBrutoTotal = salarioPromedio * participante.EsfuerzoTotal;
+
+                    int estimacionId = participante.Listparticipantes.FirstOrDefault().EstimacionId;
+
+                    var currentEstimate = await _context.DetalleEstimacions.FindAsync(estimacionId);
+                    var patchDoc = new JsonPatchDocument<DetalleEstimacion>();
+
+                    patchDoc.Replace(currentEstimate => currentEstimate.CostoBrutoEstimado, costoBrutoTotal);
+
+                    var serializedItemToUpdate = JsonConvert.SerializeObject(patchDoc);
+                    var deserialized = JsonConvert.DeserializeObject<JsonPatchDocument>(serializedItemToUpdate);
+                    deserialized?.ApplyTo(currentEstimate);
+
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
+                    return NoContent();
+                }
+                catch (Exception ex)
+                {
+
+                    transaction.Rollback();
+                    return StatusCode(500, $"Error a determinar el costo bruto estimado: {ex.Message}");
+                }
+
+            }
+
+        }
 
         // POST: api/Estimacions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

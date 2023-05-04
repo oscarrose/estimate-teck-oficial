@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace estimate_teck.Models
@@ -7,10 +7,12 @@ namespace estimate_teck.Models
     {
         public int ParametroEconomicoId { get; set; }
         public int EstimacionId { get; set; }
-        public string NombreParametro { get; set; } = null!;
-        public decimal ValorParametro { get; set; }
+        public decimal Itbis { get; set; }
+        public decimal CostoSoporte { get; set; }
+        public decimal CostoImplementacion { get; set; }
         public DateTime? FechaCreacion { get; set; }
 
-        public virtual Estimacion Estimacion { get; set; } = null!;
+        public virtual Estimacion? Estimacion { get; set; } = null!;
     }
 }
+

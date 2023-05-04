@@ -46,15 +46,7 @@ namespace estimate_teck.Data
         public virtual DbSet<TipoRequerimiento> TipoRequerimientos { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data source=localhost; Initial catalog=estimate_teck; User Id=sa; password=admin123@");
-            }
-        }
-
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CaracteristicaSistema>(entity =>
@@ -528,6 +520,14 @@ namespace estimate_teck.Data
 
                 entity.Property(e => e.ParametroEconomicoId).HasColumnName("Parametro_economico_id");
 
+                entity.Property(e => e.CostoImplementacion)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("costo_Implementacion");
+
+                entity.Property(e => e.CostoSoporte)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("costo_Soporte");
+
                 entity.Property(e => e.EstimacionId).HasColumnName("Estimacion_Id");
 
                 entity.Property(e => e.FechaCreacion)
@@ -535,14 +535,9 @@ namespace estimate_teck.Data
                     .HasColumnName("Fecha_creacion")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.NombreParametro)
-                    .HasMaxLength(100)
-                    .IsUnicode(false)
-                    .HasColumnName("Nombre_parametro");
-
-                entity.Property(e => e.ValorParametro)
+                entity.Property(e => e.Itbis)
                     .HasColumnType("decimal(10, 2)")
-                    .HasColumnName("Valor_parametro");
+                    .HasColumnName("ITBIS");
 
                 entity.HasOne(d => d.Estimacion)
                     .WithMany(p => p.ParametrosEconomicos)
