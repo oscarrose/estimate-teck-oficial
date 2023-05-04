@@ -505,9 +505,9 @@ CREATE TABLE Parametros_economico
 (
     Parametro_economico_id INT NOT NULL IDENTITY CONSTRAINT Pk_parametros_economicos_id PRIMARY KEY(Parametro_economico_id),
     Estimacion_Id INT NOT NULL CONSTRAINT Fk_estimacion_id_parametros_economico FOREIGN KEY REFERENCES Estimacion(Estimacion_Id),
-    ITBIS INT NOT NULL,
-    costo_Soporte INT NOT NULL,
-    costo_Implementacion INT NOT NULL,
+    ITBIS decimal(10,2) NOT NULL,
+    costo_Soporte  decimal(10,2) NOT NULL,
+    costo_Implementacion  decimal(10,2) NOT NULL,
     Fecha_creacion DATETIME DEFAULT GETDATE()
 
 );
