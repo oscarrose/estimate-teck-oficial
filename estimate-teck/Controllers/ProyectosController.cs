@@ -67,7 +67,8 @@ namespace estimate_teck.Controllers
                                      proj.UsuarioId,
                                      proj.FechaCreacion,
                                      proj.Descripcion,
-                                     proj.ClienteId
+                                     proj.ClienteId,
+                                     proj.TipoAplicacion
                                  }).FirstOrDefaultAsync();
 
             if (project == null)
