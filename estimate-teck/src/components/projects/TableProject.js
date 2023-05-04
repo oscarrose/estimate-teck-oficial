@@ -72,6 +72,8 @@ const TableProject = ({ dataTableProject, setEditProject }) => {
             <EditOutlined />Editar
           </Link>
 
+         
+
           <Link to={`${rute}project/requirementClient/${record.proyectoId}`}
             style={{ marginBottom: "1rem" }}  >
             <SolutionOutlined />Administrar Requerimientos
