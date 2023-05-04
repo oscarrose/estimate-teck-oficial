@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
+using static estimate_teck.DTO.ViewRequerimientosDTO;
 
 namespace estimate_teck.Controllers
 {
@@ -19,31 +20,42 @@ namespace estimate_teck.Controllers
             _context = context;
         }
 
-        // [HttpGet("RequerimientoByProyecto/{id}")]
-        // public async Task<ActionResult<IEnumerable<RequerimientosDTO>>> GetRequerimientos(int id)
-        // {
-        //     var Requerimientos = await (
-        //         from r in _context.RequerimientosClientes
-        //         join p in _context.Proyectos on r.ProyectoId equals p.ProyectoId
-        //         join tipoReq in _context.TipoRequerimientos on r.TipoRequerimientoId equals tipoReq.TipoRequerimientoId
-        //         join est in _context.EstadoRequerimientos on r.EstadoId equals est.EstadoRequerimientoId
-        //         where r.ProyectoId == id
-        //         select new RequerimientosDTO()
-        //         {
-        //             RequerimientoId = r.RequerimientoId,
-        //             ProyectoId = r.ProyectoId,
-        //             NombreProyecto = p.NombreProyecto,
-        //             TipoRequerimiento = tipoReq.Nombre,
-        //             TipoRequerimientoId = r.TipoRequerimientoId,
-        //             EstadoId = r.EstadoId,
-        //             Estado = est.NombreEstadoRequerimiento,
+        [HttpGet("RequerimientoByProyecto/{id}")]
+        public async Task<ActionResult<IEnumerable<ViewRequerimientosDTO>>> GetRequerimientos(int id)
+        {
+            var Requerimientos = await (
+                from r in _context.RequerimientosClientes
+                join p in _context.Proyectos on r.ProyectoId equals p.ProyectoId
+                join tipoReq in _context.TipoRequerimientos on r.TipoRequerimientoId equals tipoReq.TipoRequerimientoId
+                join est in _context.EstadoRequerimientos on r.EstadoId equals est.EstadoRequerimientoId
+                join u in _context.Usuarios on p.UsuarioId equals u.UsuarioId
+                join e in _context.Empleados on u.EmpleadoId equals e.EmpleadoId
+                where r.ProyectoId == id
+                select new ViewRequerimientosDTO()
+                {
+                    RequerimientoId = r.RequerimientoId,
+                    TipoRequerimiento= tipoReq.Nombre,
+                    Usuario=string.Concat(e.Nombre, " ", e.Apellido),
 
-        //             FechaCreacion = p.FechaCreacion,
+                   // ProyectoId = r.ProyectoId,
+                    //NombreProyecto = p.NombreProyecto,
+                    //TipoRequerimiento = tipoReq.Nombre,
+                    //TipoRequerimientoId = r.TipoRequerimientoId,
+                    Requisito = r.Requisito,
+                    RequisitoSf = r.RequerimientosSoftwares.Select(rs => new RequerimientoSf
+                    {
+                        Id = rs.Id,
+                        requerimientoSf = rs.RequerimientoSf
+                    }).ToList()
+                    //EstadoId = r.EstadoId,
+                    //Estado = est.NombreEstadoRequerimiento,
 
-        //         }).ToListAsync();
-        //     return Ok(Requerimientos);
+                    //FechaCreacion = p.FechaCreacion,
 
-        // }
+                }).ToListAsync();
+            return Ok(Requerimientos);
+
+        }
 
 
         [HttpGet("SWRequerimentsForEstimate/{id}")]
