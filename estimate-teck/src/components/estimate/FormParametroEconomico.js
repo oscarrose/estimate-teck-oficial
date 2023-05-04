@@ -8,7 +8,7 @@ function FormParametroEconomico({ detalleEstimacion }) {
 
     const { isModalParametro, setIsModalParametro, setUpdateDetalleEstimacion, setLoandingEstimacion } = useEstimate();
 
-    //console.log("xdx", detalleEstimacion)
+    
     const [form] = Form.useForm();
     const estimacionId = detalleEstimacion.viewEstimacion.estimacionId;
     const costoBrutoEstimado = detalleEstimacion.viewEstimacionDetalle.costoBrutoEstimado;
@@ -24,7 +24,7 @@ function FormParametroEconomico({ detalleEstimacion }) {
             ...values,
             costoBrutoEstimado: costoBrutoEstimado
         }
-        console.log("aa",newValues)
+       
 
         await CallApi.post("Estimacions/CalcularCostoTotal", newValues)
             .then(() => {

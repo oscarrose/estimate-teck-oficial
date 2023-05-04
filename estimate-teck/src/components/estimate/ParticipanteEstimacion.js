@@ -63,9 +63,7 @@ function ParticipanteEstimacion({ detalleEstimacion }) {
         onReset();
     };
 
-    const onFinish = (values) => {
-        console.log('Received values of form:', values);
-    };
+   
     return (
         <>
             <Modal title="Agregar los cargos para la estimación" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>

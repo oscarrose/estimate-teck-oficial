@@ -55,7 +55,7 @@ function IndexEstimate() {
     fetchInfoProject();
   }, [updateDetalleEstimacion]);
 
-  // console.log("ads", detalleEstimacion.viewParticipanteEstimacion)
+ 
   return (
     <div className="grid grid-rows-2 grid-cols-1 p-3 bg-white container mx-auto">
       <Spin size="large" spinning={loadingEstimacion} className='container mx-auto p-5'>

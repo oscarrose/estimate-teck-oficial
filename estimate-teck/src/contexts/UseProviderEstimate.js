@@ -73,7 +73,7 @@ const UseProviderEstimate = ({ children }) => {
 
         await CallApi.post("Estimacions/estimarProyectos ", dataToSend)
             .then((res) => {
-                console.log("res", res.data)
+               
                 setFinishEstimate(false)
                 openNotificationWithIcon('success', 'topRight', 'Estimaddor de proyectos', 'Estimación realizada correctamente')
                 navigate(rute + `project/estimate/${infoProyect.proyectoId}`, { replace: true });

@@ -69,13 +69,13 @@ export default function FormProjects() {
                 estadoProyectoId: 1
             }
 
-            console.log("new", newValues)
+           
             await CallApi.post("Proyectos/RegisterProject", newValues).then(() => {
                 setLoadingProject(false);
                 navigate(rute + "projects", { replace: true });
                 message.success("Registrado correctamente");
             }).catch((error) => {
-                console.log(error)
+              
                 setLoadingProject(false);
                 message.error("Error interno1", error.message);
             });
@@ -95,7 +95,7 @@ export default function FormProjects() {
                     tipo: { nombreTipoCliente: res.data.nombreTipoCliente }
                 });
                 setLoadingProject(false);
-                console.log("de", res.data)
+              
             })
             .catch((error) => {
                 setLoadingProject(false);

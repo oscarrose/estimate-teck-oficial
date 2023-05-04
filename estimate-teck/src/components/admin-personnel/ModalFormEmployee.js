@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 import useModuleCargos from "../../hooks/useModuleCargos";
-import { Modal, Form, Input, Upload, Select, Spin, Button, message, DatePicker, notification } from "antd";
-import ImgCrop from "antd-img-crop";
-import { PlusOutlined, UploadOutlined } from "@ant-design/icons"
+import { Modal, Form, Input, Select, Spin, Button, message, DatePicker, notification } from "antd";
 import CallApi from "../../ServicesHttp/CallApi";
 import moment from 'moment';
-import { cargo, estadoUsuarioEmpleado, Countrys, ProvinciaRD } from "./ItemsSelect";
+import { estadoUsuarioEmpleado } from "./ItemsSelect";
 import useAuth from '../../hooks/useAuth';
 const { Option } = Select;
 
 const dateFormat = 'YYYY-MM-DD';
-//import useModuleCargos from "../../hooks/useModuleCargos";
-
-
 
 function ModalFormEmployee({
   setUpdateTableEmployee,
@@ -96,11 +91,7 @@ function ModalFormEmployee({
 
   const { auth } = useAuth();
 
-  console.log("aa", auth)
-  // const [country, setCountry] = useState('');
-  // const [state, setState] = useState('');
-  // const [city, setCity] = useState('');
-
+  
   //Asginar los valores a editar
   const edit = () => {
     form.setFieldsValue({
@@ -154,7 +145,7 @@ function ModalFormEmployee({
         ...values,
         creadoPor: auth.emailUsuario
       }
-      console.log("dcee", valuesNew)
+     
       await CallApi.post("Empleados/CreateEmployee", valuesNew)
 
 

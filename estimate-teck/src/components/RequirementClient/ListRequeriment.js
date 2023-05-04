@@ -24,7 +24,7 @@ function ListRequeriment({ dataRequeriment, setOpenForm, setEditRequirement }) {
       size="large"
       pagination={{
         onChange: (page) => {
-          console.log(page);
+         
         },
         pageSize: 2,
       }}
