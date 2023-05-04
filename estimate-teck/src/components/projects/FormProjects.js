@@ -114,8 +114,10 @@ export default function FormProjects() {
         form.setFieldsValue({
             nombreProyecto: dataEdit.nombreProyecto,
             descripcion: dataEdit.descripcion,
-            TipoProyecto:dataEdit.tipoProyecto
+            TipoProyecto:dataEdit.tipoProyecto,
+            TipoAplicacion:dataEdit.tipoAplicacion
         });
+       
     };
 
     return (
