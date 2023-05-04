@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, message, Spin, Typography, Collapse} from "antd";
-import { PlusOutlined,DeleteOutlined } from "@ant-design/icons";
+import { Button, message, Spin, Typography } from "antd";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useParams } from 'react-router-dom';
 import CallApi from "../../ServicesHttp/CallApi";
-import CollapseRequeriments from "./CollapseRequeriments";
 import ListRequeriment from "./ListRequeriment";
 import FormRequirement from "./FormRequirement";
+import ListaRequerimentos from "./ListaRequerimientos";
 
 const { Title } = Typography;
 function IndexRequerClient() {
@@ -30,16 +30,16 @@ function IndexRequerClient() {
    *Function para obtener los datos  para la tabla de requerimiento
    */
   const fetchRequirementByProject = async () => {
-    // setLoanding(true);
-    // await CallApi.get(`RequerimientosClientes/RequerimientoByProyecto/${idProyecto}`)
-    //   .then((res) => {
-    //     setDataRequeriment(res.data);
-    //     setLoanding(false);
-    //   })
-    //   .catch((error) => {
-    //     setLoanding(false);
-    //     message.error("Error Interno", error.message);
-    //   });
+    setLoanding(true);
+    await CallApi.get(`RequerimientosClientes/RequerimientoByProyecto/${idProyecto}`)
+      .then((res) => {
+        setDataRequeriment(res.data);
+        setLoanding(false);
+      })
+      .catch((error) => {
+        setLoanding(false);
+        message.error("Error Interno", error.message);
+      });
   };
 
   useEffect(() => {
@@ -76,12 +76,12 @@ function IndexRequerClient() {
         }
       ]
     }
-    
+
   ])
 
   return (
     <div className="grid grid-rows-2 grid-cols-1 bg-white container mx-auto">
-     
+
       <div className='container mx-auto p-5'>
         <Title>Requerimientos del cliente</Title>
         <Spin spinning={loading}>
@@ -96,16 +96,30 @@ function IndexRequerClient() {
             agregar requerimientos
           </Button>
           <div>
-            <ListRequeriment
+            {/* <ListRequeriment
               setEditRequirement={setEditRequirement}
               setOpenForm={setOpenForm}
               dataRequeriment={dataRequeriment}
+            /> */}
+
+            {/* <TableRequeriment
+              dataRequeriment={dataRequeriment}
+              loading={loading}
+              setOpenForm={setOpenForm}
+            /> */}
+
+            <ListaRequerimentos
+              dataRequeriment={dataRequeriment}
+              loading={loading}
+              //setOpenForm={setOpenForm}
             />
           </div>
         </Spin>
       </div>
+
+
       <FormRequirement
-      setDataRequeriment={setDataRequeriment}
+        setDataRequeriment={setDataRequeriment}
         setEditRequirement={setEditRequirement}
         editRequirement={editRequirement}
         key={editRequirement}
@@ -113,6 +127,8 @@ function IndexRequerClient() {
         idProyecto={idProyecto}
         openForm={openForm}
         setOpenForm={setOpenForm} />
+
+
 
     </div>
   );
