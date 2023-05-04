@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace estimate_teck.Models
@@ -26,15 +27,25 @@ namespace estimate_teck.Models
         public string TipoAplicacion { get; set; } = null!;
         public DateTime? FechaCreacion { get; set; }
 
+        [JsonIgnore]
         public virtual Cliente? Cliente { get; set; } = null!;
+        [JsonIgnore]
         public virtual EstadoProyecto? EstadoProyecto { get; set; } = null!;
+        [JsonIgnore]
         public virtual Usuario? Usuario { get; set; } = null!;
+        [JsonIgnore]
         public virtual ICollection<CaracteristicaSistema>? CaracteristicaSistemas { get; set; }
+        [JsonIgnore]
         public virtual ICollection<ComponenteFuncionale>?  ComponenteFuncionales { get; set; }
+        [JsonIgnore]
         public virtual ICollection<ConteoTipoComponente>?  ConteoTipoComponentes { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Estimacion>?  Estimacions { get; set; }
+        [JsonIgnore]
         public virtual ICollection<HistorialProyecto>?  HistorialProyectos { get; set; }
+        [JsonIgnore]
         public virtual ICollection<PuntoFuncionAjustado>? PuntoFuncionAjustados { get; set; }
+        [JsonIgnore]
         public virtual ICollection<RequerimientosCliente>? RequerimientosClientes { get; set; }
     }
 }
