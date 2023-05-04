@@ -22,7 +22,7 @@ function TableEmpoyee({
     {
       title: "Identificación",
       dataIndex: "identificacion",
-      width: 127,
+      
     },
     {
       title: "F.nacimiento",
@@ -31,12 +31,12 @@ function TableEmpoyee({
     {
       title: "Estado",
       dataIndex: "estado",
-      width: 90
+      
     },
     {
       title: "Cargo",
-      dataIndex: "nombreCargo",
-      width: 127,
+      dataIndex: "cargo",
+     
     },
     {
       title: "Num. concacto",
@@ -44,12 +44,12 @@ function TableEmpoyee({
       {
         title: "Celular",
         dataIndex: "celular",
-        width: 110,
+        
       },
       {
         title: "Telefono ",
         dataIndex: "telefonoResidencial",
-        width: 110,
+      
       },
       
     ]
@@ -61,10 +61,11 @@ function TableEmpoyee({
      
     },
     {
-      title: "Provincia",
-      dataIndex: "provincia",
-     
+      title: "Dir. Estado",
+      dataIndex: "estadop",
+      
     },
+   
     {
       title: "Ciudad",
       dataIndex: "ciudad",
@@ -81,7 +82,7 @@ function TableEmpoyee({
     {
       title: "Fecha creación",
       dataIndex: "fechaCreacion",
-      width: 127,
+     
     },
     {
       render: (record) => (

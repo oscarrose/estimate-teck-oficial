@@ -25,7 +25,7 @@ function ModalFormEmployee({
 
   const [Minor, setMinor] = useState(false);
 
-  const {dataCargos} = useModuleCargos();
+  const { dataCargos } = useModuleCargos();
 
   const notifyOnlyMinorAge = () => {
 
@@ -91,7 +91,7 @@ function ModalFormEmployee({
 
   const { auth } = useAuth();
 
-  
+
   //Asginar los valores a editar
   const edit = () => {
     form.setFieldsValue({
@@ -107,33 +107,13 @@ function ModalFormEmployee({
       calle: editEmployee.calle,
       sector: editEmployee.sector,
       estadoId: editEmployee.estadoId,
-      provincia: editEmployee.provincia,
+      estado: editEmployee.estadop,
       pais: editEmployee.pais,
       direccion: editEmployee.direccion
     });
   };
 
-  // const [fileList, setFileList] = useState([
-  //   {
-  //   }
-  // ]);
-  // const onChange = ({ fileList: newFileList }) => {
-  //   setFileList(newFileList);
-  // };
-  // const onPreview = async (file) => {
-  //   let src = file.url;
-  //   if (!src) {
-  //     src = await new Promise((resolve) => {
-  //       const reader = new FileReader();
-  //       reader.readAsDataURL(file.originFileObj);
-  //       reader.onload = () => resolve(reader.result);
-  //     });
-  //   }
-  //   const image = new Image();
-  //   image.src = src;
-  //   const imgWindow = window.open(src);
-  //   imgWindow?.document.write(image.outerHTML);
-  // };
+ 
 
   const [loandingSave, setLoandingSave] = useState(false);
 
@@ -145,7 +125,7 @@ function ModalFormEmployee({
         ...values,
         creadoPor: auth.emailUsuario
       }
-     
+
       await CallApi.post("Empleados/CreateEmployee", valuesNew)
 
 
@@ -353,131 +333,131 @@ function ModalFormEmployee({
                 ))}
               </Select>
             </Form.Item>}
-            
-{/*             <Select placeholder=" Seleccione la ocupacion en la empresa" allowClear>
+
+            {/*             <Select placeholder=" Seleccione la ocupacion en la empresa" allowClear>
               {cargo.map((data) => (
                 <Option key={data.idCargo} value={data.idCargo}>
                   {data.nombre}
                 </Option>
               ))}
             </Select> */}
-       
 
-          <Form.Item
-            name="telefonoResidencial"
-            label="Teléfono residencial"
-            rules={[{
-              max: 10,
-              min: 10,
-              message: "El numero de telefono es invalido"
-            }]}
-            hasFeedback
-          >
-            <Input type="number" placeholder="(###)#######" />
-          </Form.Item>
-          <Form.Item
-            name="celular"
-            label="Celular"
-            hasFeedback
-            rules={[
-              {
-                require: true,
-                message: "El celular es requerido",
 
-              },
-              {
+            <Form.Item
+              name="telefonoResidencial"
+              label="Teléfono residencial"
+              rules={[{
                 max: 10,
                 min: 10,
-                message: "El numero de celular es invalido"
-              }
-            ]}
-          >
-            <Input type="number" placeholder="(###)#######" />
-          </Form.Item>
-          <Form.Item
-            name="pais"
-            label="Pais"
-            rules={[
-              {
-                required: true,
-                message: "El pais es necesario!",
-              },
-            ]}
-            hasFeedback
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item name="estado" label="Estado"
-            rules={[
-              {
-                required: true,
-                message: "El estado es necesario!",
-              },
-            ]}
-            hasFeedback>
-            <Input />
-          </Form.Item>
-
-          <Form.Item name="ciudad" label="Ciudad"
-            rules={[
-              {
-                required: true,
-                message: "La ciudad es necesaria!",
-              },
-            ]}
-            hasFeedback>
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="direccion"
-            label="Dirección"
-            hasFeedback
-            rules={[
-              {
-                required: true,
-                message: "La dirección es requerida",
-              },
-            ]}
-          >
-            <Input placeholder="Sector, nombre de la calle, No. casa" />
-          </Form.Item>
-          {editEmployee && (
+                message: "El numero de telefono es invalido"
+              }]}
+              hasFeedback
+            >
+              <Input type="number" placeholder="(###)#######" />
+            </Form.Item>
             <Form.Item
-              name="estadoId"
-              label="Estado"
+              name="celular"
+              label="Celular"
+              hasFeedback
+              rules={[
+                {
+                  require: true,
+                  message: "El celular es requerido",
+
+                },
+                {
+                  max: 10,
+                  min: 10,
+                  message: "El numero de celular es invalido"
+                }
+              ]}
+            >
+              <Input type="number" placeholder="(###)#######" />
+            </Form.Item>
+            <Form.Item
+              name="pais"
+              label="Pais"
+              rules={[
+                {
+                  required: true,
+                  message: "El pais es necesario!",
+                },
+              ]}
+              hasFeedback
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item name="estado" label="Dir. estado"
+              rules={[
+                {
+                  required: true,
+                  message: "El Dir. estado es necesario!",
+                },
+              ]}
+              hasFeedback>
+              <Input />
+            </Form.Item>
+
+            <Form.Item name="ciudad" label="Ciudad"
+              rules={[
+                {
+                  required: true,
+                  message: "La ciudad es necesaria!",
+                },
+              ]}
+              hasFeedback>
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              name="direccion"
+              label="Dirección"
               hasFeedback
               rules={[
                 {
                   required: true,
-                  message: "El estado es requerido",
+                  message: "La dirección es requerida",
                 },
               ]}
             >
-              <Select placeholder=" Seleccione el tipo de estado" allowClear>
-                {estadoUsuarioEmpleado.map((data) => (
-                  <Option key={data.idEstado} value={data.idEstado}>
-                    {data.estado}
-                  </Option>
-                ))}
-              </Select>
+              <Input placeholder="Sector, nombre de la calle, No. casa" />
             </Form.Item>
-          )}
-          {!editEmployee && (
-            <Button type="primary" htmlType="reset" danger>
-              Cancelar
+            {editEmployee && (
+              <Form.Item
+                name="estadoId"
+                label="Estado"
+                hasFeedback
+                rules={[
+                  {
+                    required: true,
+                    message: "El estado es requerido",
+                  },
+                ]}
+              >
+                <Select placeholder=" Seleccione el tipo de estado" allowClear>
+                  {estadoUsuarioEmpleado.map((data) => (
+                    <Option key={data.idEstado} value={data.idEstado}>
+                      {data.estado}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            )}
+            {!editEmployee && (
+              <Button type="primary" htmlType="reset" danger>
+                Cancelar
+              </Button>
+            )}
+            <Button type="primary" disabled={Minor} htmlType="submit">
+              Guardar
             </Button>
-          )}
-          <Button type="primary" disabled={Minor} htmlType="submit">
-            Guardar
-          </Button>
 
-        </Form>
+          </Form>
 
-      </Spin>
+        </Spin>
 
-    </Modal>
+      </Modal>
 
       {/* 
             <Geography

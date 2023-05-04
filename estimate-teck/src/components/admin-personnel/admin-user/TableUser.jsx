@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Space, Table, Tooltip, Popconfirm } from "antd";
-import { PauseOutlined, ReloadOutlined } from "@ant-design/icons";
+import { PauseOutlined, ReloadOutlined,UserSwitchOutlined } from "@ant-design/icons";
 
 function TableUser({
   dataUser,
@@ -79,7 +79,7 @@ function TableUser({
                 setChangeUser(record.usuarioId);
               }}
             >
-              <PauseOutlined />
+             <UserSwitchOutlined />
             </Button>
 
           </Tooltip> }

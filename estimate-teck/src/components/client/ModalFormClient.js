@@ -36,7 +36,8 @@ function ModalFormEmployee({
          
           message.success("Registrado correctamente");
           onReset();
-          setDataClient((prevData) => prevData.concat(res.data));
+          setUpdateTableClient((prevData) => !prevData)
+          //setDataClient((prevData) => prevData.concat(res.data));
           setLoandingSave(false);
         })
         .catch((error) => {
@@ -313,7 +314,7 @@ function ModalFormEmployee({
 
             <Form.Item
               name="estado"
-              label="Estado"
+              label="Dir. Estado"
               hasFeedback
               rules={[
                 {
