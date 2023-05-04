@@ -18,6 +18,7 @@ const generationSoftwareRequirements = async (req, res) => {
 
     const newPrompt = `escribeme los requisitos funcionales de software especificos, de no existir ignoralo,de estos los siguientes requerimientos de usuarios:\n ${JSON.stringify(prompt)} \ndevolver la respuesta separada por coma, en el siguiente formato JSON:[{"id":X,"tipoRequerimientoId":tipoRequerimientoId,"requisito":"El requerimiento de usuario","requisitoSf":[{"id":X,"requerimientoSf":"requerisito funcional de software"},],}]`;
 
+
     try {
         const dataIA = await completionIA({ prompt: newPrompt });
         handleSuccess({ req: req, res: res, dataResponse: dataIA })

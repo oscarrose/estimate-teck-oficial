@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 const configuration = new Configuration({
-    organization: "org-eBtCx77zqaGE9sFcAJR3zLSi",
+    organization: "org-VcHpJTYaFZ4YG8VeFFkcOeYx",
     apiKey: process.env.OPENAI_API_KEY,
 });
 
@@ -13,11 +13,6 @@ function removeLetterRespuesta(cadena) {
     }
     return cadena;
 }
-// if (cadena.includes("Respuesta:")) {
-//     return cadena.replace("Respuesta:", "");
-// } else {
-//     return cadena;
-// }
 
 const completionIA = async ({ prompt }) => {
     const responseIA = await openai.createCompletion({
@@ -30,8 +25,9 @@ const completionIA = async ({ prompt }) => {
         top_p: 1.0,
         max_tokens: 2048
     });
+  
     const Response = removeLetterRespuesta(responseIA.data.choices[0].text);
-    console.log(Response)
+    //console.log(Response)
     return Response
 
 };
