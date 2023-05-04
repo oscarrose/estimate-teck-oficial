@@ -35,7 +35,7 @@ function TableEmpoyee({
     },
     {
       title: "Cargo",
-      dataIndex: "cargo",
+      dataIndex: "nombreCargo",
       width: 127,
     },
     {

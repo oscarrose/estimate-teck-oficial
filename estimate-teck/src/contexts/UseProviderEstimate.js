@@ -12,7 +12,7 @@ const UseProviderEstimate = ({ children }) => {
 
     const navigate = useNavigate();
 
-    const {auth}=useAuth();
+    const { auth } = useAuth();
 
     //para manejar los requisitos de la api IA
     const [dataIaRequirement, setDataIaRequirement] = useState({}
@@ -35,13 +35,18 @@ const UseProviderEstimate = ({ children }) => {
 
     const [step, setStep] = useState(0);
 
-    const [detalleEstimacion, setDetalleEstimacion]=useState(null)
+    const [detalleEstimacion, setDetalleEstimacion] = useState(null)
 
-    const [haveEstimacion, setHaveEstimacion]=useState(false);
+    const [updateDetalleEstimacion, setUpdateDetalleEstimacion] = useState(false);
 
-    const [loadingDetalleEstimacion, setLoadingDetalleEstimacion]=useState(false);
+    const [loadingDetalleEstimacion, setLoadingDetalleEstimacion] = useState(false);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [isModalParametro, setIsModalParametro] = useState(false);
+
+    //Para saber cuando se estan obteniendo los datos
+    const [loadingEstimacion, setLoandingEstimacion] = useState(false);
 
     const openNotificationWithIcon = (type, position, title, message) => {
         notification[type]({
@@ -63,12 +68,12 @@ const UseProviderEstimate = ({ children }) => {
             ComponenteFuncionales: newClassificationComponents,
             CaracteristicaSistemas: systemCharacteristc,
             Productividades: newProductividadId,
-            usuarioId:auth.idUsuario    
+            usuarioId: auth.idUsuario
         };
 
         await CallApi.post("Estimacions/estimarProyectos ", dataToSend)
             .then((res) => {
-                console.log("res", res.data)
+               
                 setFinishEstimate(false)
                 openNotificationWithIcon('success', 'topRight', 'Estimaddor de proyectos', 'Estimación realizada correctamente')
                 navigate(rute + `project/estimate/${infoProyect.proyectoId}`, { replace: true });
@@ -80,12 +85,10 @@ const UseProviderEstimate = ({ children }) => {
     }
 
 
+    //   useEffect(() => {
+    //     fetchDataDetalleEstimacion();
 
-
-//   useEffect(() => {
-//     fetchDataDetalleEstimacion();
-
-//   }, []);
+    //   }, []);
 
 
     const prev = useCallback(
@@ -94,20 +97,16 @@ const UseProviderEstimate = ({ children }) => {
         }, [step]
     );
 
-
-
-
     // const hola = useCallback(
     //     () => {
     //         console.log("aqui",()=>1+1)
     //     }, []
     //   );
 
-    // console.log(hola)
     return (
         <estimateContext.Provider
             value={{
-                isModalOpen, setIsModalOpen,loadingDetalleEstimacion, setLoadingDetalleEstimacion,haveEstimacion, setHaveEstimacion,detalleEstimacion, setDetalleEstimacion,finishEstimate, setFinishEstimate,
+                isModalParametro, setIsModalParametro,loadingEstimacion, setLoandingEstimacion, isModalOpen, setIsModalOpen, loadingDetalleEstimacion, setLoadingDetalleEstimacion, updateDetalleEstimacion, setUpdateDetalleEstimacion, detalleEstimacion, setDetalleEstimacion, finishEstimate, setFinishEstimate,
                 finishProjectEstimate, prev, setDataIaRequirement, dataIaRequirement, step, setStep,
                 saveClassificationComponents, setSaveClassificationComponents,
                 systemCharacteristc, setSystemCharacteristic,

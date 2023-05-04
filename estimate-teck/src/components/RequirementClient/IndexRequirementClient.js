@@ -116,8 +116,6 @@ function IndexRequerClient() {
           </div>
         </Spin>
       </div>
-
-
       <FormRequirement
         setDataRequeriment={setDataRequeriment}
         setEditRequirement={setEditRequirement}

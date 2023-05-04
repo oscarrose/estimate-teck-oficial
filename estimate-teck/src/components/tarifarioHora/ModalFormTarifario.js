@@ -47,7 +47,7 @@ function ModalFormTarifario({
         ...values,
         usuarioId:auth.idUsuario
       }
-      console.log("ho", objNew)
+     
       
       await CallApi.post("TarifarioHoras/CreateTarifarioHora", objNew)
         .then((res) => {
@@ -96,7 +96,7 @@ function ModalFormTarifario({
         .catch((error) => {
           setLoandingSave(false);
           message.error("Error interno", error.message);
-          console.log("Revisar",newValues)
+         
         });
     }
   }; 

@@ -1,10 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { message } from "antd";
 import CallApi from "../ServicesHttp/CallApi";
+import userAuth from "../hooks/useAuth";
 
 const useModuleAdminPersonnel = () => {
   //Data para mostrar los datos en la table de empleado
   const [dataEmployee, setDataEmployee] = useState([]);
+
+  const {auth} = userAuth();
 
     //Data para mostrar los datos en la table de empleado y en el select del usuario
     const [dataEmployeeWithoutUser, setDataEmployeeWithoutUser] = useState([]);
@@ -32,9 +35,12 @@ const useModuleAdminPersonnel = () => {
     setloanding(true);
     await CallApi.get("Empleados/GetAllEmployee")
       .then((res) => {
+
         setDataEmployee(res.data);
+        
         setloanding(false);
-      
+        
+        
       })
       .catch((error) => {
         setloanding(false);
@@ -67,8 +73,12 @@ const useModuleAdminPersonnel = () => {
     setloanding(true);
     await CallApi.get("Usuarios/GetAllUsuarios")
       .then((res) => {
-        setDataUser(res.data);
+        //const newdata = res.data.filter(usuario=> usuario.usarioId !== auth.idUsuario)
+        const filteredData = res.data.filter((item) => item.usuarioId !== auth.idUsuario);
+        setDataUser(filteredData);
+        console.log("Rev", filteredData);
         setloanding(false);
+
       })
       .catch((error) => {
         setloanding(false);

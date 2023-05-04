@@ -43,7 +43,8 @@ function ModalFormProductividad({
     if (!controlFormProductividad.dataEdit) {
       const objNew={
         ...values,
-        usuarioId:auth.idUsuario
+        usuarioId:auth.idUsuario,
+        empleado: values.empleado,
       }
       await CallApi.post("ProductividadPuntoFuncions/CreateProductividad", objNew)
         .then((res) => {
@@ -65,7 +66,8 @@ function ModalFormProductividad({
         ...values,
         fechaCreacion: controlFormProductividad.dataEdit.fechaCreacion,
         productividadId: controlFormProductividad.dataEdit.productividadId,
-        usuarioId:auth.idUsuario
+        usuarioId:auth.idUsuario,
+        empleado: values.empleado,
       };
       
       await CallApi.put(

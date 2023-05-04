@@ -14,7 +14,7 @@ const useModuleProductividad = () => {
   //Para saber cuando termina la peticcion de responder
   const [loanding, setloanding] = useState(false);
   /**
-   *Function para obtener los datos  para la tabla de empleados
+   *Function para obtener los datos  para la tabla de productividad
    */
   const fetchDataProductividad = useCallback(async function () {
     setloanding(true);

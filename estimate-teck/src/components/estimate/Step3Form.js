@@ -9,9 +9,7 @@ function Step3From({ idProyecto }) {
 
     const { prev, setStep, saveProductivityPlatform,prevSaveComponents} = useEstimate();
 
-  console.log("1", saveProductivityPlatform)
-
-  console.log("2", prevSaveComponents)
+ 
     return (
         <Spin spinning={loading}>
            <h4>paso siguiente</h4>

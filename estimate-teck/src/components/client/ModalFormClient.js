@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Modal, Form, Input, Select, Spin, Button, message } from "antd";
 import CallApi from "../../ServicesHttp/CallApi";
 import { tipoClient } from "./ItemSelectClient";
-import { Countrys, ProvinciaRD } from "../admin-personnel/ItemsSelect";
-
+import useAuth from "../../hooks/useAuth";
 const { Option } = Select;
 
 function ModalFormEmployee({
@@ -17,23 +16,7 @@ function ModalFormEmployee({
     form.resetFields();
   };
 
-
-  //Asginar los valores a editar
-  /* const edit = () => {
-     form.setFieldsValue({
-      nombre: controlFormClient.dataEdit.nombre,
-      apellido: controlFormClient.dataEdit.apellido,
-      identificacion: controlFormClient.dataEdit.identificacion,
-      celular: controlFormClient.dataEdit.celular,
-      email: controlFormClient.dataEdit.email,
-      telefonoResidencial: controlFormClient.dataEdit.telefonoResidencial,
-     
-      ciudad: controlFormClient.dataEdit.ciudad,
-      calle: controlFormClient.dataEdit.calle,
-      sector: controlFormClient.dataEdit.sector,
-     
-    });
-  };*/
+  const { auth } = useAuth();
 
   const [loandingSave, setLoandingSave] = useState(false);
 
@@ -41,9 +24,16 @@ function ModalFormEmployee({
   const onSubmit = async (values) => {
     setLoandingSave(true);
     if (!controlFormClient.dataEdit) {
-     
-      await CallApi.post("Client/CreateClient", values)
+
+      const objNew = {
+        ...values,
+        //usuarioId: auth.idUsuario,
+        creadoPor: auth.emailUsuario
+      }
+
+      await CallApi.post("Client/CreateClient", objNew)
         .then((res) => {
+         
           message.success("Registrado correctamente");
           onReset();
           setDataClient((prevData) => prevData.concat(res.data));
@@ -59,6 +49,7 @@ function ModalFormEmployee({
         ...values,
         fechaCreacion: controlFormClient.dataEdit.fechaCreacion,
         clienteId: controlFormClient.dataEdit.clienteId,
+        creadoPor: auth.emailUsuario
       };
 
       await CallApi.put(
@@ -71,7 +62,7 @@ function ModalFormEmployee({
           setLoandingSave(false);
           setControlFormClient({
             visible: false,
-            dataEdit:null
+            dataEdit: null
           });
 
         })
@@ -89,7 +80,7 @@ function ModalFormEmployee({
         centered
         open={controlFormClient.visible}
         onCancel={() => {
-          // onReset();
+         
           setControlFormClient({
             ...controlFormClient,
             visible: false,
@@ -249,18 +240,18 @@ function ModalFormEmployee({
             >
               <Input type="number" placeholder="(###)#######" />
             </Form.Item>
-            <Form.Item
+            {/*             <Form.Item
               name="pais"
-              label="Pais"
+              label="País"
               rules={[
                 {
                   required: true,
-                  message: "El pais es necesario!",
+                  message: "El país es necesario!",
                 },
               ]}
               hasFeedback
             >
-              <Select
+{               <Select
                 placeholder="Seleccione el país"
                 showSearch
                 optionFilterProp="children"
@@ -275,14 +266,30 @@ function ModalFormEmployee({
                     {option}
                   </Option>
                 ))}
-              </Select>
-            </Form.Item>
+              </Select> }
+            </Form.Item> */}
 
-            <Form.Item name="estado" label="Provincia"
+            <Form.Item
+              name="pais"
+              label="País"
+              hasFeedback
               rules={[
                 {
                   required: true,
-                  message: "La provincia es necesaria!",
+                  message: "El email es requerido",
+                },
+              ]}
+            >
+              <Input type="pais" placeholder="País" />
+            </Form.Item>
+
+
+
+            {/*             <Form.Item name="estado" label="Estado"
+              rules={[
+                {
+                  required: true,
+                  message: "El estado es necesario!",
                 },
               ]}
               hasFeedback>
@@ -302,6 +309,34 @@ function ModalFormEmployee({
                   </Option>
                 ))}
               </Select>
+            </Form.Item> */}
+
+            <Form.Item
+              name="estado"
+              label="Estado"
+              hasFeedback
+              rules={[
+                {
+                  required: true,
+                  message: "El estado es requerido",
+                },
+              ]}
+            >
+              <Input type="estado" placeholder="Estado" />
+            </Form.Item>
+
+            <Form.Item
+              name="ciudad"
+              label="Ciudad"
+              hasFeedback
+              rules={[
+                {
+                  required: true,
+                  message: "La ciudad es requerida",
+                },
+              ]}
+            >
+              <Input placeholder="Ciudad" />
             </Form.Item>
 
             <Form.Item
@@ -311,7 +346,7 @@ function ModalFormEmployee({
               rules={[
                 {
                   required: true,
-                  message: "El campo es requerido",
+                  message: "La ciudad es requerida",
                 },
               ]}
             >

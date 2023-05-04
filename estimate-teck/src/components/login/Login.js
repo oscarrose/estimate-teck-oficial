@@ -48,7 +48,7 @@ const Login = () => {
       navigate(rute + "home", { replace: true });
     }).catch((error) => {
       message.error(error.response.data)
-      console.log("err",error)
+     
       setLogged(false)
      
 

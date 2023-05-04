@@ -31,7 +31,7 @@ function Step1Form({ idProyecto }) {
         await CallApi.get(`RequerimientosClientes/SWRequerimentsForEstimate/${idProyecto}`).then((res) => {
             setLoanding(false);
             setRequerimentClient(res.data)
-            console.log("aa", res.data)
+           
         }).catch((error) => {
             setLoanding(false);
             message.error("Error Interno", error.message);
@@ -44,7 +44,7 @@ function Step1Form({ idProyecto }) {
         setLoanding(true)
         const newValues = requerimentClient.flatMap(({ requisitoSf }) => requisitoSf.map(({ id, requerimientoSf }) => ({ id, requerimientoSf })));
         await CallApi.post("http://localhost:8080/classifiction-requeriments-SW", newValues).then((res) => {
-            //console.log("res", JSON.parse(res.data.body))
+           
             // Agregar propiedades del segundo objeto al primer objeto
             const updatedRequerimentClient = requerimentClient.map(requeriment => {
                 const updatedRequisitoSf = requeriment.requisitoSf.map(sf => {

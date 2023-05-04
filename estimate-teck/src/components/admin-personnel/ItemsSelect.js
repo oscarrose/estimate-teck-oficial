@@ -2,11 +2,11 @@ const cargo = [
 
     {
         idCargo: 1,
-        nombre: "Frontend Development"
+        nombre: "Frontend Development Junior"
     },
     {
         idCargo: 2,
-        nombre: "Backend Development"
+        nombre: "Frontend Development Mid Senior"
     },
     {
         idCargo: 3,
